@@ -1,0 +1,19 @@
+body {background: lavenderblush;
+width: 60%;
+margin: auto;}
+h1 {text-align: center;
+font-size: 42px;}
+h2 {text-align: center;}
+h3 {color: red;
+	width: 100%;
+	background: lightgoldenrodyellow;
+border: 2px solid black;
+padding: 10px;
+margin: auto;
+clear: both;}
+img {float: right;
+	margin: 20px;}
+.highlights {border: double;
+margin: 10px;
+padding: 10px;
+width: 30%;}

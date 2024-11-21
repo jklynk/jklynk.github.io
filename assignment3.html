@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+	<title>RADIOHEAD STORE</title>
+</head>
+<body>
+	<h1>Welcome to the RADIOHEAD STORE!</h1><br>
+	<h2>Click "add to cart" to add item</h2>
+<br><br>
+<p id="okcomp">OK Computer</p>
+<p>Price: $10</p>
+<input type="button" value="Add OKAY COMPUTER to Cart" id="okcompbutton">
+<br><br><br>
+<p id="thief">Hail to the Thief</p>
+<p>Price: $15</p>
+<input type="button" value="Add HAIL TO THE THIEF to Cart" id="thiefbutton">
+<br><br><br>
+<p id="rainbows">In Rainbows</p>
+<p>Price: $20</p>
+<input type="button" value="Add IN RAINBOWS to Cart" id="rainbowsbutton">
+<br><br><br>
+<p>Cart Total:</p>
+<div id="cart">0</div>
+
+<p>Enter Payment Amount:</p>
+<input type="number" id="payment">
+<input type="button" value="Confirm Purchase" id="confirm">
+<div id="paymentstatus"></div>
+
+<script type="text/javascript">
+	
+
+
+/////variables (step 1)/////
+var okcomphover=document.querySelector("#okcomp");
+var thiefhover=document.querySelector("#thief");
+var rainbowshover=document.querySelector("#rainbows");
+
+var okcompincart=document.querySelector("#okcompbutton");
+var thiefincart=document.querySelector("#thiefbutton");
+var rainbowsincart=document.querySelector("#rainbowsbutton");
+
+var carttotal = 0
+
+var payment=document.querySelector("#payment");
+var confirm=document.querySelector("#confirm");
+var paymentstatus=document.querySelector("#paymentstatus");
+
+
+
+/////event listeners (step 3)/////
+okcomphover.addEventListener("mouseover", albumOver);
+okcomphover.addEventListener("mouseout", albumOut);
+thiefhover.addEventListener("mouseover", albumOver);
+thiefhover.addEventListener("mouseout", albumOut);
+rainbowshover.addEventListener("mouseover", albumOver);
+rainbowshover.addEventListener("mouseout", albumOut);
+okcompincart.addEventListener("click", updateCart);
+thiefincart.addEventListener("click", updateCart);
+rainbowsincart.addEventListener("click", updateCart);
+confirm.addEventListener("click", paymentCheck);
+
+
+
+/////callable functions (step 2)/////
+
+function albumOver(){
+	this.style.backgroundColor="lightgrey";
+		if(this.id=="okcomp"){
+			this.textContent="Few albums so audacious, innovative, and anxious have ever captured the popular imagination like OK Computer, the 1997 Radiohead triumph that not only announced a new frontier of rock exploration, but also articulated budding pre-millennial interest in—and concern over—our technological toys."
+		}
+		else if(this.id=="thief"){
+			this.textContent="Following the creative successes of Kid A and Amnesiac — which found the members of Radiohead rethinking their approach to the studio—the group once again shook things up on Hail to the Thief."
+		}
+		else{
+			this.textContent="For those who grew up during the streaming era, it may be impossible to grasp just how monumental the announcement of Radiohead’s seventh album, In Rainbows, seemed in 2007."
+		}
+}
+
+
+function albumOut(){
+	this.style.backgroundColor="white";
+		if(this.id=="okcomp"){
+			this.textContent="OK Computer"
+		}
+		else if(this.id=="thief"){
+			this.textContent="Hail to the Thief"
+		}
+		else{
+			this.textContent="In Rainbows"
+		}
+}
+
+
+function updateCart(){
+	if(this.id=="okcompbutton"){
+		carttotal += 10;
+		cart.textContent = carttotal;
+		okcompincart.disabled = true;		
+	}
+	else if(this.id=="thiefbutton"){
+		carttotal += 15;
+		cart.textContent = carttotal;
+		thiefincart.disabled = true;		
+	}
+	else{
+		carttotal += 20;
+		cart.textContent = carttotal;
+		rainbowsincart.disabled = true;	
+	}
+}
+
+
+function paymentCheck(){
+	if(payment.value==carttotal){
+		paymentstatus.textContent="Payment Confirmed";
+		paymentstatus.style.color="green";
+	}
+	else {
+		paymentstatus.textContent="Payment Denied (Not Equal to Cart Total)";
+		paymentstatus.style.color="red";
+	}
+}
+
+
+</script>
+</body>
