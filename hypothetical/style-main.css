@@ -1,0 +1,349 @@
+/* Base Styles */
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    line-height: 2;
+    color: #ffffff;
+    background-color: #000000;
+}
+
+/* Header Styles */
+
+.header-main {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: transparent; /* Remove background color */
+    z-index: 1000;
+    padding: 0 5em;
+    transition: all 0.3s ease;
+}
+
+
+.header-main.scrolled {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.header-inner-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: right;
+    padding: 1.5em 2em;
+    text-transform: uppercase;
+}
+
+.nav-logo-flex {
+    display: flex;
+    padding: 1em 2em;
+    text-decoration: none;
+    color: #ffffff;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link-flex {
+    display: flex;
+    align-items: center;
+    padding: 1em 2em;
+    text-decoration: none;
+    color: #ffffff;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link-flex:hover {
+    opacity: 0.6;
+}
+
+.nav-link-text {
+    font-size: 1.3em;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+/* Update the header styles to be transparent */
+
+#center{
+    padding-top: 2vem;
+    padding-bottom: 1em;
+    display: flex;
+    justify-content:space-evenly;
+}
+/* Add styles for full-width image section */
+#img-block {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-image: url('https://placehold.co/1920x1080');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Creates parallax effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+#img-block::before {
+    content: '';
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(1, 1, 1, 0.4); /* Adds subtle overlay */
+    z-index: 1;
+}
+
+#img-block > * {
+    position: relative;
+    height: auto;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 2em;
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+/* Hero Section */
+#hero {
+    padding: 50px 7em ;
+    padding-bottom: -15em;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #000000;
+}
+
+.h2-title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    max-width: 800px;
+    margin-bottom: 1.5em;
+    position: relative;
+}
+
+/* Ticker Tape Styles */
+.ticker-tape-container {
+  overflow: hidden; /* Crops the ticker to the width of the browser */
+  width: 100%;
+}
+
+.ticker-tape {
+    padding-top: .5em;
+    padding-bottom: 1em;
+    font-size: 5rem;
+    display: inline-flex;
+    gap: 3rem; /* Space between each client name */
+    white-space: nowrap;
+    animation: ticker-loop 400s linear infinite;
+}
+
+/* Keyframes for continuous loop animation */
+@keyframes ticker-loop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Duplicate ticker-tape for seamless loop */
+.ticker-tape::after {
+  content: attr(data-duplicate);
+  display: inline-flex;
+}
+
+.basic-styling {
+  border-radius: 10px;
+  padding: 2rem;
+  font-size: 1.5rem;
+}
+
+.basic-styling span {
+  padding: 0.25rem 1rem;
+  border-radius: 10px;
+}
+
+/* Animated Arrow */
+.arrow-symbol {
+    font-size: 1.5em;
+    opacity: 0;
+    transform: translateX(0);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    top: -0.1em;
+}
+
+.h2-title:hover .arrow-symbol {
+    opacity: 1;
+    transform: translateX(20px);
+}
+
+/* Featured Work Section */
+#featured-work {
+    padding: 100px 10em;
+}
+
+.project-grid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 3;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.project-image-container {
+    position: relative; /* Establishes a positioning context */
+    width: 30em;
+    overflow: hidden;
+}
+
+.project-image-container:hover img {
+    transform: scale(1.05);
+}
+
+.project-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1; /* Ensure image is beneath the text */
+}
+
+.project-image-container h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.project-image-container h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-image-container h3 {
+    margin-top: 1.5em;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.project-text {
+    position: absolute; /* Position text over the image */
+    top: 50%; /* Center text vertically */
+    left: 50%; /* Center text horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+    z-index: 2; /* Ensure text is above the image */
+    color: black; /* Contrast with image */
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 2em;
+}
+
+/* Clients Section */
+#clients {
+    padding: 10px 3em;
+}
+
+
+/* Footer */
+
+.footer-content{
+    display: flex;
+    justify-content: left;
+    justify-content: space-evenly;
+}
+footer {
+    background-color: #fff;
+    color: #000;
+    padding: 40px 5em;
+    align-content: center;
+}
+
+footer ul {
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer a {
+    color: #000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+}
+
+footer a:hover {
+    opacity: 0.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .header-main {
+        padding: 1em;
+    }
+    
+    #hero, #featured-work, #clients {
+        padding: 80px 2em;
+    }
+    
+    .h2-title {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-inner-flex {
+        padding: 1em;
+    }
+    
+    .nav-link-flex {
+        padding: 0.5em 1em;
+    }
+    
+    .h2-title {
+        font-size: 2.2rem;
+    }
+    
+    .project-grid {
+        gap: 20px;
+    }
+
+    #img-block {
+        height: 50vh;
+    }
+    
+    #img-block > * {
+        font-size: 1.2rem;
+        padding: 0 1em;
+    }
+}
+
+/* Loading Animation */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.project {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
