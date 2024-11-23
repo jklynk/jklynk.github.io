@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothetical Studios</title>
     <link rel="stylesheet" href="style-main.css">
+    <link rel="stylesheet" href="style-animated-containers.css">
     <!-- Include Geist Mono font -->
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@200;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 </head>
 <body>
     <header class="header-main">
@@ -43,8 +46,8 @@
         <div class="mobile-menu">
             <nav class="mobile-nav">
                 <a href="work.html" class="mobile-nav-link">Work</a>
-                <a href="labs.html" class="mobile-nav-link">Labs</a>
-                <a href="contact.html" class="mobile-nav-link">Contact</a>
+                <a href="project.html" class="mobile-nav-link">Template</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
             </nav>
         </div>
 
@@ -54,48 +57,90 @@
         <div class="hero-collumn">
             <h1>We are Hypothetical</h1>
             <h2>A multidisciplinary studio at the intersection of moving image, technology and design. Dedicated to crafting visually stunning and conceptually rich content we specialize immersive experiences, interactive installations, and award-winning visual media.</h3>
-            <div id="center">
-                <object data="images/scroll-down-4922768.svg" width="50" height="50"> </object>
+                <div id="center">
+                    <object data="images/scroll-down-4922768.svg" width="50" height="50"> </object>
+                </div>
             </div>
-        </div>
     </section>
-    
+
     <section>
         <img id="img-block"img src="images/Pre_comp_2.gif" alt="3D Motion Gif">
     </section>
 
-    <section id="FeaturedGallery">
-        <h2>Featured Work</h2>
+    <section class="padding">
+        <h2>Featured</h2>
         <div class="project-grid">
-            <span class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <span class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Creative Production Project">
                 <h3 class="project-text">Creative Production</h3>
             </span> 
-            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Digital Experience Project">
                 <h3 class="project-text">Digital Experience</h3>
             </div>
-            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Motion Design Project">
                 <h3 class="project-text">Motion Design</h3>
             </div>
-            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Creative Production Project">
                 <h3 class="project-text">Creative Production</h3>
             </div> 
-            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Digital Experience Project">
                 <h3 class="project-text">Digital Experience</h3>
             </div>
-            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.8" data-tilt-reverse="true">
+            <div class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="0.9" data-tilt-reverse="true">
                 <img src="https://placehold.co/960x540" alt="Motion Design Project">
                 <h3 class="project-text">Motion Design</h3>
             </div>
         </div>
-        <h2 id= "Clients">Our Clients</h2>
-
     </section>
-
+    <section class="padding">
+            <div id="center">
+                <div class="image-stack">   
+                    <div class="image-stack__item image-stack__item--top animate__animated animate__slideInLeft">
+                        <span class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="1.2" data-tilt-reverse="true">
+                            <img src="https://placehold.co/960x540" alt="Creative Production Project">
+                            <h3 class="project-text">Creative Production</h3>
+                        </span> 
+                    </div>
+                    <div class="project-image-container animate__animated animate__slideInRight">
+                        <span class="project-image-container">
+                            <h1>We are Hypothetical</h1>
+                            <h2>we specialize immersive experiences, interactive installations, and award-winning visual media.</h3>
+                        </span> 
+                    </div>
+                </div>
+            </div>
+            <div id="center">
+                <div class="image-stack image-stack__item--top animate__animated animate__slideInLeft" >
+                </div>
+                <div class="image-stack">   
+                    <div class="image-stack__item image-stack__item--top animate__animated animate__fadeInUp">
+                        <span class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="1.2" data-tilt-reverse="true">
+                            <img src="https://placehold.co/960x540" alt="Creative Production Project">
+                            <h3 class="project-text">Creative Production</h3>
+                        </span> 
+                    </div>
+                    <div class="image-stack__item image-stack__item--top animate__animated animate__slideInLeft">
+                        <span class="project-image-container" data-tilt data-tilt-max="22.5" data-tilt-scale="1.2" data-tilt-reverse="true">
+                            <img src="https://placehold.co/960x540" alt="Creative Production Project">
+                            <h3 class="project-text">Creative Production</h3>
+                        </span> 
+                    </div>
+                    <div class="project-image-container animate__animated animate__slideInRight">
+                        <span class="project-image-container">
+                            <h1>We are Hypothetical</h1>
+                            <h2>we specialize immersive experiences, interactive installations, and award-winning visual media.</h3>
+                        </span> 
+                    </div>
+                </div>
+            </div>
+    </section>
+    <section class="padding">
+        <h2>Our Clients</h2>
+    </section>
     <section>
         <div class="ticker-tape-container">
             <div class="ticker-tape-container">
@@ -162,9 +207,9 @@
                 </ul>
             </div>
         </div>
-</footer>
-    
-   
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="jquery-3.7.1.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const arrowSymbols = document.querySelectorAll('.arrow-symbol');
@@ -172,68 +217,68 @@
             const menuButton = document.querySelector('.mobile-menu-button');
             const mobileMenu = document.querySelector('.mobile-menu');
             const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-            // Toggle mobile menu
-            menuButton.addEventListener('click', function() {
-                this.classList.toggle('active');
-                mobileMenu.classList.toggle('active');
-                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-            });
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    menuButton.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
+                // Toggle mobile menu
+                menuButton.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    mobileMenu.classList.toggle('active');
+                    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+                });
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuButton.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                // Function to animate arrow symbols on hover
+                const animateArrowSymbol = (arrow, direction) => {
+                    arrow.style.opacity = '1';
+                    arrow.style.transform = `translateX(${direction}px)`;
+                };
+
+                // Function to reset arrow symbols
+                const resetArrowSymbol = (arrow) => {
+                    arrow.style.opacity = '0';
+                    arrow.style.transform = 'translateX(0)';
+                };
+
+                // Add hover effects for navigation arrows
+                document.querySelectorAll('.nav-link-flex').forEach(link => {
+                    const arrow = link.querySelector('.arrow-symbol');
+                    link.addEventListener('mouseover', () => animateArrowSymbol(arrow, -10));
+                    link.addEventListener('mouseout', () => resetArrowSymbol(arrow));
+                });
+
+                // Add hover effect for hero title arrow
+                if (headerTitle) {
+                    const titleArrow = headerTitle.querySelector('.arrow-symbol');
+                    headerTitle.addEventListener('mouseover', () => animateArrowSymbol(titleArrow, 10));
+                    headerTitle.addEventListener('mouseout', () => resetArrowSymbol(titleArrow));
+                }
+
+                // Add fade-in animation for projects on scroll
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const projectObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.project').forEach(project => {
+                    project.style.opacity = '0';
+                    project.style.transform = 'translateY(20px)';
+                    project.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                    projectObserver.observe(project);
                 });
             });
-            // Function to animate arrow symbols on hover
-            const animateArrowSymbol = (arrow, direction) => {
-                arrow.style.opacity = '1';
-                arrow.style.transform = `translateX(${direction}px)`;
-            };
-
-            // Function to reset arrow symbols
-            const resetArrowSymbol = (arrow) => {
-                arrow.style.opacity = '0';
-                arrow.style.transform = 'translateX(0)';
-            };
-
-            // Add hover effects for navigation arrows
-            document.querySelectorAll('.nav-link-flex').forEach(link => {
-                const arrow = link.querySelector('.arrow-symbol');
-                link.addEventListener('mouseover', () => animateArrowSymbol(arrow, -10));
-                link.addEventListener('mouseout', () => resetArrowSymbol(arrow));
-            });
-
-            // Add hover effect for hero title arrow
-            if (headerTitle) {
-                const titleArrow = headerTitle.querySelector('.arrow-symbol');
-                headerTitle.addEventListener('mouseover', () => animateArrowSymbol(titleArrow, 10));
-                headerTitle.addEventListener('mouseout', () => resetArrowSymbol(titleArrow));
-            }
-
-            // Add fade-in animation for projects on scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const projectObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.project').forEach(project => {
-                project.style.opacity = '0';
-                project.style.transform = 'translateY(20px)';
-                project.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-                projectObserver.observe(project);
-            });
-        });
-    </script>
-    <script src="tilt.jquery.js"></script>
+        </script>
+        <script src="tilt.jquery.js"></script>
 </body>
 </html>
