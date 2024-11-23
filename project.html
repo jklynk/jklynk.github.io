@@ -7,30 +7,6 @@
     <link rel="stylesheet" href="style-main.css">
     <!-- Include Geist Mono font -->
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@200;400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header class="header-main">
-        <a href="home.html" class="nav-link-flex">
-                <span class="nav-link-text">HYPO/THETICAL</span>
-                <span class="arrow-symbol" style="">⟵</span>
-            </a>
-        <div class="header-inner-flex">
-            <a href="work.html" class="nav-link-flex">
-                <span class="nav-link-text">Work</span>
-                <span class="arrow-symbol" style="">⟵</span>
-            </a>
-            <a href="labs.html" class="nav-link-flex">
-                <span class="nav-link-text">Labs</span>
-                <span class="arrow-symbol">⟵</span>
-            </a>
-            <a href="contact.html" class="nav-link-flex">
-                <span class="nav-link-text">Contact</span>
-                <span class="arrow-symbol">⟵</span>
-            </a>
-        </div>
-    </header>
-
-
     <style>
         * {
             margin: 0;
@@ -162,6 +138,50 @@
             
         }
     </style>
+</head>
+<body>
+    <header class="header-main">
+        <div class="nav-spacer">
+            <a href="home.html" class="nav-logo">
+                <span class="nav-link-text">HYPO/THETICAL</span>
+                <span class="arrow-symbol" style="">⟵</span>
+            </a>
+        </div>
+        
+        <div class="nav-spacer"></div>
+
+        <div class="header-inner-flex">
+            <a href="work.html" class="nav-link-flex">
+                <span class="nav-link-text">Work</span>
+                <span class="arrow-symbol" style="">⟵</span>
+            </a>
+            <a href="project.html" class="nav-link-flex">
+                <span class="nav-link-text">template</span>
+                <span class="arrow-symbol">⟵</span>
+            </a>
+            <a href="about.html" class="nav-link-flex">
+                <span class="nav-link-text">about</span>
+                <span class="arrow-symbol">⟵</span>
+            </a>
+        </div>
+
+        <button class="mobile-menu-button" aria-label="Toggle menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="mobile-menu">
+            <nav class="mobile-nav">
+                <a href="work.html" class="mobile-nav-link">Work</a>
+                <a href="labs.html" class="mobile-nav-link">Labs</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </nav>
+        </div>
+
+    </header>
+
+    
 
     <!-- Hero Image -->
     <section id="hero-section">
@@ -204,25 +224,55 @@
 
 
     
-    <section id="footer-content">    
-        <footer>
-            <div class="footer-contents">
-                <div class="copyright">© Hypothetical Studios 2024</div>
-                <ul>
-                    <li><a href="/terms">Supplier T&C's</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
+    <footer class="footer-wrapper">
+        <div class="footer-content">
+            <!-- Copyright Section -->
+            <div class="footer-section">
+                <span class="nav-link-text">HYPO/THETICAL</span>
+                <span class="arrow-symbol" style="">⟵</span>
+                <p class="copyright">© Hypothetical Studios 2024</p>
+            </div>
+            <div class="footer-section"></div>
+            <!-- Site Map -->
+            <div class="footer-section">
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/work">Work</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>
-        </footer>
-    </section>
+            <!-- Legal -->
+            <div class="footer-section">
+                <ul class="footer-links">
+                    <li><a href="/terms">Terms & Conditions</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/cookies">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const arrowSymbols = document.querySelectorAll('.arrow-symbol');
-            const headerTitle = document.querySelector('.h2-title');
-
+            const header = document.querySelector('.header-main');
+            const menuButton = document.querySelector('.mobile-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            // Toggle mobile menu
+            menuButton.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            });
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuButton.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
             // Function to animate arrow symbols on hover
             const animateArrowSymbol = (arrow, direction) => {
                 arrow.style.opacity = '1';
@@ -272,5 +322,6 @@
             });
         });
     </script>
+    <script src="tilt.jquery.js"></script>
 </body>
 </html>

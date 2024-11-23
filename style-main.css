@@ -9,53 +9,80 @@ body {
     color: #ffffff;
     background-color: #000000;
 }
-
+h1 {
+    padding: 0;
+    margin: 0;
+    font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+}
+h2 {
+    padding: 0;
+    margin: 0;
+    font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-optical-sizing: auto;
+    font-size: 1.33em;
+    font-weight: 300;
+}
 /* Header Styles */
 
 .header-main {
     display: flex;
     position: fixed;
+    justify-content: center; 
     top: 0;
     left: 0;
     right: 0;
     background-color: transparent; /* Remove background color */
     z-index: 1000;
-    padding: 0 5em;
     transition: all 0.3s ease;
 }
 
-
-.header-main.scrolled {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.header-inner-flex {
-    display: flex;
+.nav-spacer {
+    width: 30%;
+    flex-wrap: wrap;
+    flex-grow: 1;
     flex-direction: row;
-    align-items: right;
-    padding: 1.5em 2em;
     text-transform: uppercase;
 }
 
-.nav-logo-flex {
+.header-inner-flex {
+    width: 30%;
     display: flex;
-    padding: 1em 2em;
+    flex-grow: 1;
+    flex-direction: row;
+    text-transform: uppercase;
+}
+
+.nav-logo{
+    mix-blend-mode: exclusion;
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
     text-decoration: none;
     color: #ffffff;
     transition: opacity 0.3s ease;
+    font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
 }
 
 .nav-link-flex {
     display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-direction: row;
     align-items: center;
-    padding: 1em 2em;
     text-decoration: none;
     color: #ffffff;
-    transition: opacity 0.3s ease;
+
 }
 
 .nav-link-flex:hover {
     opacity: 0.6;
+    transition: opacity 0.3s ease;
 }
 
 .nav-link-text {
@@ -63,13 +90,90 @@ body {
     font-weight: 400;
     margin-right: 0.5em;
 }
+
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1em;
+    position: fixed;
+    right: 1em;
+    top: 1em;
+    z-index: 1001;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 2px;
+    margin: 5px auto;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 2em;
+}
+
+.mobile-nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-nav-link:hover {
+    opacity: 0.6;
+}
+
+/* Mobile Menu Active States */
+.mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu-button.active .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-button.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-button.active .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
 /* Update the header styles to be transparent */
 
 #center{
-    padding-top: 2vem;
-    padding-bottom: 1em;
+    padding-top: 5em;
+    padding-bottom: 0em;
     display: flex;
-    justify-content:space-evenly;
+    justify-content:center;
 }
 /* Add styles for full-width image section */
 #img-block {
@@ -112,22 +216,14 @@ body {
 }
 /* Hero Section */
 #hero {
-    padding: 50px 7em ;
-    padding-bottom: -15em;
+    padding: 100px 10em;
     min-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #000000;
 }
 
-.h2-title {
-    font-size: 3.5rem;
-    line-height: 1.2;
-    max-width: 800px;
-    margin-bottom: 1.5em;
-    position: relative;
-}
+
 
 /* Ticker Tape Styles */
 .ticker-tape-container {
@@ -136,7 +232,6 @@ body {
 }
 
 .ticker-tape {
-    padding-top: .5em;
     padding-bottom: 1em;
     font-size: 5rem;
     display: inline-flex;
@@ -184,28 +279,39 @@ body {
     top: -0.1em;
 }
 
-.h2-title:hover .arrow-symbol {
-    opacity: 1;
-    transform: translateX(20px);
-}
+
 
 /* Featured Work Section */
-#featured-work {
-    padding: 100px 10em;
-}
+
 
 .project-grid {
     display: flex;
     flex-wrap: wrap;
-    flex-grow: 3;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    flex-grow: 1;
     gap: 30px;
     margin-top: 60px;
 }
 
+
+#FeaturedGallery {
+    padding-top: 100px; 
+    padding: 5em 2em;
+    justify-content: center;
+}
+
+#Clients {
+    flex
+    display: block;
+    padding-top: 10em;
+}
+
+
 .project-image-container {
     position: relative; /* Establishes a positioning context */
     width: 30em;
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 2;
     overflow: hidden;
 }
 
@@ -250,80 +356,158 @@ body {
     padding-bottom: 2em;
 }
 
-/* Clients Section */
-#clients {
-    padding: 10px 3em;
-}
 
 
-/* Footer */
-
-.footer-content{
-    display: flex;
-    justify-content: left;
-    justify-content: space-evenly;
-}
-footer {
+/* Footer Styles */
+.footer-wrapper {
     background-color: #fff;
     color: #000;
-    padding: 40px 5em;
-    align-content: center;
+    padding: 2em 8em;
 }
 
-footer ul {
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat( 4,1fr);
+    grid-column-gap: 10px;    
+    align-items: start;
+}
+
+.footer-section {
     display: flex;
-    justify-content: flex-end;
-    gap: 30px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-footer a {
+.footer-section h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links a {
     color: #000;
     text-decoration: none;
     font-size: 0.9rem;
     transition: opacity 0.3s ease;
 }
 
-footer a:hover {
+.footer-links a:hover {
     opacity: 0.6;
 }
 
+.copyright {
+    font-size: 0.9rem;
+}
+
 /* Responsive Design */
-@media (max-width: 1024px) {
+
+/* Large screens */
+
+@media (max-width: 3840px) {
     .header-main {
-        padding: 1em;
+        padding: 2em 8em;
     }
     
-    #hero, #featured-work, #clients {
-        padding: 80px 2em;
+    #hero, #FeaturedGallery {
+        padding: 2em 8em;
     }
     
-    .h2-title {
+    .h2-FeaturedGallery {
         font-size: 2.8rem;
     }
 }
 
+/* Medium-large screens */
+@media (max-width: 3840px) {
+    .header-main {
+        padding: 2em 6em;
+    }
+    
+    #hero, #FeaturedGallery {
+        padding: 2em 6em;
+    }
+    
+    .h2-FeaturedGallery {
+        font-size: 2.8rem;
+    }
+}
+/* Tablets and smaller desktops */
+
+@media (max-width: 1024px) {
+    .header-main {
+        padding: 1.5em 4em;
+    }
+    .header-inner-flex{
+        display:    none;
+    }
+    .mobile-menu-button {
+        padding: 1.5em 4em;
+
+        display: block;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .nav-spacer {
+        width: auto;
+    }
+    
+    #hero, #FeaturedGallery {
+        padding: 1.5em 4em;
+    }
+    
+    .h2-FeaturedGallery {
+        font-size: 2.8rem;
+    }
+}
+
+/* Mobile devices */
+
 @media (max-width: 768px) {
     .header-inner-flex {
-        padding: 1em;
+        display: none;
     }
-    
-    .nav-link-flex {
-        padding: 0.5em 1em;
+
+    .mobile-menu-button {
+        display: block;
     }
-    
-    .h2-title {
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .nav-spacer {
+        width: auto;
+    }
+
+    .header-main {
+        padding: 1em 2em;
+    }
+    #hero, #FeaturedGallery {
+        padding: 5em 2em;
+    }
+        
+    .h2-FeaturedGallery {
         font-size: 2.2rem;
     }
-    
+
     .project-grid {
         gap: 20px;
     }
 
     #img-block {
-        height: 50vh;
+        height: auto;
     }
     
     #img-block > * {
