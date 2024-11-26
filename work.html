@@ -27,6 +27,10 @@
   overflow: hidden;
 }
 
+#FeaturedGallery {
+    padding: 0px 100px;
+}
+
 .btn {
   font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
   border: none;
@@ -39,11 +43,13 @@
 }
 
 .btn:hover {
+  transition: all 0.3s ease;
   background-color: #ddd;
   transform: translateY(-2px);
 }
 
 .btn.active {
+  transition: all 0.3s ease;
   background-color: #666;
   color: white;
 }
@@ -101,15 +107,15 @@
         </div>
     </section>
     <section id="FeaturedGallery">
-        <div class="Category-Filter"></div>
+        <div class="Category-Filter">
         <h1>Categories</h1>
-        <div id="myBtnContainer">
+             <div id="myBtnContainer">
             <button class="btn active" onclick="filterSelection('all')">All Works</button>
             <button class="btn" onclick="filterSelection('CP')">Creative Production</button>
             <button class="btn" onclick="filterSelection('DE')">Digital Experience</button>
             <button class="btn" onclick="filterSelection('MD')">Motion Design</button>
+            </div>
         </div>
-
         <div class="container">
             <div class="project-grid">
                 <div class="filterDiv CP project-image-container" data-tilt data-tilt-max="10" data-tilt-scale="0.8" data-tilt-reverse="true">
