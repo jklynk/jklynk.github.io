@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothetical Studios</title>
     <link rel="stylesheet" href="style-main.css">
+    <link rel="stylesheet" href="style-animated-containers.css">
     <!-- Include Geist Mono font -->
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@200;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         * {
             margin: 0;
@@ -14,11 +16,7 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        
+        body        
 
         #hero-section {
             width: 100%;
@@ -32,7 +30,7 @@
         }
 
         .content-wrapper {
-            /max-width: 1440px;
+            max-width: 1440px;
             margin: 0 auto;
             /padding: 2rem 1rem;
             display: grid;
@@ -99,11 +97,16 @@
             color: White;
         }
         .body {
-            font-family: system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+
+        .footer-style{
+            
+            
+        }
+
        /* the set max width is fucking the header*/ 
         @media (max-width: 768px) {
             .content-wrapper {
@@ -134,6 +137,7 @@
             .grid-image {
                 height: 300px;
             }
+            
             
             
         }
@@ -191,7 +195,7 @@
     <div class="content-wrapper">
         <!-- Introduction Text -->
         <section id="intro-section">
-            <h2 class="section-title">Project Introduction</h2>
+            <h1 class="section-title">Project Introduction</h1>
             <div class="section-content">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
                 <br>
@@ -213,46 +217,46 @@
 
         <!-- Details Text Section -->
         <section id="details-section">
-            <h2 class="section-title">Project Details</h2>
+            <h1 class="section-title">Project Details</h1>
             <div class="section-content">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
                 <br>
                 <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
             </div>
         </section>
+    </div>
 
 
-
-    
-    <footer class="footer-wrapper">
-        <div class="footer-content">
-            <!-- Copyright Section -->
-            <div class="footer-section">
-                <span class="nav-link-text">HYPO/THETICAL</span>
-                <span class="arrow-symbol" style="">⟵</span>
-                <p class="copyright">© Hypothetical Studios 2024</p>
-            </div>
-            <div class="footer-section"></div>
-            <!-- Site Map -->
-            <div class="footer-section">
-                <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/work">Work</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </div>
-            <!-- Legal -->
-            <div class="footer-section">
-                <ul class="footer-links">
-                    <li><a href="/terms">Terms & Conditions</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
-                    <li><a href="/cookies">Cookie Policy</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-
+        <section id="footer-style">
+            <footer class="footer-wrapper">
+                <div class="footer-content">
+                    <!-- Copyright Section -->
+                    <div class="footer-section">
+                        <span class="nav-link-text">HYPO/THETICAL</span>
+                        <span class="arrow-symbol" style="">⟵</span>
+                        <p class="copyright">© Hypothetical Studios 2024</p>
+                    </div>
+                    <div class="footer-section"></div>
+                    <!-- Site Map -->
+                    <div class="footer-section">
+                        <ul class="footer-links">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/work">Work</a></li>
+                            <li><a href="/contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- Legal -->
+                    <div class="footer-section">
+                        <ul class="footer-links">
+                            <li><a href="/terms">Terms & Conditions</a></li>
+                            <li><a href="/privacy">Privacy Policy</a></li>
+                            <li><a href="/cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </section>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const arrowSymbols = document.querySelectorAll('.arrow-symbol');
