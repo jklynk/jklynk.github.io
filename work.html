@@ -27,7 +27,6 @@
   overflow: hidden;
 }
 
-/
 .btn {
 font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
   border: none;
@@ -35,16 +34,20 @@ font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 16px 16px;
   background-color: #f1f1f1;
   cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .btn:hover {
   background-color: #ddd;
+  transform: translateY(-2px);
 }
 
 .btn.active {
   background-color: #666;
   color: white;
 }
+
 </style>
 
 <body>
@@ -89,7 +92,13 @@ font-family: "Geist Mono", -apple-system, BlinkMacSystemFont, sans-serif;
 
     </header>
     <section id="hero">
-        <img id="img-block"img src="images/Pre_comp_2.gif" alt="3D Motion Gif">
+        <div class="hero-collumn">
+            <h1>See our work</h1>
+            <h2>Scroll down to see a full gallery of our work, <br>sortable by All Works, Creative Productions, Digital Experiences and Motion Design.</h2>
+            <div id="center">
+                    <object data="images/scroll-down-4922768.svg" width="50" height="50"> </object>
+                </div>
+        </div>
     </section>
     <section id="FeaturedGallery">
         <div class="Category-Filter"></div>
