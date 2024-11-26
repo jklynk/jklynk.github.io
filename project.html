@@ -68,8 +68,10 @@
 
         /* Second Text Section */
         #details-section {
-            grid-column: 2;
+            
+            grid-column: 1;
             margin-bottom: 4rem;
+            margin-left: 2rem;
         }
 
         /* Final Text Section */
@@ -106,6 +108,44 @@
             
             
         }
+        /*credtis div */
+         .credtis-container {
+            max-width: 81vw;
+            margin: 0 auto;
+        }
+
+        .credtis-header {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .credtis-arrow {
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .credtis-table {
+            width: 100%;
+            border-collapse: collapse;
+            display: none;
+        }
+
+        .credtis-table td {
+            padding: 5px 0;
+            border: none;
+        }
+
+        .credtis-table .role {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Rotation for open/close states */
+        .credtis-header.open .credtis-arrow {
+            transform: rotate(90deg);
+        }
 
        /* the set max width is fucking the header*/ 
         @media (max-width: 768px) {
@@ -116,7 +156,7 @@
 
             #intro-section,
             #details-section {
-                grid-column: 1;
+                grid-column: 4;
             }
 
             #image-grid-1,
@@ -225,6 +265,29 @@
         </section>
     </div>
 
+        <section>
+             <div class="credtis-container">
+                <div class="credtis-header">
+                    <span class="credtis-arrow">▶</span>
+                    <h1>Credtis</h1>
+                </div>
+                <table class="credtis-table">
+                    <tr>
+                        <td><span class="role">Photographer</span>John Doe</td>
+                    </tr>
+                    <tr>
+                        <td><span class="role">Designer</span>Jane Smith</td>
+                    </tr>
+                    <tr>
+                        <td><span class="role">Developer</span>Mike Johnson</td>
+                    </tr>
+                </table>
+             </div>
+             <br>
+             <br>
+        </section>
+
+
 
         <section id="footer-style">
             <footer class="footer-wrapper">
@@ -256,7 +319,21 @@
                 </div>
             </footer>
         </section>
+
+
+
+
     <script>
+        /*credit*/
+        const credtisHeader = document.querySelector('.credtis-header');
+        const credtisTable = document.querySelector('.credtis-table');
+
+        credtisHeader.addEventListener('click', () => {
+            credtisHeader.classList.toggle('open');
+            credtisTable.style.display = 
+                credtisTable.style.display === 'table' ? 'none' : 'table';
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const arrowSymbols = document.querySelectorAll('.arrow-symbol');
             const header = document.querySelector('.header-main');
