@@ -175,22 +175,22 @@ h2 {
     display: flex;
     justify-content:center;
 }
-/* Add styles for full-width image section */
+
 .image-stack {
   position: relative;
-  width: 200%;
+  width: 100%;
 }
 
 .image-stack__item--bottom {
   position: absolute;
   right: 50px;
   top: 0;
-  width:100%; // this is an arbitrary width, depends on the design
+  width:10em; 
   z-index: -1;
 }
 
 .image-stack__item--top {
-  padding-top: 300px; // arbitrary value
+  padding-top: 100px; // arbitrary value
   padding-right: 20%; // arbitrary value
   width:100%; // arbitrary value
 }
@@ -199,6 +199,8 @@ img {
   width: 200%;
   display: block;
 }
+
+
 #img-block {
     position: relative;
     width: 100%;
