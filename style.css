@@ -7,16 +7,20 @@ body {
   color: black;
   font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
   font-weight: normal;
-  align-content: center;}
+  align-content: center;
+  margin-bottom: 100px;}
 }
 
-h1 {color: #000000;
+
+h1 {
+  color: #000000;
   text-align: left;
   font-size: 42px;
-    font-weight: normal;
+  font-weight: normal;
   padding: 10px;
   margin: 0px; 
-  float: left;}
+  float: left;
+}
 
 h2 {color: #000000;
   text-align: center;
@@ -56,4 +60,14 @@ top: 0;}
   margin: auto;
   width: 30%;
 }
+
+@media only screen and (max-width: 600px) {
+  #topheader {
+    position: static;
+  }
+  #notheader{
+    width: 80%;
+  }
+}
+
 
