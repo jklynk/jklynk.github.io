@@ -40,6 +40,11 @@ embed {
   height: 250px;
 }
 
+img{
+  max-width: 100%;
+}
+
+
 #menudetails {color: #000000;
       position: sticky;
       font-size: 32px;
@@ -55,6 +60,34 @@ top: 0;}
 #notheader {
   margin: auto;
   width: 30%;
+}
+
+/* for centering images */
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.right {
+  float: right;
+}
+
+/*for scrolling gallery stuff*/
+
+div.scroll-container {
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  border: 10px white solid;
+}
+
+div.scroll-container img {
+  height: 500px;
+  max-width: inherit;
+  padding-right: 10px;
 }
 
 /* For mobile fitting */
