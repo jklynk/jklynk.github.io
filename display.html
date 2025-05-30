@@ -22,6 +22,25 @@
       transition: opacity 1s;
     }
 
+    .qr-container {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .qr-container p {
+      margin: 10px 0 0 0;
+      font-size: 14px;
+      color: #333;
+      font-weight: bold;
+    }
+
     @keyframes pulsate {
       from {
         transform: scale(1);
@@ -33,6 +52,10 @@
   </style>
 </head>
 <body>
+  <div class="qr-container">
+    <img src="form.png" alt="QR Code to send messages" width="120" height="120" />
+    <p>Scan to send a message!</p>
+  </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
@@ -94,37 +117,58 @@
     }
 
     function animateMessage(el) {
-      const elWidth = 200; // estimated width for initial placement
-      const elHeight = 30;
-      let x = Math.random() * (window.innerWidth - elWidth);
-      let y = Math.random() * (window.innerHeight - elHeight);
-      let dx = (Math.random() - 0.5) * .5;
-      let dy = (Math.random() - 0.5) * .5;
-
-      function move() {
+      // Wait for the element to be rendered so we can get its actual dimensions
+      requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
-        const elW = rect.width;
-        const elH = rect.height;
+        const elWidth = rect.width;
+        const elHeight = rect.height;
+        
+        // Use actual dimensions for initial placement
+        let x = Math.random() * Math.max(0, window.innerWidth - elWidth);
+        let y = Math.random() * Math.max(0, window.innerHeight - elHeight);
+        let dx = (Math.random() - 0.5) * 0.5;
+        let dy = (Math.random() - 0.5) * 0.5;
 
-        x += dx;
-        y += dy;
+        function move() {
+          const currentRect = el.getBoundingClientRect();
+          const currentWidth = currentRect.width;
+          const currentHeight = currentRect.height;
 
-        if (x <= 0 || x + elW >= window.innerWidth) dx *= -1;
-        if (y <= 0 || y + elH >= window.innerHeight) dy *= -1;
+          x += dx;
+          y += dy;
 
+          // Keep text fully on screen with proper boundary checking
+          if (x <= 0) {
+            x = 0;
+            dx = Math.abs(dx);
+          } else if (x + currentWidth >= window.innerWidth) {
+            x = window.innerWidth - currentWidth;
+            dx = -Math.abs(dx);
+          }
+
+          if (y <= 0) {
+            y = 0;
+            dy = Math.abs(dy);
+          } else if (y + currentHeight >= window.innerHeight) {
+            y = window.innerHeight - currentHeight;
+            dy = -Math.abs(dy);
+          }
+
+          el.style.left = x + "px";
+          el.style.top = y + "px";
+
+          requestAnimationFrame(move);
+        }
+
+        // Set initial position and start animation
         el.style.left = x + "px";
         el.style.top = y + "px";
-
-        requestAnimationFrame(move);
-      }
-
-      el.style.left = x + "px";
-      el.style.top = y + "px";
-      move();
+        move();
+      });
     }
 
     function getRandomColor() {
-      const colors = ["#ff0", "#0ff", "#f0f", "#0f0", "#f00", "#00f", "#fff"];
+      const colors = ["#fff", "#ffff00", "#00ffff", "#ff00ff", "#00ff00", "#ff6600", "#ff0080", "#80ff00", "#0080ff", "#ff8000"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
   </script>
