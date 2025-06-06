@@ -46,6 +46,19 @@ img{
   max-width: 100%;
 }
 
+input {
+  opacity: 0.3;
+}
+
+textarea {
+  opacity: 0.3;
+  width: 100%;
+}
+
+iframe {
+  max-width: 100%;
+}
+
 
 #menudetails {color: #000000;
       position: sticky;
