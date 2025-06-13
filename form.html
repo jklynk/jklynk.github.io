@@ -11,41 +11,93 @@
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
     const firebaseConfig = {
-          apiKey: "AIzaSyBCSmzABKJeCVTI67dHN6J0r8LsJTPizI8",
-    authDomain: "criticalmassscreen.firebaseapp.com",
-    databaseURL: "https://criticalmassscreen-default-rtdb.firebaseio.com",
-    projectId: "criticalmassscreen",
+      apiKey: "AIzaSyBCSmzABKJeCVTI67dHN6J0r8LsJTPizI8",
+      authDomain: "criticalmassscreen.firebaseapp.com",
+      databaseURL: "https://criticalmassscreen-default-rtdb.firebaseio.com",
+      projectId: "criticalmassscreen",
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const messagesRef = ref(db, "messages");
 
-    window.submitMessage = (e) => {
+    // Simple profanity filter
+    const blockedWords = ['shit', 'fuck', 'damn', 'asshole', 'bitch']; // Add more as needed
+    
+    function containsProfanity(text) {
+      const lowerText = text.toLowerCase();
+      return blockedWords.some(word => lowerText.includes(word));
+    }
+
+    window.submitMessage = async (e) => {
       e.preventDefault();
       const input = document.getElementById("message");
+      const button = document.querySelector("button");
       const text = input.value.trim();
 
-      // Show success toast
-const toast = document.getElementById("toast");
-toast.style.display = "block";
-setTimeout(() => {
-  toast.style.display = "none";
-}, 2000);
+      // Validation
+      if (text.length === 0) {
+        showToast("❌ Please enter a message", "error");
+        return;
+      }
+      
+      if (text.length > 100) {
+        showToast("❌ Message too long (100 chars max)", "error");
+        return;
+      }
 
-// Vibrate (if supported)
-if ("vibrate" in navigator) {
-  navigator.vibrate(200);
-}
+      if (containsProfanity(text)) {
+        showToast("❌ Please keep it respectful", "error");
+        return;
+      }
 
-      if (text.length === 0 || text.length > 140) return;
+      // Show loading state
+      button.disabled = true;
+      button.textContent = "Sending...";
 
-      push(messagesRef, {
-        text,
-        timestamp: Date.now()
-      });
+      try {
+        await push(messagesRef, {
+          text,
+          timestamp: Date.now()
+        });
 
-      input.value = "";
+        // Success feedback
+        showToast("✔ Message sent!", "success");
+        
+        // Vibrate (if supported)
+        if ("vibrate" in navigator) {
+          navigator.vibrate(200);
+        }
+
+        input.value = "";
+      } catch (error) {
+        console.error("Error sending message:", error);
+        showToast("❌ Failed to send. Check connection.", "error");
+      } finally {
+        // Reset button
+        button.disabled = false;
+        button.textContent = "Send";
+      }
+    };
+
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = "block";
+      
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3000);
+    }
+
+    // Character counter
+    window.updateCounter = () => {
+      const input = document.getElementById("message");
+      const counter = document.getElementById("counter");
+      const remaining = 100 - input.value.length;
+      counter.textContent = `${remaining} characters left`;
+      counter.style.color = remaining < 20 ? "#ff6b6b" : "#aaa";
     };
   </script>
 
@@ -55,6 +107,7 @@ if ("vibrate" in navigator) {
       --bg: #000;
       --text: #fff;
       --input-bg: #111;
+      --error: #ff6b6b;
     }
 
     body {
@@ -67,16 +120,22 @@ if ("vibrate" in navigator) {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100dvh;
+      min-height: 100dvh;
       text-align: center;
       padding: 1.5rem;
     }
 
     h1 {
       font-size: 1.8rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       color: var(--accent);
       text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 2rem;
     }
 
     form {
@@ -90,12 +149,23 @@ if ("vibrate" in navigator) {
     input[type="text"] {
       padding: 1rem;
       font-size: 1.1rem;
-      border: none;
+      border: 2px solid transparent;
       border-radius: 10px;
       background: var(--input-bg);
       color: var(--text);
       outline: none;
       text-align: center;
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    #counter {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: -0.5rem;
     }
 
     button {
@@ -110,16 +180,53 @@ if ("vibrate" in navigator) {
       transition: all 0.2s ease;
     }
 
-    button:hover,
-    button:focus {
+    button:hover:not(:disabled),
+    button:focus:not(:disabled) {
       background: #00e6b8;
       transform: scale(1.02);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .note {
       font-size: 0.9rem;
       color: #aaa;
       margin-top: 1rem;
+      line-height: 1.4;
+    }
+
+    .note a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.8rem 1.2rem;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 1rem;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+      display: none;
+    }
+
+    .toast.success {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+    }
+
+    .toast.error {
+      background: var(--error);
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
     }
 
     @media (max-height: 500px) {
@@ -132,43 +239,32 @@ if ("vibrate" in navigator) {
         font-size: 1rem;
         padding: 0.8rem;
       }
-
-    #toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #00ffcc;
-  color: #000;
-  padding: 0.8rem 1.2rem;
-  border-radius: 999px;
-  font-weight: bold;
-  font-size: 1rem;
-  z-index: 1000;
-  box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
-  transition: opacity 0.3s ease;
-}
-
     }
   </style>
 </head>
 <body>
   <h1>Send a Message</h1>
+  <div class="subtitle">to Doug Ford</div>
+  
   <form onsubmit="submitMessage(event)">
-    <div id="toast" style="display: none;">✔ Message sent!</div>
     <input
       type="text"
       id="message"
-      placeholder="Say something (max 25 characters)"
-      maxlength="25"
+      placeholder="Your message to the Premier..."
+      maxlength="100"
+      oninput="updateCounter()"
       required
     />
-    <button type="submit">Send</button>
+    <div id="counter">100 characters left</div>
+    <button type="submit">Send Message</button>
   </form>
-  <div class="note">Hit send a your message will show up on the screen</div>
-  <div class="note">Messages dissapear after 3 hours</div>
-  <div class="note">🚴 Emojis work too 🚴</div>
+  
+  <div class="note">Your message will appear on the live screen</div>
+  <div class="note">Messages disappear after 3 hours</div>
+  <div class="note">🚴 Emojis work too! 🚴</div>
   <div class="note">Created by <a href="index.html">jklynk</a></div>
+  
+  <div id="toast" class="toast"></div>
 </body>
 </html>
 

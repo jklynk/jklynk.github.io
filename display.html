@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Message Wall</title>
+  <title>Live Message Wall - Doug Ford Messages</title>
   <style>
     body {
       margin: 0;
       background: #000;
       overflow: hidden;
-      font-family: sans-serif;
+      font-family: 'Helvetica Neue', sans-serif;
+      position: relative;
     }
 
     .message {
@@ -18,53 +19,97 @@
       color: white;
       font-weight: bold;
       pointer-events: none;
-      animation: pulsate 2s ease-in-out infinite alternate;
-      transition: opacity 1s;
+      animation: pulsate 3s ease-in-out infinite alternate;
+      transition: opacity 1s ease;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
     }
 
-    .qr-container {
+    .control-panel {
       position: fixed;
       top: 20px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.9);
+      right: 20px;
+      background: rgba(0, 255, 204, 0.15);
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
       padding: 15px;
       border-radius: 10px;
-      text-align: center;
+      font-size: 0.9rem;
       z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(3px);
+      text-align: center;
+      max-width: 200px;
     }
 
-    .qr-container p {
-      margin: 10px 0 0 0;
-      font-size: 14px;
-      color: #333;
-      font-weight: bold;
+    .control-panel h3 {
+      margin: 0 0 10px 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
+
+    .control-panel img {
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    .control-panel .stats {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0, 255, 204, 0.3);
+    }
+
+
 
     @keyframes pulsate {
       from {
         transform: scale(1);
+        opacity: 0.8;
       }
       to {
-        transform: scale(1.2);
+        transform: scale(1.1);
+        opacity: 1;
       }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .message.new {
+      animation: fadeIn 0.5s ease-out, pulsate 3s ease-in-out infinite alternate 0.5s;
     }
   </style>
 </head>
 <body>
-  <div class="qr-container">
-    <img src="form.png" alt="QR Code to send messages" width="120" height="120" />
-    <p>Scan to send a message!</p>
+  <div class="control-panel">
+    <h2>📢 Send a Message to Doug Ford 📢</h2>
+    <img src="form.png" alt="QR Code" width="100" height="100" />
+    <div class="stats">
+      <div>Active: <span id="activeCount">0</span></div>
+      <div>Total: <span id="totalCount">0</span></div>
+    </div>
   </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+    import { getDatabase, ref, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
     const firebaseConfig = {
-    apiKey: "AIzaSyBCSmzABKJeCVTI67dHN6J0r8LsJTPizI8",
-    authDomain: "criticalmassscreen.firebaseapp.com",
-    databaseURL: "https://criticalmassscreen-default-rtdb.firebaseio.com",
-    projectId: "criticalmassscreen",
+      apiKey: "AIzaSyBCSmzABKJeCVTI67dHN6J0r8LsJTPizI8",
+      authDomain: "criticalmassscreen.firebaseapp.com",
+      databaseURL: "https://criticalmassscreen-default-rtdb.firebaseio.com",
+      projectId: "criticalmassscreen",
     };
 
     const app = initializeApp(firebaseConfig);
@@ -72,44 +117,83 @@
     const messagesRef = ref(db, "messages");
 
     const activeMessages = [];
+    const MESSAGE_LIFETIME = 3 * 60 * 60 * 1000; // 3 hours
+    let totalMessageCount = 0;
 
+    // Listen for new messages
     onChildAdded(messagesRef, (snapshot) => {
       const message = snapshot.val();
+      const messageId = snapshot.key;
       const timestamp = message.timestamp || 0;
       const age = Date.now() - timestamp;
 
-      if (age > 3 * 60 * 60 * 1000) return;
+      // Skip messages older than 3 hours
+      if (age > MESSAGE_LIFETIME) return;
 
-      const el = createMessageElement(message.text);
+      totalMessageCount++;
+      updateStats();
+
+      const el = createMessageElement(message.text, messageId);
       animateMessage(el);
       updateMessageStyles();
 
+      // Calculate remaining lifetime for this message
+      const remainingLifetime = MESSAGE_LIFETIME - age;
+      
+      // Remove message after its remaining lifetime
       setTimeout(() => {
-        el.style.opacity = 0;
-        setTimeout(() => {
-          el.remove();
-          const index = activeMessages.indexOf(el);
-          if (index !== -1) activeMessages.splice(index, 1);
-          updateMessageStyles();
-        }, 1000);
-      }, 3 * 60 * 60 * 1000);
+        removeMessage(el);
+      }, remainingLifetime);
     });
 
-    function createMessageElement(text) {
+    // Get total message count
+    onValue(messagesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const messages = snapshot.val();
+        totalMessageCount = Object.keys(messages).length;
+        updateStats();
+      }
+    });
+
+    function createMessageElement(text, messageId) {
       const el = document.createElement("div");
-      el.className = "message";
+      el.className = "message new";
       el.textContent = text;
+      el.dataset.messageId = messageId;
       el.style.color = getRandomColor();
       document.body.appendChild(el);
       activeMessages.push(el);
       return el;
     }
 
+    function removeMessage(el) {
+      el.style.opacity = 0;
+      setTimeout(() => {
+        if (el.parentNode) {
+          el.remove();
+        }
+        const index = activeMessages.indexOf(el);
+        if (index !== -1) {
+          activeMessages.splice(index, 1);
+        }
+        updateMessageStyles();
+        updateStats();
+      }, 1000);
+    }
+
+    function updateStats() {
+      document.getElementById("activeCount").textContent = activeMessages.length;
+      document.getElementById("totalCount").textContent = totalMessageCount;
+    }
+
     function updateMessageStyles() {
-      const baseSize = Math.min(window.innerWidth, window.innerHeight) / 15;
-      const minSize = 12;
+      const baseSize = Math.min(window.innerWidth, window.innerHeight) / 20;
+      const minSize = 16;
+      const maxSize = 48;
       const count = activeMessages.length;
-      const size = Math.max(minSize, baseSize - count * 0.4);
+      
+      // Scale down font size as more messages appear, but keep readable
+      const size = Math.max(minSize, Math.min(maxSize, baseSize - count * 0.8));
 
       activeMessages.forEach((el) => {
         el.style.fontSize = `${size}px`;
@@ -117,17 +201,21 @@
     }
 
     function animateMessage(el) {
-      // Wait for the element to be rendered so we can get its actual dimensions
+      // Wait for the element to be rendered
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const elWidth = rect.width;
         const elHeight = rect.height;
         
-        // Use actual dimensions for initial placement
-        let x = Math.random() * Math.max(0, window.innerWidth - elWidth);
-        let y = Math.random() * Math.max(0, window.innerHeight - elHeight);
-        let dx = (Math.random() - 0.5) * 0.5;
-        let dy = (Math.random() - 0.5) * 0.5;
+        // Messages can now use the full screen since everything is in the corner
+        const margin = 20;
+        
+        let x = Math.random() * Math.max(0, window.innerWidth - elWidth - margin);
+        let y = Math.random() * Math.max(0, window.innerHeight - elHeight - margin);
+        
+        // Slower, more organic movement
+        let dx = (Math.random() - 0.5) * 0.3;
+        let dy = (Math.random() - 0.5) * 0.3;
 
         function move() {
           const currentRect = el.getBoundingClientRect();
@@ -137,27 +225,37 @@
           x += dx;
           y += dy;
 
-          // Keep text fully on screen with proper boundary checking
+          // Bounce off boundaries
           if (x <= 0) {
             x = 0;
-            dx = Math.abs(dx);
+            dx = Math.abs(dx) * 0.8; // Add some damping
           } else if (x + currentWidth >= window.innerWidth) {
             x = window.innerWidth - currentWidth;
-            dx = -Math.abs(dx);
+            dx = -Math.abs(dx) * 0.8;
           }
 
           if (y <= 0) {
             y = 0;
-            dy = Math.abs(dy);
+            dy = Math.abs(dy) * 0.8;
           } else if (y + currentHeight >= window.innerHeight) {
             y = window.innerHeight - currentHeight;
-            dy = -Math.abs(dy);
+            dy = -Math.abs(dy) * 0.8;
           }
+
+          // Add slight random variation to prevent messages from getting stuck
+          dx += (Math.random() - 0.5) * 0.02;
+          dy += (Math.random() - 0.5) * 0.02;
+          
+          // Keep speed reasonable
+          dx = Math.max(-0.5, Math.min(0.5, dx));
+          dy = Math.max(-0.5, Math.min(0.5, dy));
 
           el.style.left = x + "px";
           el.style.top = y + "px";
 
-          requestAnimationFrame(move);
+          if (el.parentNode) {
+            requestAnimationFrame(move);
+          }
         }
 
         // Set initial position and start animation
@@ -168,9 +266,17 @@
     }
 
     function getRandomColor() {
-      const colors = ["#fff", "#ffff00", "#00ffff", "#ff00ff", "#00ff00", "#ff6600", "#ff0080", "#80ff00", "#0080ff", "#ff8000"];
+      const colors = [
+        "#fff", "#ffff00", "#00ffff", "#ff00ff", 
+        "#00ff00", "#ff6600", "#ff0080", "#80ff00", 
+        "#0080ff", "#ff8000", "#00ffcc", "#ff6bb3",
+        "#84ff84", "#ffb84d", "#b3b3ff"
+      ];
       return colors[Math.floor(Math.random() * colors.length)];
     }
+
+    // Handle window resize
+    window.addEventListener('resize', updateMessageStyles);
   </script>
 </body>
 </html>
