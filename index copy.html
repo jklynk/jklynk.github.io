@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+<head>
+	<title>jklynk</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        /* Hover image styling */
+        .work-item {
+            position: relative;
+            margin-bottom: 1em;
+        }
+        
+        .work-link {
+            text-decoration: underline;
+            
+        }
+        
+        .work-image {
+            max-width: 100%;
+            margin-top: 0;
+            border: 1px solid #ccc;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease;
+        }
+        
+        .work-image.show {
+            opacity: 1;
+            max-height: 500px; /* Adjust based on your largest image */
+            margin-top: 0.5em;
+        }
+        
+        /* Ensure images fit within the content area */
+        .work-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="topheader">
+	<details id="menudetails">
+		<summary>menu</summary>
+		<a href="#currently">currently</a>
+		<br>
+		<!--
+		<a href="#dailies">dailies</a>
+		<br> -->
+		<a href="#works">works</a>
+		<br>
+		<a href="#about">about</a>
+		<br>
+		<a href="#contact">contact</a>
+	</details>
+
+	<h1>jklynk</h1>
+  <p>aka jonny klynkramer<br><br>
+
+
+</div>
+	
+<div id="notheader">		
+
+<!--now section-->
+
+<h3 id="currently">currently</h3>
+    
+    <p>(as of 2025-06-17):</p>
+
+    <ul>
+      <li>living, working and learning in <a href="https://www.unitedwaygt.org/issues/land-acknowledgements-uncovering-an-oral-history-of-tkaronto/">tkaronto</a></li>
+      <li>studying for a <a href="https://www.torontomu.ca/master-digital-media/">masters of digital media</a> at <a href="https://www.torontomu.ca/">tmu</a></li>
+      <li>exploring concepts around <a href="https://nscad.ca/research-services/research-creation/">research-creation</a>, <a href="https://www.conceptlab.com/criticalmaking/">critical making</a>, <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118475249">interactive digital art</a>, and more</li>   
+      <li><a href="https://youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr&si=NyCkZSWIfGgzxrl7">making bike journals</a> and attending <a href="https://youtu.be/7gWcqaqHhNg?si=4NCxCviw53f_uQCC">critical mass</a></li>
+      <li>cooking up the <a href="tip.html">tactical interaction project</a></li>
+    </ul>
+
+<!--dailies section
+
+<h3 id="dailies">dailies</h3>
+
+	<p>daily thoughts/work/progess:</p>
+
+<a href="dailies/250126.html">250126</a><br>
+<a href="dailies/250125.html">250125</a><br>
+<a href="dailies/250124.html">250124</a><br>
+<a href="dailies/250123.html">250123</a><br>
+<a href="dailies/250122.html">250122</a><br>
+<a href="dailies/250121.html">250121</a><br>
+
+-->
+
+<!--works section-->
+
+<h3 id="works">works</h3>
+
+	<p>things i've made:</p>
+
+	 <ul>
+      <li class="work-item">
+        <a href="tip.html" class="work-link" data-image="images/tip.jpg">tactical interaction project</a> <br>major research project, 2025 (ongoing)
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="dredge11redux.html" class="work-link" data-image="images/dredge11redux.jpg">dredge11[redux]</a> <br>installation, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="pinkklynk.html" class="work-link" data-image="images/pinkklynk.jpg">pink/klynk</a> <br>augmented reality, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="av01.html" class="work-link" data-image="images/av01.jpg">untitled[av01]</a> <br>performance, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="murmuration.html" class="work-link" data-image="images/murmuration.gif">murmuration</a> <br>animation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="dredge11retrograde.html" class="work-link" data-image="images/dredge11.gif">dredge11[retrograde]</a> <br>installation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="sloppymachine.html" class="work-link" data-image="images/sloppymachine.jpg">sloppy machine</a> <br>installation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="helloworld.html" class="work-link" data-image="images/helloworld.gif">hello, world</a> <br>animation, 2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="sirenum.html" class="work-link" data-image="images/sirenum.jpg">sirenum scopuli</a> <br>installation,2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="entropy.html" class="work-link" data-image="images/entropy.gif">entropy</a> <br>installation, 2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="https://vimeo.com/jklynk/mondegris" class="work-link" data-image="images/mondegris.gif">monde gris</a> <br>video, 2021
+        <div class="work-image"></div>
+      </li><br>
+      <li><a href="olderworks.html">older works</a></li>
+    </ul>
+
+<!--about section-->
+
+<h3 id="about">about</h3>
+
+	<p>about jklynk:</p>
+
+	<p><i>still a work in progress</i></p>
+
+<!--contact section-->
+
+<h3 id="contact">contact</h3>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+
+    <!-- Replace with your Access Key -->
+    <input type="hidden" name="access_key" value="b1ba5ef3-2a54-4c15-bd88-430c40522cbf">
+
+    <!-- Form Inputs. Each input must have a name="" attribute -->
+    name<br>
+    <input type="text" name="name" required><br>
+    email<br>
+    <input type="email" name="email" required><br>
+    message to jklynk<br>
+    <textarea name="message" required></textarea>
+
+    <!-- Honeypot Spam Protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;"><br>
+
+    <!-- Custom Confirmation / Success Page -->
+    <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+
+    <button type="submit">send email</button>
+
+    <p><a href="https://www.instagram.com/jklynk">instagram</a></p>
+    <p><a href="https://www.youtube.com/@jklynk">youtube</a></p>
+
+</form>
+
+
+</div>
+
+<script>
+// Minimal JavaScript for hover image functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const workLinks = document.querySelectorAll('.work-link[data-image]');
+    
+    workLinks.forEach(link => {
+        const imageContainer = link.parentElement.querySelector('.work-image');
+        const imageSrc = link.getAttribute('data-image');
+        
+        link.addEventListener('mouseenter', function() {
+            if (!imageContainer.hasChildNodes()) {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.alt = link.textContent;
+                imageContainer.appendChild(img);
+            }
+            imageContainer.classList.add('show');
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            imageContainer.classList.remove('show');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
