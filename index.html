@@ -5,6 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        /* Hover image styling */
+        .work-item {
+            position: relative;
+            margin-bottom: 1em;
+        }
+        
+        .work-link {
+            text-decoration: underline;
+            
+        }
+        
+        .work-image {
+            max-width: 100%;
+            margin-top: 0;
+            border: 1px solid #ccc;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease;
+        }
+        
+        .work-image.show {
+            opacity: 1;
+            max-height: 500px; /* Adjust based on your largest image */
+            margin-top: 0.5em;
+        }
+        
+        /* Ensure images fit within the content area */
+        .work-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
@@ -67,17 +102,50 @@
 	<p>things i've made:</p>
 
 	 <ul>
-      <li><a href="tip.html">tactical interaction project</a> <br>major research project, 2025 (ongoing)</li><br>
-      <li><a href="dredge11redux.html">dredge11[redux]</a> <br>installation, 2024</li><br>
-      <li><a href="pinkklynk.html">pink/klynk</a> <br>augmented reality, 2024</li><br>
-      <li><a href="av01.html">untitled[av01]</a> <br>performance, 2024</li><br>
-      <li><a href="murmuration.html">murmuration</a> <br>animation, 2023</li><br>
-      <li><a href="dredge11retrograde.html">dredge11[retrograde]</a> <br>installation, 2023</li><br>
-      <li><a href="sloppymachine.html">sloppy machine</a> <br>installation, 2023</li><br>
-      <li><a href="helloworld.html">hello, world</a> <br>animation, 2022</li><br>
-      <li><a href="sirenum.html">sirenum scopuli</a> <br>installation,2022</li><br>
-      <li><a href="entropy.html">entropy</a> <br>installation, 2022</li><br>
-      <li><a href="https://vimeo.com/jklynk/mondegris">monde gris</a> <br>video, 2021</li><br>
+      <li class="work-item">
+        <a href="tip.html" class="work-link" data-image="images/tip.jpg">tactical interaction project</a> <br>major research project, 2025 (ongoing)
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="dredge11redux.html" class="work-link" data-image="images/dredge11redux.jpg">dredge11[redux]</a> <br>installation, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="pinkklynk.html" class="work-link" data-image="images/pinkklynk.jpg">pink/klynk</a> <br>augmented reality, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="av01.html" class="work-link" data-image="images/av01.jpg">untitled[av01]</a> <br>performance, 2024
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="murmuration.html" class="work-link" data-image="images/murmuration.gif">murmuration</a> <br>animation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="dredge11retrograde.html" class="work-link" data-image="images/dredge11.gif">dredge11[retrograde]</a> <br>installation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="sloppymachine.html" class="work-link" data-image="images/sloppymachine.jpg">sloppy machine</a> <br>installation, 2023
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="helloworld.html" class="work-link" data-image="images/helloworld.gif">hello, world</a> <br>animation, 2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="sirenum.html" class="work-link" data-image="images/sirenum.jpg">sirenum scopuli</a> <br>installation,2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="entropy.html" class="work-link" data-image="images/entropy.gif">entropy</a> <br>installation, 2022
+        <div class="work-image"></div>
+      </li><br>
+      <li class="work-item">
+        <a href="https://vimeo.com/jklynk/mondegris" class="work-link" data-image="images/mondegris.gif">monde gris</a> <br>video, 2021
+        <div class="work-image"></div>
+      </li><br>
       <li><a href="olderworks.html">older works</a></li>
     </ul>
 
@@ -122,4 +190,31 @@
 
 </div>
 
+<script>
+// Minimal JavaScript for hover image functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const workLinks = document.querySelectorAll('.work-link[data-image]');
+    
+    workLinks.forEach(link => {
+        const imageContainer = link.parentElement.querySelector('.work-image');
+        const imageSrc = link.getAttribute('data-image');
+        
+        link.addEventListener('mouseenter', function() {
+            if (!imageContainer.hasChildNodes()) {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.alt = link.textContent;
+                imageContainer.appendChild(img);
+            }
+            imageContainer.classList.add('show');
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            imageContainer.classList.remove('show');
+        });
+    });
+});
+</script>
+
 </body>
+</html>
