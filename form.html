@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Critical Mass Screen</title>
+  <title>MassCast Input</title>
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -22,7 +22,7 @@
     const messagesRef = ref(db, "messages");
 
     // Simple profanity filter
-    const blockedWords = ['shit', 'fuck', 'damn', 'asshole', 'bitch']; // Add more as needed
+    const blockedWords = ['shit', 'fuck', 'damn', 'asshole', 'bitch', 'dick', 'pussy']; // Add more as needed
     
     function containsProfanity(text) {
       const lowerText = text.toLowerCase();
@@ -42,7 +42,7 @@
       }
       
       if (text.length > 100) {
-        showToast("❌ Message too long (100 chars max)", "error");
+        showToast("❌ Message too long (60 chars max)", "error");
         return;
       }
 
@@ -95,9 +95,9 @@
     window.updateCounter = () => {
       const input = document.getElementById("message");
       const counter = document.getElementById("counter");
-      const remaining = 100 - input.value.length;
+      const remaining = 60 - input.value.length;
       counter.textContent = `${remaining} characters left`;
-      counter.style.color = remaining < 20 ? "#ff6b6b" : "#aaa";
+      counter.style.color = remaining < 10 ? "#ff6b6b" : "#aaa";
     };
   </script>
 
@@ -243,26 +243,25 @@
   </style>
 </head>
 <body>
-  <h1>Send a Message<br>to Doug Ford 📢</h1>
+  <h1>SHARE YOUR VISION<br>FOR TORONTO'S FUTURE</h1>
   <br>
   
   <form onsubmit="submitMessage(event)">
     <input
       type="text"
       id="message"
-      placeholder="Your message to the Premier..."
-      maxlength="100"
+      placeholder="Share your vision here"
+      maxlength="60"
       oninput="updateCounter()"
       required
     />
-    <div id="counter">100 characters left</div>
+    <div id="counter">60 characters left</div>
     <button type="submit">Send Message</button>
   </form>
   
-  <div class="note">Your message will appear on the live screen</div>
-  <div class="note">Messages disappear after 3 hours</div>
-  <div class="note">🚴 Emojis work too! 🚴</div>
-  <div class="note">Created by <a href="index.html">jklynk</a></div>
+  <div class="note">Your message will be projected from NODE-1</div>
+  <div class="note">📢 Emojis work too! 📢</div><br><br>
+  <div class="note"><a href="tip.html">MassCast</a> created by <a href="index.html">jklynk</a> - 2025</div>
   
   <div id="toast" class="toast"></div>
 </body>
