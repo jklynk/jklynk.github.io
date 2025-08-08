@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>masscast</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body id="notheader">
+
+    <br>
+    
+    <a href="./index.html" class="right">home</a> 
+
+    <h1>masscast</h1>
+
+    <p><i>convivial tool, 2025</p>
+    <p>part of <a href="./tip.html">the tactical interaction project</a></i></p>
+
+    <br>
+    <img src="images/masscast.png" alt="MassCast Input">
+<section id="masscast">
+  <header>
+    <p><strong>A live, mobile message wall for protests and public gatherings.</strong></p>
+    <p>
+      <em>MassCast</em> is an interactive system that transforms NODE-1 into a rolling platform for collective expression. Participants scan a QR code to submit short text messages, which then appear in real time on NODE-1’s display. Designed with low barriers to participation, MassCast invites the public to contribute to a shared, mobile voice in the streets.
+    </p>
+
+  </header>
+<br>
+  <section id="concept">
+    <h1>Concept &amp; Inspiration</h1>
+    <p>
+      The idea for MassCast emerged from attending Critical Mass rides in Toronto. Riders often carry handmade signs with pro-cycling messages: a powerful but limited form of expression. MassCast reimagines this as a digital, collective sign-making process, where contributions can be made on the spot and displayed instantly, adapting to the energy and mood of the gathering.
+    </p>
+  </section>
+
+  <section id="how-it-works">
+    <h1>How It Works</h1>
+    <p>
+      A QR code displayed on NODE-1 links to a simple web form. Participants type a short message and hit send, and the message appears instantly on the display, animated to float, fade, and shift over time. The system is built with HTML, CSS, and JavaScript, backed by Google Firebase for real-time data storage and retrieval. Development was accelerated using “vibe coding”: an AI-assisted programming process, while retaining human oversight for design and moderation logic.
+    </p>
+  </section>
+
+  <section id="design-principles">
+    <h1>Design Principles</h1>
+    <p>
+      MassCast is intentionally designed to be accessible and adaptable. No app or account is required, lowering the barrier to entry. The immediacy of the display amplifies the sense of collective presence, while the system’s portability allows it to function with either the flatscreen or projector, in motion or stationary, for both daytime and nighttime events.
+    </p>
+  </section>
+
+  <section id="challenges">
+    <h1>Challenges &amp; Lessons Learned</h1>
+    <p>
+      Early testing revealed hardware limitations: an underpowered Raspberry Pi Zero couldn’t handle the real-time display. The system was shifted to run on a Mac Mini, improving performance but increasing weight. This became a productive failure, leading to new insights about matching software demands to hardware capabilities and the importance of modular, swappable components.
+    </p>
+  </section>
+
+  <section id="future">
+    <h1>Future Directions</h1>
+    <p>
+      Future development for MassCast includes adding moderation features for community-led curation, optimizing for lighter, more portable hardware, and adapting to different use-cases. As an open-ended tool, MassCast can be harnessed for protests, workshops, community meetings, festivals, or any moment where a collective voice matters. If you’d like to build your own version or collaborate on an activation, get in touch:
+    </p>
+
+        <form action="https://api.web3forms.com/submit" method="POST">
+
+    <!-- Replace with your Access Key -->
+    <input type="hidden" name="access_key" value="b1ba5ef3-2a54-4c15-bd88-430c40522cbf">
+
+    <!-- Form Inputs. Each input must have a name="" attribute -->
+    name<br>
+    <input type="text" name="name" required><br>
+    email<br>
+    <input type="email" name="email" required><br>
+    message to jklynk<br>
+    <textarea name="message" required></textarea>
+
+    <!-- Honeypot Spam Protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;"><br>
+
+    <!-- Custom Confirmation / Success Page -->
+    <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+
+    <button type="submit">send email</button>
+<br><br><br>
+  </section>
+</section>
+
+
+  </body>
+</html>
