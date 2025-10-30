@@ -31,7 +31,7 @@
     .control-panel {
       position: fixed;
       top: 20px;
-      left: 700px;
+      left: 20px;
       background: rgba(0, 255, 204, 0.15);
       border: 1px solid #00ffcc;
       color: #00ffcc;
@@ -119,7 +119,7 @@
     const messagesRef = ref(db, "messages");
 
     const activeMessages = [];
-    const MESSAGE_LIFETIME = 48 * 60 * 60 * 1000; // 48 hours
+    const MESSAGE_LIFETIME = 78 * 60 * 60 * 1000; // 48 hours
     let totalMessageCount = 0;
 
     // Listen for new messages

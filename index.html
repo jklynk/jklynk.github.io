@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
     <style>
         /* Hover image styling */
         .work-item {
@@ -38,6 +39,13 @@
             max-width: 100%;
             height: auto;
             display: block;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
     </style>
 </head>
@@ -231,6 +239,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+  let cursorX, cursorY;
+
+  function setup() {
+    createCanvas(windowWidth, windowHeight);
+    background(153, 204, 255);
+    noStroke();
+  }
+
+  function draw() {
+    // Update the cursor position
+    cursorX = mouseX;
+    cursorY = mouseY;
+
+    // Draw a circle at the cursor position
+    fill(255, 165, 0);
+    ellipse(cursorX, cursorY, 250, 250);
+  }
+
 </script>
 
 </body>
