@@ -1,0 +1,160 @@
+/* RESET */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* BODY & TYPOGRAPHY */
+body {
+    background-color: #ffffff; /* Dark mode base */
+    color: #000000;
+    font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    font-size: larger;
+    padding: 2rem;
+    /*
+  background-image: url('images/selfportraitslow.gif');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%; 
+*/
+}
+
+.content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+header {max-width: 600px;
+  margin: auto; margin-bottom: 3rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+h1 { font-size: 2rem; letter-spacing: -1px; margin-bottom: 0.5rem; }
+.logo {filter: invert(0%); width: 100%; height: auto; transition: filter .8s, transform .8s; }
+.logo:hover { 
+    filter: invert(100%); 
+    transform: scale(1.0);
+    transition: filter .8s, transform .8s; 
+}
+
+.tagline { color: #000000; margin-bottom: 1.5rem; font-size: 1rem; }
+
+/* FILTER BUTTONS */
+.filter-bar button {
+    background: none;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: 5px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.5s;
+}
+.filter-bar button:hover, .filter-bar button.active {
+    border-color: #ff8400; /* Terminal Green */
+    color: #ff8400;
+    transform: scale(1.1);
+}
+
+/* MASONRY GRID LAYOUT */
+.masonry-grid {
+    /* This container is intentionally left blank. Isotope will apply positioning. */
+}
+
+/* The sizer elements define the column and gutter widths for Isotope */
+.grid-sizer,
+.card {
+    width: 23.5%; /* 4-column layout: 4 * 23.5% = 94% */
+}
+
+.gutter-sizer {
+    width: 2%; /* Gutter: 3 * 2% = 6%. Total = 100% */
+}
+
+/* THE CARDS */
+.card {
+    background-color: #ffffff;
+   border: 1px solid #c7c7c7;    border-radius: 10px;
+    padding: 20px;    overflow: hidden;
+    margin-bottom: 30px; /* Add vertical spacing */
+}
+
+.card.interactive:hover {
+    border-color: #aaa; /* Only change border on interactive cards */
+    transform: translateY(2px); /* Replaced with a starker border change */
+}
+
+.card.bio { border: 1px dashed #323232; background: #d7d7d7; }
+
+/* CARD CONTENTS */
+.card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+    filter: invert(0%); 
+    transform: scale(1);
+    transition: filter .8s, transform .8s;
+}
+.card:hover img { 
+    filter: invert(100%); 
+    transform: scale(1.05);
+    transition: filter .8s, transform .8s; 
+}
+
+.card h2 { font-size: 1rem; margin-bottom: 0.5rem; color: #000000; }
+.card .card-content-body {
+    margin-bottom: 10px;
+}
+.card .card-content-body p { font-size: 1rem; color: #000000; line-height: 1.4; }
+.card .card-content-body p:not(:last-child) { margin-bottom: 0.75em; } /* Add space between paragraphs inside a card */
+.card .card-content-body blockquote {
+    border-left: 2px solid #555;
+    padding-left: 0.75rem;
+    margin: 0.75rem 0;
+    color: #999;
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+/* "Read More" feature styles */
+.card-expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+}
+.card-expandable-content.expanded {
+    max-height: 1000px; /* Large enough to fit any content */
+    transition: max-height 0.4s ease-out;
+}
+.read-more-btn {
+    background: none; border: none; color: #ff8400; text-decoration: underline;
+    padding: 5px 0; margin-top: 5px; cursor: pointer; font-size: 0.9rem;
+    font-family: inherit;
+}
+
+/* TAGS */
+.tags span {
+    font-size: 0.7rem;
+    background: #bcbcbc;
+    padding: 2px 6px;
+    margin-right: 5px;
+    border-radius: 3px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s, text-decoration 0.2s;
+}
+.tags span:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+.card.interactive { cursor: pointer; }
+
+/* RESPONSIVE */
+@media (max-width: 1500px) {
+    .grid-sizer, .card { width: 32%; } /* 2-column layout */
+    .gutter-sizer { width: 2%; }
+}
+@media (max-width: 900px) {
+    .grid-sizer, .card { width: 49%; } /* 2-column layout */
+    .gutter-sizer { width: 2%; }
+}
+@media (max-width: 600px) {
+    .grid-sizer, .card { width: 100%; } /* 1-column layout */
+    .gutter-sizer { width: 0; }
+}   

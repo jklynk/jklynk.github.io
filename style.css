@@ -7,29 +7,14 @@ body {
   color: black;
   font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
   font-weight: normal;
+  font-size: larger;
   align-content: center;
   margin-bottom: 100px;
+  background-image: url('images/bgstill.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 }
-
-h1 {
-  color: #000000;
-  text-align: left;
-  font-size: 42px;
-  font-weight: normal;
-}
-
-h2 {color: #000000;
-  text-align: center;
-  padding: 100px;
-  margin: 20px;
-  }
-
-h3 {color: #000000;
-  text-align: center;
-  font-size: 38px;
-  padding: 50px;
-  margin: 20px;
-  text-decoration-line: underline;}
 
 embed {
   width: 100%;
@@ -59,7 +44,8 @@ a:visited {
   color: #cc8100;
 }
 
-#menudetails {color: #ffffff;
+#menudetails {
+  color: #ffffff;
   padding: 10px;
       position: sticky;
       font-size: 32px;
@@ -73,11 +59,11 @@ position: sticky;
 top: 0;}
 
 #notheader {
-  background: rgba(255, 255, 255, 0.60);
+  background: rgba(255, 255, 255, 0.7);
   margin: auto;
   padding: 50px;
   margin-top: 50px;
-  width: 30%;
+  width: 35%;
 }
 
 /* for centering images */
@@ -116,6 +102,12 @@ div.scroll-container img {
   }
   #notheader{
     width: 80%;
+  }
+  body{
+  background-image: url('images/bgstill.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
   }
 }
 
