@@ -59,7 +59,7 @@
     "category": "project",
     "tags": ["Installation", "TouchDesigner", "2024"],
     "content": "Interactive Installation, 2024",
-    "image": "images/dredge11redux.jpg",
+    "image": "images/dredge11redux.JPG",
     "link": "projects/dredge11redux.html"
   },
     {
@@ -86,7 +86,7 @@
     "category": "project",
     "tags": ["Animation", "Video", "Unreal", "2023"],
     "content": "Short Film, 2023",
-    "image": "images/murmuration.gif",
+    "image": "images/murmuration.mp4",
     "link": "projects/murmuration.html"
   },
     {
@@ -95,7 +95,7 @@
     "category": "project",
     "tags": ["Installation", "XR", "3D Scans", "Video", "Photo", "Audio", "Unity", "TouchDesigner", "2023"],
     "content": "Interactive Installation, 2023",
-    "image": "images/dredge11retrograde.gif",
+    "image": "images/dredge11retrograde.mp4",
     "link": "projects/dredge11retrograde.html"
   },
     {
@@ -113,7 +113,7 @@
     "category": "project",
     "tags": ["Animation", "Film", "Unreal", "2022"],
     "content": "Short Film, 2022",
-    "image": "images/helloworld.gif",
+    "image": "images/helloworld.mp4",
     "link": "projects/helloworld.html"
   },
     {
@@ -131,7 +131,7 @@
     "category": "project",
     "tags": ["Installation", "TouchDesigner", "Video", "2022"],
     "content": "Installation, 2022",
-    "image": "images/entropy.gif",
+    "image": "images/entropy.mp4",
     "link": "projects/entropy.html"
   },
         {
@@ -194,7 +194,7 @@
     "category": "project",
     "tags": ["Video", "Film", "2021"],
     "content": "Short Film, 2021",
-    "image": "images/mondegris.gif",
+    "image": "images/mondegris.mp4",
     "link": "https://vimeo.com/jklynk/mondegris?share=copy"
   },
          {

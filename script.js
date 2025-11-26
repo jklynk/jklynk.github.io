@@ -48,7 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageSrc = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             }
         }
-        const imageHTML = imageSrc ? `<img src="${imageSrc}" alt="${item.title}">` : '';
+
+        let mediaHTML = '';
+        if (imageSrc) {
+            if (imageSrc.endsWith('.mp4')) {
+                mediaHTML = `<video src="${imageSrc}" alt="${item.title}" autoplay loop muted playsinline></video>`;
+            } else {
+                mediaHTML = `<img src="${imageSrc}" alt="${item.title}">`;
+            }
+        }
 
         // Build the Tags
         const tagsHTML = item.tags.map(tag => `<span onclick="filterByTag(event, '${tag}')">${tag}</span>`).join('');
@@ -62,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Put it all together
         card.innerHTML = `
-            ${imageHTML}
+            ${mediaHTML}
             <h2>${item.title}</h2>
             <div class="card-content-body">${cardContentHTML}</div>
             <div class="tags">${tagsHTML}</div>

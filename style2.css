@@ -105,7 +105,8 @@ h1 { font-size: 2rem; letter-spacing: -1px; margin-bottom: 0.5rem; }
 .card.bio { border: 1px dashed #323232; background: #d7d7d7; }
 
 /* CARD CONTENTS */
-.card img {
+.card img,
+.card video {
     width: 100%;
     height: auto;
     display: block;
@@ -114,7 +115,8 @@ h1 { font-size: 2rem; letter-spacing: -1px; margin-bottom: 0.5rem; }
     transform: scale(1);
     transition: filter .8s, transform .8s;
 }
-.card:hover img { 
+.card:hover img,
+.card:hover video { 
     filter: invert(100%); 
     transform: scale(1.05);
     transition: filter .8s, transform .8s; 
