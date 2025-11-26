@@ -63,7 +63,7 @@ top: 0;}
   margin: auto;
   padding: 50px;
   margin-top: 50px;
-  width: 35%;
+  width: 50%;
 }
 
 /* for centering images */
@@ -101,7 +101,8 @@ div.scroll-container img {
     position: static;
   }
   #notheader{
-    width: 80%;
+    width: 90%;
+    padding: 10px;
   }
   body{
   background-image: url('images/bgstill.png');
