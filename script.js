@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. CONFIGURATION ---
     const container = document.getElementById('garden-container');
+    const loadingWidget = document.getElementById('loading-widget');
     let allData = [];
     let iso;
 
@@ -100,17 +101,25 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(gutterSizer);
     container.appendChild(fragment);
 
-    imagesLoaded(container, () => {
-        iso = new Isotope(container, {
-            itemSelector: '.card',
-            layoutMode: 'masonry',
-            percentPosition: true,
-            masonry: {
-                columnWidth: '.grid-sizer',
-                gutter: '.gutter-sizer',
-                horizontalOrder: false
-            }
-        });
+    // Initialize Isotope once all images are loaded
+    const imgLoad = imagesLoaded(container);
+
+    imgLoad.on('always', function() {
+      iso = new Isotope(container, {
+          itemSelector: '.card',
+          layoutMode: 'masonry',
+          percentPosition: true,
+          masonry: {
+              columnWidth: '.grid-sizer',
+              gutter: '.gutter-sizer',
+              horizontalOrder: false
+          }
+      });
+
+      // Hide loading widget and show the grid
+      loadingWidget.style.display = 'none';
+      container.style.visibility = 'visible';
+      container.style.opacity = 1;
     });
     }
 
