@@ -1,301 +1,53 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>jklynk</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-    <style>
-
-       body {
-  background-image: url('images/selfportraitslow.gif');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
-} 
-
-        /* Hover image styling */
-        .work-item {
-            position: relative;
-            margin-bottom: 1em;
-        }
-        
-        .work-link {
-            text-decoration: underline;
-            
-        }
-        
-        .work-image {
-            max-width: 100%;
-            margin-top: 0;
-            border: 1px solid #ccc;
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: opacity 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease;
-        }
-        
-        .work-image.show {
-            opacity: 1;
-            max-height: 500px; /* Adjust based on your largest image */
-            margin-top: 0.5em;
-        }
-        
-        /* Ensure images fit within the content area */
-        .work-image img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .imgvert {
-          filter: invert(100%);
-          
-        }
-        #notheader {
-          margin-top: 50%;
-        }
-        
-    </style>
+    <title>jklynk // garden</title>
+    <link rel="stylesheet" href="style2.css">
 </head>
 <body>
 
-<div id="topheader">
-	<details id="menudetails">
-		<summary>menu</summary>
-		<a href="#current">current</a>
-		<br>
-    <a href="#bio">bio</a>
-		<br>
-    <a href="#works">works</a>
-		<br>
-    <a href="#dailies">dailies</a>
-		<br>
-		<a href="#contact">contact</a>
-	</details>
-
- <!-- <h1>jklynk</h1> -->
-  <img src="images/jklynk2.png" width="160"><br>
-  
-  <!-- <p>aka jonny klynkramer<br><br> -->
-
-
-</div>
-	
-<div id="notheader">		
-
-<!--now section-->
-
-<!-- h3 >currently</h3> -->
-<img class="imgvert" id="current" src="images/current.png" width="150">
-    
-    <p>recent updates (as of 2025-11-11):</p>
-    <ul>
-      <li>living, working and learning in <a href="https://www.unitedwaygt.org/issues/land-acknowledgements-uncovering-an-oral-history-of-tkaronto/">tkaronto</a></li>
-      <li>recovering from completing a <a href="https://www.torontomu.ca/master-digital-media/">master of digital media</a> at <a href="https://www.torontomu.ca/">tmu</a></li>
-      <li>binging <a href="https://solvedpodcast.com/">solved</a> and <a href="https://www.youtube.com/struthless">struthless</a></li>   
-      <li>periodically making <a href="https://youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr&si=NyCkZSWIfGgzxrl7">bike journals</a></li>
-      <li>ran my first <a href="https://www.strava.com/activities/15490854347">triathlon</a> and <a href="https://www.strava.com/activities/16043791707">half-marathon</a></li>
-      <li>continuing documentation of the <a href="tip.html">tactical interaction project:</a></li>
-    </ul>
-
-    <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/gQaxIIjWn2o?si=wlWXGXmeuX6oFB9t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  -->
-<br><br><br>
-
-<!--about section-->
-
-<!-- <h3 id="bio">bio</h3> -->
-<img class="imgvert" id="bio" src="images/bio.png" width="90"><br>
-
-
-	<p>jklynk, aka jonny klynkramer (he/they) is a toronto-based polydisciplanary artist and researcher whose practice drifts between interactive and generative media, installation, audio-visual performance, and DIY making.<br><br>
-    
-  comfortable moving between welding a bike-mounted projection system, composing soundscapes in ableton, or building real-time visuals in touchdesigner, they approach each project as an experiment: valuing process, curiosity, and the unexpected over polished outcomes.<br><br>
-
-  shaped by nearly a decade living in the yukon and inspired more recently by toronto’s cycling culture and critical mass rides, jklynk’s recent work explores how technology, public space, and community intersect. this site is very much a work-in-progress: part portfolio, part open-source digital garden.</p>
-
-
-<!--works section-->
-<br><br><br>
-
-<!-- <h3 id="works">works</h3> -->
-<img class="imgvert" id="works" src="images/works.png" width="130">
-
-	<p>things i've made:</p>
-
-	 <ul>
-      <li class="work-item">
-        <a href="tip.html" class="work-link" data-image="images/tip.jpg">tactical interaction project</a> <br>major research project, 2025 (ongoing)
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="dredge11redux.html" class="work-link" data-image="images/dredge11redux.jpg">dredge11[redux]</a> <br>installation, 2024
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="pinkklynk.html" class="work-link" data-image="images/pinkklynk.jpg">pink/klynk</a> <br>augmented reality, 2024
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="av01.html" class="work-link" data-image="images/av01.jpg">untitled[av01]</a> <br>performance, 2024
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="murmuration.html" class="work-link" data-image="images/murmuration.gif">murmuration</a> <br>animation, 2023
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="dredge11retrograde.html" class="work-link" data-image="images/dredge11.gif">dredge11[retrograde]</a> <br>installation, 2023
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="sloppymachine.html" class="work-link" data-image="images/sloppymachine.jpg">sloppy machine</a> <br>installation, 2023
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="helloworld.html" class="work-link" data-image="images/helloworld.gif">hello, world</a> <br>animation, 2022
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="sirenum.html" class="work-link" data-image="images/sirenum.jpg">sirenum scopuli</a> <br>installation,2022
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="entropy.html" class="work-link" data-image="images/entropy.gif">entropy</a> <br>installation, 2022
-        <div class="work-image"></div>
-      </li><br>
-      <li class="work-item">
-        <a href="https://vimeo.com/jklynk/mondegris" class="work-link" data-image="images/mondegris.gif">monde gris</a> <br>video, 2021
-        <div class="work-image"></div>
-      </li><br>
-      <li><a href="olderworks.html">older works</a></li>
-    </ul>
-
-
-<!--dailies section-->
-
-<br><br><br>
-<!-- <h3 id="dailies">dailies</h3> -->
-<img class="imgvert" id="dailies" src="images/dailies.png" width="150">
-
-	<p>journals/tidbits/thoughts/work/progess:</p>
-
-<a href="https://youtu.be/gQaxIIjWn2o?si=gNWS44D0v95vKJjz">WALKTHROUGH: Understanding What We Can Only Feel</a><br>
-<a href="https://youtu.be/O9UiJs1Fzy8?si=PiMKROV1Bet4szxo">Autumn Ride to the Botanical Garden</a><br>
-<a href="https://youtu.be/Za2FnIzvRGI?si=uuyMzY3VTD2pj4q9">I CRASHED!</a><br>
-<a href="https://youtu.be/UfURWcqbl38?si=87oRsLGnqLTRVY-w">Its Over!</a><br>
-<a href="https://youtu.be/QnLqgHEGkKg?si=dIuddOTrcLY0dg_r">Thesis paper updates</a><br>
-<a href="https://youtu.be/SKSkvdW2RlM?si=lUxxJEkvZnUY6bWf">Thesis writing begins</a><br>
-<a href="https://youtu.be/xTFbb60dAy4?si=27_cfhHseJl9ZHUY">In the Yukon: DIY Life w/ Fred & Jake</a><br>
-
-<details>
-  <summary>archive</summary>
-<a href="https://youtu.be/L12c91mjnAE?si=uJD-couutAKXV0DG">250612: Project updates & looking ahead</a><br>
-<a href="https://youtu.be/PLd5aldRo_g?si=KSMeSYj2r3ZGrXyK">250530: Critical Mass, Interaction & Community Building</a><br>
-<a href="https://youtu.be/JVjYzNCklzs?si=gwErg0nk8exjw6R-">250413: More on my zine & MRP</a><br>
-<a href="https://youtu.be/6drbHwZMXr0?si=JStgLyCmX5ZgmpAh">250407: Balancing time, making a zine, healthy minds</a><br>
-<a href="https://youtu.be/-n95C0nEqME?si=1Z_5MjimfS_fw3Lm">250331: Rising authoritarianism & tactical media</a><br>
-<a href="https://youtu.be/rzVBn2CLnwI?si=BzIRjzEU7BKmokpF">250328: Journalling, tools for grad studies & me as a project</a><br>
-<a href="https://youtu.be/NEsUS1ESQFI?si=Hy5qJTevA9ERL-A1">250326: Vehicles in bike lanes and why I'm doing this</a><br>
-<a href="https://youtu.be/0I17ZbJ7YPk?si=x_DapBr6tT9UBFRV">250325: What's this all about?</a><br>
-<a href="dailies/250126.html">250126</a><br>
-<a href="dailies/250125.html">250125</a><br>
-<a href="dailies/250124.html">250124</a><br>
-<a href="dailies/250123.html">250123</a><br>
-<a href="dailies/250122.html">250122</a><br>
-<a href="dailies/250121.html">250121</a><br>
-</details>
-
-
-<!--contact section-->
-<br><br><br>
-<!-- <h3 id="contact">contact</h3> -->
-<img class="imgvert" id="contact" src="images/contact.png" width="150">
-
-  <form action="https://api.web3forms.com/submit" method="POST">
-
-    <!-- Replace with your Access Key -->
-    <input type="hidden" name="access_key" value="b1ba5ef3-2a54-4c15-bd88-430c40522cbf">
-
-    <!-- Form Inputs. Each input must have a name="" attribute -->
-    name<br>
-    <input type="text" name="name" required><br>
-    email<br>
-    <input type="email" name="email" required><br>
-    message to jklynk<br>
-    <textarea name="message" required></textarea>
-
-    <!-- Honeypot Spam Protection -->
-    <input type="checkbox" name="botcheck" class="hidden" style="display: none;"><br>
-
-    <!-- Custom Confirmation / Success Page -->
-    <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
-
-    <button type="submit">send email</button>
-
-    <p><a href="https://www.instagram.com/jklynk">instagram</a></p>
-    <p><a href="https://www.youtube.com/@jklynk">youtube</a></p>
-
-</form>
-
-
-</div>
-
-<script>
-// Minimal JavaScript for hover image functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const workLinks = document.querySelectorAll('.work-link[data-image]');
-    
-    workLinks.forEach(link => {
-        const imageContainer = link.parentElement.querySelector('.work-image');
-        const imageSrc = link.getAttribute('data-image');
+    <header>
+        <div class="ticker-wrap">
+            <div class="ticker">
+                <span>artist</span>
+                <span>creative-technologist</span>
+                <span>filmmaker</span>
+                <span>musician</span>
+                <span>bartender</span>
+                <span>triathlete</span>
+                <!-- Repeat for seamless loop -->
+                <span>artist</span>
+                <span>creative-technologist</span>
+                <span>filmmaker</span>
+                <span>musician</span>
+                <span>bartender</span>
+                <span>triathlete</span>
+            </div>
+        </div>
+        <img class="logo" src="images/sitelogo.gif"><br>
+        <br>
         
-        link.addEventListener('mouseenter', function() {
-            if (!imageContainer.hasChildNodes()) {
-                const img = document.createElement('img');
-                img.src = imageSrc;
-                img.alt = link.textContent;
-                imageContainer.appendChild(img);
-            }
-            imageContainer.classList.add('show');
-        });
+        <br>
         
-        link.addEventListener('mouseleave', function() {
-            imageContainer.classList.remove('show');
-        });
-    });
-});
+        <div class="filter-bar">
+            <button onclick="filterData('all')" class="active">ALL</button>
+            <button onclick="filterData('project')">ART</button>
+            <button onclick="filterData('life')">LIFE</button>
+            <button onclick="filterData('mind')">OTHER</button>
+        </div>
+    </header>
 
-/*
-  let cursorX, cursorY;
+    <div id="garden-container" class="masonry-grid">
+        <!-- Isotope Sizer element -->
+        <div class="grid-sizer"></div>
+        <div class="gutter-sizer"></div>
+    </div>
 
-  function setup() {
-    createCanvas(windowWidth, windowHeight);
-    background(153, 204, 255);
-    noStroke();
-  }
-
-  function draw() {
-    // Update the cursor position
-    cursorX = mouseX;
-    cursorY = mouseY;
-
-    // Draw a circle at the cursor position
-    fill(255, 165, 0);
-    ellipse(cursorX, cursorY, 250, 250);
-  }
- */
-
-</script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

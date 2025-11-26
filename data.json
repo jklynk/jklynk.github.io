@@ -1,0 +1,434 @@
+[
+    {
+    "id": "bio",
+    "title": "about jklynk",
+    "category": "bio",
+    "tags": ["Bio", "2025"],
+    "content": "jklynk, aka jonny klynkramer (he/they) is a toronto-based polydisciplanary artist and researcher whose practice drifts between interactive and generative media, installation, audio-visual performance, and DIY making. \n\n comfortable moving between welding a bike-mounted projection system, composing soundscapes in ableton, or building real-time visuals in touchdesigner, they approach each project as an experiment: valuing process, curiosity, and the unexpected over polished outcomes. \n\n shaped by nearly a decade living in the yukon and inspired more recently by toronto’s cycling culture and critical mass rides, jklynk’s recent work explores how technology, public space, and community intersect. this site is very much a work-in-progress: part portfolio, part open-source digital garden",
+    "image": "images/jklynk.jpg",
+    "link": ""
+  },
+    {
+    "id": "bio",
+    "title": "recent life updates:",
+    "category": "bio",
+    "tags": ["2025"],
+    "content": "(as of 2025-11-24):\n\n- living, working and learning in [tkaronto](https://www.unitedwaygt.org/issues/land-acknowledgements-uncovering-an-oral-history-of-tkaronto/)\n\n- recovering from completing a [master of digital media](https://www.torontomu.ca/master-digital-media/)\n\n- cooking up some new project and event ideas\n\n- binging [solved](https://solvedpodcast.com/), [struthless](https://www.youtube.com/struthless) and [new creative era](https://metalabel.substack.com/s/new-creative-era)\n\n- periodically making [bike journals](https://youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr&si=NyCkZSWIfGgzxrl7)\n\n- ran my first [triathlon](https://www.strava.com/activities/15490854347) and [half-marathon](https://www.strava.com/activities/16043791707)\n\n- continuing documentation of the [tactical interaction project](https://jklynk.com/tip.html)",
+    "image": "",
+    "link": ""
+  },
+    {
+    "id": "understanding",
+    "title": "understanding what we can only feel",
+    "category": "project",
+    "tags": ["Thesis", "Installation", "Game", "TouchDesigner", "2025"],
+    "content": "Walking Simulator, 2025",
+    "image": "images/understanding.png",
+    "link": "projects/understanding.html"
+  },
+  {
+    "id": "tip",
+    "title": "tactical interaction project",
+    "category": "project",
+    "tags": ["Thesis", "2025"],
+    "content": "Major Research Project, 2025",
+    "image": "images/tip.jpg",
+    "link": "projects/tip.html"
+  },
+    {
+    "id": "bikejournals",
+    "title": "bike journals",
+    "category": "mind",
+    "tags": ["Video", "Documentation", "2025"],
+    "content": "Personal Documentation, 2025",
+    "image": "images/bikejournals.jpg",
+    "link": "https://www.youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr"
+  },
+       {
+    "id": "openhdmi",
+    "title": "open hdmi - interaccess",
+    "category": "project",
+    "tags": ["Video", "Performance", "TouchDesigner", "2024"],
+    "content": "Performance, 2024",
+    "image": "https://cdn.prod.website-files.com/679403f0ec05f63703645535/685b5b781ab1d25624924073_OpenHDMI-Fall2024-03-smaller.jpeg",
+    "link": "https://www.instagram.com/reel/DBmErhCuhW2/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+  },
+  {
+    "id": "dredge11redux",
+    "title": "dredge11[redux]",
+    "category": "project",
+    "tags": ["Installation", "TouchDesigner", "2024"],
+    "content": "Interactive Installation, 2024",
+    "image": "images/dredge11redux.jpg",
+    "link": "projects/dredge11redux.html"
+  },
+    {
+    "id": "pinkklynk",
+    "title": "pink/klynk",
+    "category": "project",
+    "tags": ["XR", "Installation", "Collaboration", "2024"],
+    "content": "AR Installation, 2024",
+    "image": "images/pinkklynk.jpg",
+    "link": "projects/pinkklynk.html"
+  },
+     {
+    "id": "av01",
+    "title": "untitled[av01]",
+    "category": "project",
+    "tags": ["Audio", "Video", "Performance", "TouchDesigner", "Ableton", "2024"],
+    "content": "Performance, 2024",
+    "image": "images/av01.jpg",
+    "link": "projects/av01.html"
+  },
+  {
+    "id": "murmuration",
+    "title": "murmuration",
+    "category": "project",
+    "tags": ["Animation", "Video", "Unreal", "2023"],
+    "content": "Short Film, 2023",
+    "image": "images/murmuration.gif",
+    "link": "projects/murmuration.html"
+  },
+    {
+    "id": "dredge11retrograde",
+    "title": "dredge11[retrograde]",
+    "category": "project",
+    "tags": ["Installation", "XR", "3D Scans", "Video", "Photo", "Audio", "Unity", "TouchDesigner", "2023"],
+    "content": "Interactive Installation, 2023",
+    "image": "images/dredge11retrograde.gif",
+    "link": "projects/dredge11retrograde.html"
+  },
+    {
+    "id": "sloppymachine",
+    "title": "sloppy machine",
+    "category": "project",
+    "tags": ["Installation", "TouchDesigner", "Video", "Audio", "AI", "2023"],
+    "content": "Installation, 2023",
+    "image": "images/sloppymachine.jpg",
+    "link": "projects/sloppymachine.html"
+  },
+      {
+    "id": "helloworld",
+    "title": "hello, world",
+    "category": "project",
+    "tags": ["Animation", "Film", "Unreal", "2022"],
+    "content": "Short Film, 2022",
+    "image": "images/helloworld.gif",
+    "link": "projects/helloworld.html"
+  },
+    {
+    "id": "sirenum",
+    "title": "sirenum scopuli",
+    "category": "project",
+    "tags": ["Installation", "TouchDesigner", "2022"],
+    "content": "Installation, 2022",
+    "image": "images/sirenum.jpg",
+    "link": "projects/sirenum.html"
+  },
+      {
+    "id": "entropy",
+    "title": "entropy",
+    "category": "project",
+    "tags": ["Installation", "TouchDesigner", "Video", "2022"],
+    "content": "Installation, 2022",
+    "image": "images/entropy.gif",
+    "link": "projects/entropy.html"
+  },
+        {
+    "id": "couldbeworse",
+    "title": "could be worse",
+    "category": "project",
+    "tags": ["Album", "Audio", "Music", "2023"],
+    "content": "Album, 2023",
+    "image": "https://f4.bcbits.com/img/a2249125653_16.jpg",
+    "link": "https://jklynk.bandcamp.com/album/could-be-worse"
+  },
+        {
+    "id": "sadjan23",
+    "title": "s.a.d. january, 2023",
+    "category": "project",
+    "tags": ["Audio", "Music", "Video", "2023"],
+    "content": "Daily A/V Challenge, 2023",
+    "image": "images/sadjan23.png",
+    "link": "https://vimeo.com/1019169380?share=copy#t=0"
+  },
+        {
+    "id": "haveyoualways",
+    "title": "have you always - magnolia",
+    "category": "project",
+    "tags": ["Music", "Video", "2022"],
+    "content": "Music Video, 2022",
+    "image": "images/haveyoualways.jpg",
+    "link": "https://youtu.be/n0Gim7X0vug?si=nwiNb-qORscZbiJj"
+  },
+          {
+    "id": "dcsessions",
+    "title": "dawson city sessions",
+    "category": "project",
+    "tags": ["Music", "Video", "2022"],
+    "content": "Music Documentation, 2019-2022",
+    "image": "images/dcsessions.png",
+    "link": "https://www.youtube.com/channel/UCv_MqU7VosOaVOG7TI8dnMQ"
+  },
+            {
+    "id": "remainbizarre",
+    "title": "remain bizarre",
+    "category": "project",
+    "tags": ["Album", "Audio", "Music", "2022"],
+    "content": "Music Documentation, 2019-2022",
+    "image": "https://f4.bcbits.com/img/a1182636306_16.jpg",
+    "link": "https://jklynk.bandcamp.com/album/remain-bizarre"
+  },
+        {
+    "id": "sadjan22",
+    "title": "s.a.d. january, 2022",
+    "category": "project",
+    "tags": ["Audio", "Music", "Video", "2022"],
+    "content": "Daily A/V Challenge, 2022",
+    "image": "images/sadjan22.png",
+    "link": "https://vimeo.com/683157290?share=copy"
+  },
+         {
+    "id": "mondegris",
+    "title": "monde gris",
+    "category": "project",
+    "tags": ["Video", "Film", "2021"],
+    "content": "Short Film, 2021",
+    "image": "images/mondegris.gif",
+    "link": "https://vimeo.com/jklynk/mondegris?share=copy"
+  },
+         {
+    "id": "werkshoppin",
+    "title": "werkshoppin",
+    "category": "project",
+    "tags": ["Video", "Film", "2021"],
+    "content": "Short Film, 2021",
+    "image": "images/werkshoppin.jpg",
+    "link": "https://vimeo.com/587027440?share=copy"
+  },
+    {
+    "id": "strangethings",
+    "title": "strange things done",
+    "category": "project",
+    "tags": ["Video", "Film", "2019"],
+    "content": "Short Film, 2019",
+    "image": "images/strangethings.png",
+    "link": "https://vimeo.com/248756062?share=copy"
+  },
+      {
+    "id": "cestwhat",
+    "title": "bartender",
+    "category": "life",
+    "tags": ["Jobs", "Service", "2025", "2024"],
+    "content": "C'est What, Toronto, Ontario",
+    "image": "https://cestwhat.com/wp-content/uploads/sbr-feed-images/google-07_26_2024ChIJ39UA4THL1IkRh991sJ1LIsAndyZ-1-640.jpg",
+    "link": "https://cestwhat.com/"
+  },
+        {
+    "id": "mdm",
+    "title": "master of digital media",
+    "category": "life",
+    "tags": ["Education", "2025"],
+    "content": "Toronto Metropolitan University, Toronto, Ontario",
+    "image": "images/mdm.jpg",
+    "link": "https://www.torontomu.ca/master-digital-media/"
+  },
+          {
+    "id": "flashdrive",
+    "title": "group exhibition",
+    "category": "life",
+    "tags": ["Exhibition", "2025"],
+    "content": "flashDRIVE: Digital Arts Fundraiser Exhibition, Interaccess, Toronto, Ontario",
+    "image": "https://cdn.prod.website-files.com/679403f0ec05f63703645535/68547ecebcf0a1710b0fb1fe_Header.png",
+    "link": "https://www.interaccess.org/exhibitions/flashdrive-digital-arts-fundraiser-exhibition"
+  },
+    {
+    "id": "countyhalf",
+    "title": "first half-marathon",
+    "category": "life",
+    "tags": ["Fitness", "2025"],
+    "content": "County Half Marathon, Prince Edward County, Ontario",
+    "image": "https://dgtzuqphqg23d.cloudfront.net/Xp3JsAD7-C_rI087GUObp9KsEoEqTbDk_fzuA0nd9X4-2048x1152.jpg",
+    "link": "https://www.strava.com/activities/16043791707"
+  },
+      {
+    "id": "firsttri",
+    "title": "first triathlon",
+    "category": "life",
+    "tags": ["Fitness", "2025"],
+    "content": "Toronto Island Triathlon, Toronto, Ontario",
+    "image": "images/firsttri.png",
+    "link": "https://www.strava.com/activities/15490854347"
+  },
+      {
+    "id": "casey",
+    "title": "curator",
+    "category": "life",
+    "tags": ["Curatorial", "2024"],
+    "content": "Casey Koyczan, ODD Gallery, Dawson City, Yukon",
+    "image": "https://thumbs-us-west-2.myalbum.io/photo/540/58349d8e-fd55-4e49-b662-f1dffac3f1f2.jpg",
+    "link": "https://www.dawsonfilmfest.com/program_24.html"
+  },
+        {
+    "id": "thepit",
+    "title": "bar manager",
+    "category": "life",
+    "tags": ["Jobs", "Service", "2024", "2023", "2022"],
+    "content": "Westminster Hotel (The Pit), Dawson City, Yukon",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwCs5Q28Pgs_6sV0UT6DBDfRtl34VjKTTUHA&s",
+    "link": "https://www.facebook.com/westminster1898/?fref=ts#"
+  },
+          {
+    "id": "goldrush",
+    "title": "digital imaging technician",
+    "category": "life",
+    "tags": ["Jobs", "Film", "2023", "2022", "2021"],
+    "content": "RAW TV, Dawson City, Yukon. (3 seasons)",
+    "image": "https://upload.wikimedia.org/wikipedia/en/e/ec/Gold_Rush_Title.jpg",
+    "link": "https://www.raw.co.uk/series/gold-rush"
+  },
+        {
+    "id": "dcmf",
+    "title": "administration assistant",
+    "category": "life",
+    "tags": ["Jobs", "Arts", "Music", "2022", "2021"],
+    "content": "Dawson City Music Festival, Dawson City, Yukon.",
+    "image": "https://dcmf.com/wp-content/uploads/2024/03/DCMF_FINAL_BANNER_09032024-02-scaled.jpg",
+    "link": "https://dcmf.com/"
+  },
+        {
+    "id": "kcmf",
+    "title": "festival organizer & production manager",
+    "category": "life",
+    "tags": ["Jobs", "Arts", "Music", "2023", "2022", "2021"],
+    "content": "Keno City Music Festival, Keno City, Yukon.",
+    "image": "https://kenocitymusicfest.files.wordpress.com/2024/04/286508716_2100954616751772_9144517575975504451_n.jpg",
+    "link": "https://kenocitymusicfestival.com/"
+  },
+        {
+    "id": "dcisff",
+    "title": "projectionist",
+    "category": "life",
+    "tags": ["Jobs", "Film", "2023", "2022", "2021"],
+    "content": "Dawson City International Short Film Festival, Dawson City, Yukon.",
+    "image": "https://kiac.ca/wp-content/uploads/2024/05/DCISFF_logo_title_k_2024-1024x662.jpg",
+    "link": "https://www.dawsonfilmfest.com/"
+  },
+          {
+    "id": "dcfilmlab",
+    "title": "dawson film lab",
+    "category": "life",
+    "tags": ["Residency", "Film", "2023"],
+    "content": "Film Lab Residency w/ Phil Hoffman, Dawson City, Yukon.",
+    "image": "https://www.dawsonfilmfest.com/images/filmlab2022_web.png",
+    "link": "https://www.dawsonfilmfest.com/filmlab23.html"
+  },
+        {
+    "id": "kiacair",
+    "title": "kiac artist in residence",
+    "category": "life",
+    "tags": ["Residency", "Film", "2021"],
+    "content": "KIAC Artist in Residence, Dawson City, Yukon.",
+    "image": "https://kiac.ca/wp-content/uploads/2016/09/macaulayhouse_web.jpg",
+    "link": "https://kiac.ca/artist-in-residence-program/"
+  },
+            {
+    "id": "coldcuts",
+    "title": "production assistant",
+    "category": "life",
+    "tags": ["Jobs", "Film", "2021", "2020", "2017"],
+    "content": "Cold Cuts Video Festival, Dawson City, Yukon.",
+    "image": "https://pinkmilkdrink.ca/wp-content/uploads/2015/03/cold-cuts-logo-2016-cropped-e1509306771676.jpg?w=880",
+    "link": "https://coldcutsvideofestival.wordpress.com/"
+  },
+      {
+    "id": "sourtoe",
+    "title": "sourtoe captain",
+    "category": "life",
+    "tags": ["Jobs", "Service", "Yukon", "2020", "2019", "2018", "2017"],
+    "content": "Keeper of the Legendary Sourtoe Cocktail, Dawson City, Yukon.",
+    "image": "https://static.foxnews.com/foxnews.com/content/uploads/2019/09/Sourtoe-Cocktail-2.jpg",
+    "link": "https://youtu.be/9UtTHcp44AM?si=yfwy79TPJQdQtQyl"
+  },
+        {
+    "id": "downtown",
+    "title": "bar manager",
+    "category": "life",
+    "tags": ["Jobs", "Service", "2020", "2019", "2018", "2017"],
+    "content": "Downtown Hotel, Dawson City, Yukon",
+    "image": "https://www.travelyukon.com/sites/default/files/2023-01/c7-21-013.jpg",
+    "link": "https://dawsoncity.ca/listing/downtown-hotel/"
+  },
+          {
+    "id": "taps",
+    "title": "bar manager",
+    "category": "life",
+    "tags": ["Jobs", "Service", "2015", "2014"],
+    "content": "Queen's Pub & The Underground, Kingston, Ontario",
+    "image": "https://www.queensjournal.ca/wp-content/uploads/2024/06/screen_shot_2024-06-23_at_10.21.54_pm_720.png",
+    "link": "https://www.thequeenspub.ca/about/"
+  },
+        {
+    "id": "ba",
+    "title": "bachelor of arts - film & media",
+    "category": "life",
+    "tags": ["Education", "2015"],
+    "content": "Queen's University, Kingston, Ontario",
+    "image": "images/ba.png",
+    "link": ""
+  },
+          {
+    "id": "india",
+    "title": "year abroad: india",
+    "category": "life",
+    "tags": ["Education", "Travel", "2013", "2012"],
+    "content": "Year-long academic exchange in Mumbai, India",
+    "image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/512733012_10224068435052371_734154723322677961_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cf85f3&_nc_ohc=-Rt0jwpiqvQQ7kNvwEG9S1J&_nc_oc=AdlY5WpUO0Ve_z2Syfugn1TeepcwRH0aaLrutOC_lAwtVaLj3u6_CVokjQ-RFmTujas&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=4KOnhliqATrs3WE4Lj3T5A&oh=00_AfjbA884CLTxtP4gku0xZxAH1HSg8gczbjFGDZVZWZp2Hg&oe=692A4E30",
+    "link": ""
+  },
+    {
+    "id": "yukondiylife",
+    "title": "in the yukon: diy life",
+    "category": "mind",
+    "tags": ["Video", "Documentation", "Thoughts", "2025"],
+    "content": "I recently took a trip back to my old stomping grounds in Dawson City, Yukon. I was reflecting lots on what I had learned up there about DIY culture and creativity, and figured an interview and property tour with my good pals Fred & Jake would help demonstrate what I was meant.",
+    "image": "",
+    "link": "https://youtu.be/xTFbb60dAy4"
+  },
+      {
+    "id": "ctrlaltnarrate",
+    "title": "ctrl+alt+narrate ep 7",
+    "category": "mind",
+    "tags": ["Podcast", "Documentation", "Interview", "2025"],
+    "content": "Sneesha & Momna interview me for their podcast! We talk about my creative practice, education, work, life, and more...",
+    "image": "",
+    "link": "https://youtu.be/FbOpyiATxVw?si=IuEjRhmkHh0Yqsdg"
+  },
+      {
+    "id": "thefutureisnow",
+    "title": "the future is now: technologies & techniques for immersive & interactive installations",
+    "category": "mind",
+    "tags": ["Video", "Documentation", "Thoughts", "2023"],
+    "content": "Artist talk showcasing recent works between 2021-2023 and the tools, technologies and techniques that went in to making them. Originally presented at the Dawson City International Short Film Festival - April 9, 2023",
+    "image": "",
+    "link": "https://youtu.be/2gRrWi-z0Ik"
+  },
+    {
+    "id": "blogging-dailies",
+    "title": "blogging & dailies",
+    "category": "mind",
+    "tags": ["Writing", "Thoughts", "2025"],
+    "content": "250122 - I’ve been reading A LOT with the start of this new semester, trying to take in as much as I can so that I can hopefully get a better idea of what exactly I want my thesis to explore. I just recently discovered Zotero, and I love it. It’s been super useful for reading, annotating, and organizing all my texts and all the research I come across (which is a lot: over 200 items in my library already). But I’m finding I’m having a lot of trouble remembering certain facts or quotes or even whole ideas.\n\nIn reading How to Read for Grad School, I realized I need to start taking notes as I read. Then I remembered a former student of my program saying something about keeping a journal or blog as she worked through her research process, and that doing so was incredibly helpful when it came time to actually write because much of the leg work was already complete.\n\nSo, as part of my new website, I’ve decided to try and maintain some form of blog. I’m very hopeful that it will not only help me with recall later on, but that it more so helps me improve my writing abilities. There’s only one way to get better, and that’s to practice!\n\nI started off the month doing my annual song-a-day/genuary daily creative challenge. That was actually going pretty well until school started again, and all my focus and energy turned to reading. So I’m happy that in a way I’ve picked up the daily practice again, but instead of music and visual, it’s now more focused on writing. Which is a good thing, I think. The writings feel much more productive and important right now than the A/V experiments did.\n\nI’m sure there will be days where I don’t feel like writing, or don’t have anything to write about, and maybe I’ll post an A/V experiment, or an interactive web experiment, or a photo, or a drawing, or a piece of nothing, who knows? But the idea is just to try and do something thoughtful or creative everyday, and then to put it out there into the world. Who knows, maybe somebody besides me will get something out of this.\n\nAnother little thought: I’ve referred to my A/V experiments as “dailies” for a few years now. I like the term because of its connection to dailies, or rushes as they’re also called, in the film making context. I like thinking of these posts as raw footage. I think it’s totally fine if these are rushed and unpolished/unedited. Again, the idea is just to try and do something thoughtful or creative everyday, and then to put it out there into the world. It doesn’t have to be prefect, it just has to get done.",
+    "image": "",
+    "link": ""
+  },
+    {
+    "id": "smallweb",
+    "title": "thoughts on the small web",
+    "category": "mind",
+    "tags": ["Small Web", "Thoughts", "2025"],
+    "content": "250121 - I was born the same year as the internet. My dad was a software engineer for Westinghouse. I learned HTML and CSS and made small websites on Geocities. I had my own blog and was a part of a group blog run by some older kids I looked up to. \n\nAnd then at some point, in high school, I joined Facebook. And ever since then I completely forgot about my autonomous ability to create and shape my own little slice of the world wide web. The freedom to properly shape my digital persona how I felt fit. \n\nRather than residing in the flourishing and vibrant neighborhoods of geociities, we are all now living in cookie cutter row houses of the Meta suburbs. \n\nInspired by a recent workshop on the “small web”, I’ve made the long overdue decision to overhaul my personal website. \n\nThe “small web” is equal parts political and aesthetic. It engages with questions, posed by the early web, about what it means to have a personal presence online but in the light of today’s ubiquitous social media and commercialization (https://endmatter.neocities.org/smallweb) \n\nThis is partly inspired by wanting to step away from the monolithic, commercialized, algorithmically-driven doom-pits of instagram and other “social” medias, but still retain a place of digital domain and a place to share my thoughts and ideas.",
+    "image": "",
+    "link": ""
+  }
+]
