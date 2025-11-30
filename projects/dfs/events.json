@@ -1,0 +1,144 @@
+[
+    {
+        "id": 1,
+        "name": "GRAVITY WELL 02",
+        "status": "live",
+        "dateTime": "2025-11-30T21:00",
+        "location": "ENCRYPTED: ujql.v6.gqvy.y2",
+        "maxCap": 25,
+        "allowSecondaryInvites": true,
+        "attendees": [
+            { "username": "@jklynk", "status": "host", "level": 0 },
+            { "username": "@user_a", "status": "confirmed", "level": 1 },
+            { "username": "@user_b", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "SYNTH CAVERN",
+        "status": "upcoming",
+        "dateTime": "2025-12-04T19:00",
+        "location": "ENCRYPTED: reveal_T-1h",
+        "maxCap": 20,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@synth_lab", "status": "host", "level": 0 },
+            { "username": "@jklynk", "status": "pending", "level": 1 },
+            { "username": "@node_op", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "CREATE-A-THON",
+        "status": "archived",
+        "dateTime": "2025-11-28T18:00",
+        "location": "ARCHIVED: Don Valley Brickworks",
+        "maxCap": 30,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@creator_x", "status": "host", "level": 0 },
+            { "username": "@user_d", "status": "confirmed", "level": 1 },
+            { "username": "@user_e", "status": "confirmed", "level": 1 },
+            { "username": "@user_f", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "SIGNAL DECAY",
+        "status": "upcoming",
+        "dateTime": "2025-12-10T20:00",
+        "location": "ENCRYPTED: tbd",
+        "maxCap": 15,
+        "allowSecondaryInvites": true,
+        "attendees": [
+            { "username": "@node_op", "status": "host", "level": 0 },
+            { "username": "@user_a", "status": "pending", "level": 1 },
+            { "username": "@user_b", "status": "pending", "level": 1 }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "ECHO CHAMBER",
+        "status": "upcoming",
+        "dateTime": "2025-12-15T18:30",
+        "location": "ENCRYPTED: 43.651070, -79.347015",
+        "maxCap": 10,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@synth_lab", "status": "host", "level": 0 },
+            { "username": "@jklynk", "status": "confirmed", "level": 1 },
+            { "username": "@creator_x", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "DATA WEAVE",
+        "status": "live",
+        "dateTime": "2025-12-01T22:00",
+        "location": "ENCRYPTED: Under the Gardiner",
+        "maxCap": 50,
+        "allowSecondaryInvites": true,
+        "attendees": [
+            { "username": "@user_e", "status": "host", "level": 0 },
+            { "username": "@user_f", "status": "confirmed", "level": 1 },
+            { "username": "@node_op", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "GHOST IN THE MACHINE",
+        "status": "upcoming",
+        "dateTime": "2026-01-10T19:00",
+        "location": "ENCRYPTED: The Bentway",
+        "maxCap": 20,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@jklynk", "status": "host", "level": 0 },
+            { "username": "@synth_lab", "status": "pending", "level": 1 },
+            { "username": "@user_d", "status": "pending", "level": 1 }
+        ]
+    },
+    {
+        "id": 8,
+        "name": "FIREWALL GATHERING",
+        "status": "archived",
+        "dateTime": "2025-10-15T20:00",
+        "location": "ARCHIVED: Allan Gardens",
+        "maxCap": 15,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@user_a", "status": "host", "level": 0 },
+            { "username": "@user_b", "status": "confirmed", "level": 1 },
+            { "username": "@creator_x", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 9,
+        "name": "NODE CLUSTER 01",
+        "status": "archived",
+        "dateTime": "2025-09-20T21:00",
+        "location": "ARCHIVED: Cherry Beach",
+        "maxCap": 40,
+        "allowSecondaryInvites": true,
+        "attendees": [
+            { "username": "@node_op", "status": "host", "level": 0 },
+            { "username": "@user_d", "status": "confirmed", "level": 1 },
+            { "username": "@user_e", "status": "confirmed", "level": 1 },
+            { "username": "@user_f", "status": "confirmed", "level": 1 }
+        ]
+    },
+    {
+        "id": 10,
+        "name": "PROJECT CHIMERA",
+        "status": "archived",
+        "dateTime": "2025-08-01T23:00",
+        "location": "ARCHIVED: Lower Bay Station",
+        "maxCap": 5,
+        "allowSecondaryInvites": false,
+        "attendees": [
+            { "username": "@creator_x", "status": "host", "level": 0 },
+            { "username": "@jklynk", "status": "confirmed", "level": 1 },
+            { "username": "@synth_lab", "status": "confirmed", "level": 1 }
+        ]
+    }
+]

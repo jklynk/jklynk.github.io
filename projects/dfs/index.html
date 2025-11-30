@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFS_OS // v0.9</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header id="app-title" style="text-align: center; padding: 20px 10px 10px 10px;">
+    <h1 style="margin: 0; font-size: 1.2rem; color: #fff; letter-spacing: 2px;">DFS_OS</h1>
+    <p style="margin: 5px 0 0 0; font-size: 0.7rem; color: #888; text-transform: uppercase;">dark forest speakeasy operating system</p>
+</header>
+
+<header id="user-switcher" style="text-align: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+    <label for="user-select-dropdown">USER:</label>
+    <select id="user-select-dropdown"></select>
+</header>
+
+<nav>
+    <button class="nav-btn" data-view="dashboard">Dashboard</button>
+    <button class="nav-btn" data-view="create">Broadcast</button>
+    <button class="nav-btn" data-view="galaxy">Galaxy</button>
+</nav>
+
+<main>
+
+    <div id="dashboard" class="view">
+        <h2>// ACTIVE TRANSMISSIONS (HOSTING)</h2>
+        <div id="active-transmissions-list"></div>
+
+        <h2>// INCOMING SIGNALS (ATTENDING)</h2>
+        <div id="incoming-signals-list"></div>
+
+        <h2>// SIGNAL LOG (ARCHIVED)</h2>
+        <div id="archived-events-list"></div>
+    </div>
+
+    <div id="create" class="view">
+        <h2>// NEW BROADCAST PROTOCOL</h2>
+        <form id="create-event-form">
+            <div class="form-group">
+                <label>EVENT CODENAME</label>
+                <input type="text" id="event-codename" placeholder="e.g. DARK FOREST 04" required>
+            </div>
+    
+            <div class="form-group">
+                <label>DATE & TIME</label>
+                <input type="datetime-local" id="event-datetime" required>
+            </div>
+
+            <div class="form-group">
+                <label>ENCRYPTED LOCATION (Revealed 1hr prior)</label>
+                <input type="text" id="event-location" placeholder="Coordinates or Description" required>
+            </div>
+    
+            <div class="form-group">
+                <label>ATTENDEE CAP (Hard Limit)</label>
+                <input type="number" id="event-capacity" value="15" required>
+            </div>
+
+            <div class="form-group">
+                <label>ALLOW SECONDARY INVITES (FRIENDS OF FRIENDS)</label>
+                <div class="toggle-row" style="justify-content: flex-start;">
+                    <input type="checkbox" id="secondary-invites-toggle" class="toggle-checkbox">
+                    <label for="secondary-invites-toggle" class="toggle-label"></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>PRIMARY INVITES</label>
+                <div class="role-assigner">
+                    <input type="text" id="invite-username" placeholder="Type to search users...">
+                    <button type="button" id="add-invite-btn" class="btn-small">INVITE</button>
+                </div>
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+                <div id="invites-container" class="roles-container">
+                    <!-- Dynamically added role tags will appear here -->
+                </div>
+            </div>
+            <button type="submit" class="btn">BROADCAST SIGNAL</button>
+        </form>
+    </div>
+
+    <div id="event-detail" class="view">
+        <button id="back-to-dashboard" class="btn-small" style="margin-bottom: 20px;"><< BACK</button>
+
+ <h1 id="event-detail-name">EVENT: ...</h1>
+
+<span id="event-detail-datetime" class="event-meta" style="margin-top:-10px; margin-bottom: 20px;"></span>
+
+        <div class="status-bar">
+            <span id="event-detail-signal">SIGNAL: ...</span><br>
+            <span id="event-detail-location">LOC: ...</span><br><br>
+            
+        </div>
+
+        <div id="event-user-actions"></div>
+    
+        <div class="card">
+            <div id="host-controls-section" style="display: none;">
+                <h2>Host Controls</h2>
+                <input type="checkbox" id="event-detail-secondary-toggle" class="toggle-checkbox" style="display:none;">
+                <label for="event-detail-secondary-toggle" class="toggle-label full-width">Invite Chain (Secondary)</label>
+            </div>
+        </div>
+
+        <div id="secondary-invite-section" class="card" style="display: none;">
+            <h2>Secondary Invite</h2>
+            <div class="role-assigner">
+                <input type="text" id="secondary-invite-username" placeholder="Type to search users...">
+                <button type="button" id="add-secondary-invite-btn" class="btn-small">INVITE</button>
+            </div>
+            <div id="secondary-autocomplete-results" class="autocomplete-results"></div>
+        </div>
+
+        <div id="no-invite-permission-prompt" class="event-meta" style="display: none; text-align: center; padding: 10px 0;">
+            >> You do not have permission to invite others to this event.
+        </div>
+    
+        <div class="card">
+            <h2>Manifest</h2>
+            <div id="event-detail-cap" class="event-meta" style="margin-bottom: 10px;"></div>
+            <div id="waitlist-alert" class="waitlist-alert" style="display: none;">>> WAITLIST ACTIVE. NEXT INVITE GOES TO QUEUE.</div>
+            <div id="host-message-section" style="display: none; margin-top: 15px;">
+                <div class="role-assigner">
+                    <input type="text" id="host-message-input" placeholder="Message all attendees...">
+                    <button type="button" class="btn-small">SEND</button>
+                </div>
+            </div>
+            <div id="event-detail-manifest"></div>
+        </div>
+    
+        <div id="archive-contribution-panel" class="card" style="display: none;">
+            <h2>Contribute to Archive</h2>
+            <textarea id="archive-text-contribution" placeholder="Add your thoughts, memories, or notes..."></textarea>
+            <button class="btn-small" style="margin-top: 10px;">UPLOAD PHOTO/VIDEO</button>
+        </div>
+    </div>
+
+    <div id="galaxy" class="view">
+        <h2>// THE GALAXY (EVENT ARCHIVES)</h2>
+        <div id="galaxy-grid"></div>
+    </div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
