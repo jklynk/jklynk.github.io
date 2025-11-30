@@ -8,14 +8,23 @@
     "image": "images/jklynk.jpg",
     "link": ""
   },
-    {
-    "id": "bio",
+      {
+    "id": "recently",
     "title": "recent life updates:",
-    "category": "bio",
-    "tags": ["2025"],
-    "content": "(as of 2025-11-24):\n\n- living, working and learning in [tkaronto](https://www.unitedwaygt.org/issues/land-acknowledgements-uncovering-an-oral-history-of-tkaronto/)\n\n- recovering from completing a [master of digital media](https://www.torontomu.ca/master-digital-media/)\n\n- cooking up some new project and event ideas\n\n- binging [solved](https://solvedpodcast.com/), [struthless](https://www.youtube.com/struthless) and [new creative era](https://metalabel.substack.com/s/new-creative-era)\n\n- periodically making [bike journals](https://youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr&si=NyCkZSWIfGgzxrl7)\n\n- ran my first [triathlon](https://www.strava.com/activities/15490854347) and [half-marathon](https://www.strava.com/activities/16043791707)\n\n- continuing documentation of the [tactical interaction project](https://jklynk.com/tip.html)",
+    "category": "mind",
+    "tags": ["2025", "Updates"],
+    "content": "(as of 2025-11-30):\n\n- living, working and learning in [tkaronto](https://www.unitedwaygt.org/issues/land-acknowledgements-uncovering-an-oral-history-of-tkaronto/)\n\n- overhauled my website and started a [newsletter/blog](https://buttondown.com/jklynk)\n\n- cooking up some new project and event ideas\n\n- binging [solved](https://solvedpodcast.com/), [struthless](https://www.youtube.com/struthless) and [new creative era](https://metalabel.substack.com/s/new-creative-era)\n\n- periodically making [bike journals](https://youtube.com/playlist?list=PLWpGbYQ3ZjVnNs_MA8kJJElJoafrrAPPr&si=NyCkZSWIfGgzxrl7)\n\n- ran my first [triathlon](https://www.strava.com/activities/15490854347) and [half-marathon](https://www.strava.com/activities/16043791707)\n\n- continuing documentation of the [tactical interaction project](https://jklynk.com/tip.html)",
     "image": "",
     "link": ""
+  },  
+          {
+    "id": "newsletter",
+    "title": "hi friends! - newsletter",
+    "category": "mind",
+    "tags": ["Newsletter", "Updates", "Thoughts", "2025"],
+    "content": "I'm moving away from social algorithms and starting a slower, more thoughtful way to share my thoughts and updates as they come up. [Subscribe or see the archive](https://buttondown.com/jklynk)",
+    "image": "",
+    "link": "https://buttondown.com/jklynk"
   },
     {
     "id": "understanding",
@@ -23,7 +32,7 @@
     "category": "project",
     "tags": ["Thesis", "Installation", "Game", "TouchDesigner", "2025"],
     "content": "Walking Simulator, 2025",
-    "image": "images/understanding.png",
+    "image": "images/understanding.mp4",
     "link": "projects/understanding.html"
   },
   {
@@ -412,23 +421,5 @@
     "content": "Artist talk showcasing recent works between 2021-2023 and the tools, technologies and techniques that went in to making them. Originally presented at the Dawson City International Short Film Festival - April 9, 2023",
     "image": "",
     "link": "https://youtu.be/2gRrWi-z0Ik"
-  },
-    {
-    "id": "blogging-dailies",
-    "title": "blogging & dailies",
-    "category": "mind",
-    "tags": ["Writing", "Thoughts", "2025"],
-    "content": "250122 - I’ve been reading A LOT with the start of this new semester, trying to take in as much as I can so that I can hopefully get a better idea of what exactly I want my thesis to explore. I just recently discovered Zotero, and I love it. It’s been super useful for reading, annotating, and organizing all my texts and all the research I come across (which is a lot: over 200 items in my library already). But I’m finding I’m having a lot of trouble remembering certain facts or quotes or even whole ideas.\n\nIn reading How to Read for Grad School, I realized I need to start taking notes as I read. Then I remembered a former student of my program saying something about keeping a journal or blog as she worked through her research process, and that doing so was incredibly helpful when it came time to actually write because much of the leg work was already complete.\n\nSo, as part of my new website, I’ve decided to try and maintain some form of blog. I’m very hopeful that it will not only help me with recall later on, but that it more so helps me improve my writing abilities. There’s only one way to get better, and that’s to practice!\n\nI started off the month doing my annual song-a-day/genuary daily creative challenge. That was actually going pretty well until school started again, and all my focus and energy turned to reading. So I’m happy that in a way I’ve picked up the daily practice again, but instead of music and visual, it’s now more focused on writing. Which is a good thing, I think. The writings feel much more productive and important right now than the A/V experiments did.\n\nI’m sure there will be days where I don’t feel like writing, or don’t have anything to write about, and maybe I’ll post an A/V experiment, or an interactive web experiment, or a photo, or a drawing, or a piece of nothing, who knows? But the idea is just to try and do something thoughtful or creative everyday, and then to put it out there into the world. Who knows, maybe somebody besides me will get something out of this.\n\nAnother little thought: I’ve referred to my A/V experiments as “dailies” for a few years now. I like the term because of its connection to dailies, or rushes as they’re also called, in the film making context. I like thinking of these posts as raw footage. I think it’s totally fine if these are rushed and unpolished/unedited. Again, the idea is just to try and do something thoughtful or creative everyday, and then to put it out there into the world. It doesn’t have to be prefect, it just has to get done.",
-    "image": "",
-    "link": ""
-  },
-    {
-    "id": "smallweb",
-    "title": "thoughts on the small web",
-    "category": "mind",
-    "tags": ["Small Web", "Thoughts", "2025"],
-    "content": "250121 - I was born the same year as the internet. My dad was a software engineer for Westinghouse. I learned HTML and CSS and made small websites on Geocities. I had my own blog and was a part of a group blog run by some older kids I looked up to. \n\nAnd then at some point, in high school, I joined Facebook. And ever since then I completely forgot about my autonomous ability to create and shape my own little slice of the world wide web. The freedom to properly shape my digital persona how I felt fit. \n\nRather than residing in the flourishing and vibrant neighborhoods of geociities, we are all now living in cookie cutter row houses of the Meta suburbs. \n\nInspired by a recent workshop on the “small web”, I’ve made the long overdue decision to overhaul my personal website. \n\nThe “small web” is equal parts political and aesthetic. It engages with questions, posed by the early web, about what it means to have a personal presence online but in the light of today’s ubiquitous social media and commercialization (https://endmatter.neocities.org/smallweb) \n\nThis is partly inspired by wanting to step away from the monolithic, commercialized, algorithmically-driven doom-pits of instagram and other “social” medias, but still retain a place of digital domain and a place to share my thoughts and ideas.",
-    "image": "",
-    "link": ""
   }
 ]
