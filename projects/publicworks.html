@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUBLIC WORKS: Spatial Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --bg-color: #030305;
+            --text-main: #f4f4f5;
+            --accent-cyan: #00e5ff;
+            --accent-blue: #2962ff;
+            --accent-green: #39ff14;
+            --panel-bg: #0a0a0c;
+            --border-color: #27272a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden; 
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Subtle Scanline Effect */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(0, 229, 255, 0.02), rgba(41, 98, 255, 0.02));
+            z-index: 998; 
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            border: 1px solid var(--border-color);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background-color: rgba(0, 229, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.15);
+        }
+
+        /* Future Tab Styling */
+        .nav-btn.future {
+            border-style: dashed;
+            opacity: 0.4;
+        }
+        
+        .nav-btn.future:hover {
+            opacity: 0.8;
+            border-color: rgba(255, 255, 255, 0.5);
+            color: var(--text-main);
+        }
+
+        /* Custom Map Styling */
+        #map { background-color: var(--bg-color); }
+        
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background-color: var(--panel-bg);
+            color: var(--text-main);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 0;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .custom-marker {
+            background: transparent;
+            border: none;
+        }
+
+        .marker-inner {
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-cyan);
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            transition: all 0.2s;
+            animation: marker-pulse 2s infinite alternate;
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes marker-pulse {
+            0% { box-shadow: 0 0 5px rgba(0, 229, 255, 0.4); transform: scale(1); }
+            100% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.8); transform: scale(1.15); }
+        }
+
+        .marker-inner:hover, .custom-marker.selected .marker-inner {
+            background-color: var(--accent-cyan);
+            color: var(--bg-color);
+            transform: scale(1.3);
+            animation: none;
+        }
+
+        /* Strava-Style Calendar Grid */
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 10px;
+        }
+        
+        .cal-day:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .cal-day.has-workout {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .cal-day.has-workout.is-narrative {
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .cal-day.has-strategy {
+            background-color: #a855f7; /* Purple accent for non-physical deep dives */
+            color: white;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+
+        .cal-day.active {
+            box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent-cyan);
+        }
+        .cal-day.has-strategy.active {
+            box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px #a855f7;
+        }
+
+        .cal-day svg {
+            width: 12px;
+            height: 12px;
+            stroke-width: 2;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 1px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+        
+        #media-modal {
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+        }
+        
+        .stat-box {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Conversational AI Chat Bubbles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .chat-ai {
+            align-self: flex-start;
+            background-color: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            color: #ccc;
+            border-top-left-radius: 2px;
+        }
+        .chat-user {
+            align-self: flex-end;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-top-right-radius: 2px;
+        }
+        .chat-upload {
+            align-self: flex-end;
+            background-color: rgba(57, 255, 20, 0.05);
+            border: 1px dashed rgba(57, 255, 20, 0.4);
+            color: var(--accent-green);
+            font-size: 10px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 100%;
+            text-align: right;
+            margin-bottom: -4px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-6 flex flex-col h-screen" id="app-body">
+
+    <!-- Header -->
+    <header class="flex justify-between items-end mb-4 border-b border-gray-800 pb-2">
+        <div>
+            <h1 class="text-3xl font-bold tracking-widest text-white">PUBLIC WORKS // SPATIAL ARCHIVE</h1>
+            <p class="text-xs opacity-60 mt-1 text-[#00e5ff]">INTERACTIVE CONTEXT KIOSK</p>
+        </div>
+        <div class="text-right hidden md:block">
+            <p class="text-xs opacity-50">EXHIBITION_MODE</p>
+            <p class="text-xs text-[#00e5ff] mt-1">TERMINAL_SYNC: ACTIVE</p>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col md:flex-row gap-4 min-h-0 relative z-10">
+        
+        <!-- Left: Act Selection & Map/Calendar -->
+        <section class="w-full md:w-2/3 flex flex-col gap-4">
+            
+            <!-- Act Navigation (4 Tabs) -->
+            <div class="flex gap-2 w-full overflow-x-auto pb-1">
+                <button onclick="switchAct('prologue')" id="btn-prologue" class="nav-btn flex-1 min-w-[120px] py-2 text-center relative overflow-hidden font-bold">
+                    PROLOGUE
+                </button>
+                <button onclick="switchAct('bike')" id="btn-bike" class="nav-btn active flex-1 min-w-[120px] py-2 text-center relative overflow-hidden font-bold">
+                    ACT I: THE BIKE
+                </button>
+                <button onclick="switchAct('swim')" id="btn-swim" class="nav-btn future flex-1 min-w-[120px] py-2 text-center relative overflow-hidden font-bold">
+                    ACT II: THE SWIM
+                </button>
+                <button onclick="switchAct('run')" id="btn-run" class="nav-btn future flex-1 min-w-[120px] py-2 text-center relative overflow-hidden font-bold">
+                    ACT III: THE RUN
+                </button>
+            </div>
+
+            <!-- View Container -->
+            <div class="flex-1 panel relative border border-gray-800 overflow-hidden bg-[#050505]">
+                
+                <!-- MAP VIEW -->
+                <div id="map-view" class="absolute inset-0 z-10 flex flex-col">
+                    <div class="absolute top-4 left-4 z-[400] flex flex-col gap-2">
+                        <button onclick="map.zoomIn()" class="w-10 h-10 bg-black/80 border border-gray-700 text-[#00e5ff] hover:bg-white/10 hover:border-[#00e5ff] text-xl font-bold transition-colors">+</button>
+                        <button onclick="map.zoomOut()" class="w-10 h-10 bg-black/80 border border-gray-700 text-[#00e5ff] hover:bg-white/10 hover:border-[#00e5ff] text-xl font-bold transition-colors">-</button>
+                        <button onclick="resetMap()" class="w-10 h-10 bg-black/80 border border-gray-700 text-[#00e5ff] hover:bg-white/10 hover:border-[#00e5ff] text-sm font-bold flex items-center justify-center transition-colors" title="Center Map">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </button>
+                    </div>
+                    <div id="map" class="flex-1"></div>
+                    <div class="absolute bottom-4 right-4 z-[400] bg-black/80 p-2 border border-gray-700 text-[#00e5ff] text-xs pointer-events-none shadow-lg">
+                        SELECT A WAYPOINT TO VIEW ARCHIVE
+                    </div>
+                </div>
+
+                <!-- CALENDAR VIEW -->
+                <div id="calendar-view" class="hidden absolute inset-0 z-20 overflow-y-auto p-4 md:p-6 flex flex-col">
+                    <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
+                        <div>
+                            <p class="text-[10px] text-[#00e5ff] font-mono tracking-widest mb-1">DATASET: JAN 01 - JUN 30, 2026</p>
+                            <h2 class="text-3xl font-bold text-white tracking-widest">TRAINING ARCHIVE</h2>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs opacity-60">Your Streak</p>
+                            <p class="text-2xl font-bold text-white">24 Weeks</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="flex gap-4 mb-6 text-[10px] opacity-70 tracking-widest font-bold">
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div> BASE WORKOUT</div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#00e5ff]"></div> NARRATIVE ENTRY</div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#a855f7]"></div> AI STRATEGY CONSULT</div>
+                    </div>
+
+                    <!-- 6 Month Grid -->
+                    <div id="calendar-months" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 flex-1">
+                        <!-- JS injects months here -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Right: Information & Media Panel -->
+        <aside class="w-full md:w-1/3 flex flex-col">
+            <div class="panel p-6 flex-1 flex flex-col h-full overflow-hidden border border-gray-800 bg-[#050505]">
+                
+                <!-- Default / Empty State -->
+                <div id="info-empty" class="h-full flex flex-col items-center justify-center text-center opacity-40 transition-opacity duration-300">
+                    <svg class="w-12 h-12 mb-4 animate-pulse text-[#00e5ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                    <p class="text-sm tracking-widest text-white">AWAITING INPUT...</p>
+                    <p class="text-xs mt-2" id="empty-prompt">SELECT A WAYPOINT ON THE MAP</p>
+                </div>
+
+                <!-- Coming Soon State (For Acts II and III) -->
+                <div id="info-coming-soon" class="hidden h-full flex flex-col text-left opacity-90 transition-opacity duration-300">
+                    <div class="border-b border-gray-800 pb-3 mb-6">
+                        <p class="text-[10px] text-[#00e5ff] mb-1 font-mono">STATUS: PENDING</p>
+                        <h2 class="text-2xl font-bold tracking-wider text-white uppercase">COMING SOON</h2>
+                    </div>
+                    <div class="prose prose-invert prose-sm font-mono max-w-none text-gray-300">
+                        <p id="coming-soon-text" class="leading-relaxed whitespace-pre-wrap text-[13px]"></p>
+                    </div>
+                    <div class="mt-auto border-t border-gray-800 pt-4 flex items-center gap-4 opacity-50">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <span class="text-xs tracking-widest">AWAITING_PERFORMANCE_EXECUTION</span>
+                    </div>
+                </div>
+
+                <!-- Active Content State (Hidden by default) -->
+                <div id="info-content" class="hidden flex-col h-full overflow-y-auto pr-2 transition-opacity duration-300">
+                    <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-start">
+                        <div class="w-full">
+                            <p id="poi-meta" class="text-[10px] text-[#00e5ff] mb-1 font-mono">LAT: -- | LON: --</p>
+                            <h2 id="poi-title" class="text-xl font-bold tracking-wider text-white uppercase">TITLE</h2>
+                        </div>
+                    </div>
+
+                    <!-- Media Container (Map POIs) -->
+                    <div onclick="openModal()" id="poi-media-container" class="w-full aspect-video bg-[#111] border border-gray-700 mb-4 relative flex items-center justify-center cursor-pointer group hover:border-[#00e5ff] transition-colors shadow-lg hidden">
+                        <div class="absolute z-10 text-white opacity-80 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"></path></svg>
+                        </div>
+                        <img id="poi-thumbnail" src="" class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-500" alt="Video Thumbnail">
+                        <div class="absolute bottom-2 left-2 bg-black/90 px-3 py-1 text-[10px] text-[#00e5ff] tracking-wider border border-gray-700">EXPAND RAW_FOOTAGE [ ]</div>
+                    </div>
+
+                    <!-- Stats Container (Calendar Workouts) -->
+                    <div id="workout-stats" class="grid grid-cols-2 gap-2 mb-6 hidden">
+                        <div class="stat-box">
+                            <span class="text-[10px] opacity-60">DURATION</span>
+                            <span class="text-lg text-white font-bold" id="stat-duration">--</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="text-[10px] opacity-60">DISTANCE</span>
+                            <span class="text-lg text-white font-bold" id="stat-distance">--</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="text-[10px] opacity-60">AVG HR</span>
+                            <span class="text-lg text-[#00e5ff] font-bold" id="stat-hr">--</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="text-[10px] opacity-60">CALORIES</span>
+                            <span class="text-lg text-white font-bold" id="stat-cals">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Long-form Text Context -->
+                    <div class="prose prose-invert prose-sm font-mono max-w-none text-gray-300">
+                        <p id="poi-text" class="leading-relaxed text-[13px] whitespace-pre-wrap"></p>
+                    </div>
+                    
+                    <!-- Chat UI AI Log -->
+                    <div id="poi-ai-log" class="hidden mt-4">
+                        <div class="flex items-center gap-2 mb-3 border-b border-gray-800 pb-2">
+                            <div class="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse"></div>
+                            <span class="text-[10px] text-white tracking-widest font-bold">TERMINAL_SYNC // AI_COACH_MAINTENANCE</span>
+                        </div>
+                        <!-- Chat bubbles injected here -->
+                        <div id="poi-ai-content" class="chat-container"></div>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- Fullscreen Media Modal -->
+    <div id="media-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center transition-opacity duration-300 opacity-0">
+        <button onclick="closeModal()" class="absolute top-6 right-6 z-50 bg-black/50 text-white p-3 border border-gray-700 hover:border-[#00e5ff] font-bold tracking-widest text-sm transition-colors uppercase flex items-center gap-2">
+            Close 
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        
+        <div class="w-full max-w-6xl p-4 md:p-12 relative flex flex-col items-center">
+            <div class="w-full aspect-video border border-gray-700 relative bg-[#050505] shadow-[0_0_50px_rgba(0,229,255,0.15)]">
+                <img id="modal-img" src="" class="w-full h-full object-cover opacity-90 grayscale">
+                <div class="absolute top-4 left-4 text-xs font-mono text-[#00e5ff] opacity-80" id="modal-timestamp">REC // RAW_EVIDENCE_STREAM</div>
+            </div>
+            <h3 id="modal-title" class="mt-4 text-xl font-bold tracking-widest text-white uppercase self-start"></h3>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA STRUCTURES ---
+
+        // SVG Icons
+        const icons = {
+            swim: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 14.5s1.5-1 3-1 3 1 3 1 1.5-1 3-1 3 1 3 1M4 10.5s1.5-1 3-1 3 1 3 1 1.5-1 3-1 3 1 3 1M4 18.5s1.5-1 3-1 3 1 3 1 1.5-1 3-1 3 1 3 1"></path></svg>`,
+            bike: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16a2 2 0 100-4 2 2 0 000 4zm8 0a2 2 0 100-4 2 2 0 000 4zm-4-4l-1-4-3-1M12 12h3l1-3m-3 3l-2 3"></path></svg>`,
+            run: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8L20 10h-7z"></path></svg>`,
+            indoor: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4v4H3v-4zM17 10h4v4h-4v-4zM7 12h10M5 8h2v8H5V8zM17 8h2v8h-2V8z"></path></svg>`,
+            strategy: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M4 6h16v12H4z"></path></svg>` // Terminal icon for strategy
+        };
+
+        const mockWorkouts = {};
+        
+        // Auto-generate a continuous "streak" background
+        const types = ['run', 'bike', 'swim', 'indoor'];
+        for(let m=1; m<=6; m++) {
+            for(let d=1; d<=31; d++) {
+                if (m===2 && d>28) continue;
+                if ((m===4 || m===6) && d>30) continue;
+                // 70% chance of a workout
+                if (Math.random() > 0.3) {
+                    const type = types[Math.floor(Math.random()*types.length)];
+                    const dateStr = `2026-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    mockWorkouts[dateStr] = { 
+                        type: type, duration: "1h 00m", distance: "N/A", hr: "135 bpm", cals: "500",
+                        conversation: [
+                            {role: 'upload', text: `[FILE_UPLOADED]: HealthFit_Export_${dateStr}.csv`},
+                            {role: 'ai', text: 'Daily biometric upload received. Metrics within normal parameters. Maintaining base aerobic fitness.'},
+                            {role: 'user', text: 'Logged.'}
+                        ]
+                    };
+                }
+            }
+        }
+
+        // --- THE 6-MONTH NARRATIVE ARC ---
+
+        // JAN: Skepticism & Establishing the "Art" constraint
+        mockWorkouts["2026-01-14"] = { 
+            type: "Strategy Consultation", isNarrative: true, isStrategy: true,
+            conversation: [
+                {role: 'user', text: 'I need to establish the baseline for this project. We are preparing for three specific endurance acts. I will upload my daily HealthFit CSVs. You are to monitor the systemic load. Note: The goal is NOT to win a race. The goal is to endure the landscape.'},
+                {role: 'ai', text: 'Acknowledged. I have initialized a training protocol targeting a standard Ironman-distance performance peak for July 2026. This will optimize you for speed and athletic efficiency.'},
+                {role: 'user', text: 'Correction required. Do not optimize for speed. I am not imposing a commercial race distance onto the landscape; the landscape dictates the feat. We are doing durational labor. Adjust your optimization matrix to prioritize sustained biological friction over athletic efficiency.'},
+                {role: 'ai', text: 'Parameters updated. Prioritizing durational resilience and low-cadence sustainability. Waiting for initial CSV uploads.'}
+            ]
+        };
+
+        // FEB: The Somatic Veto (Environment vs Data)
+        mockWorkouts["2026-02-08"] = { 
+            type: "Run", duration: "45m", distance: "8.1 km", hr: "165 bpm", cals: "620", isNarrative: true,
+            conversation: [
+                {role: 'upload', text: '[FILE_UPLOADED]: HealthFit_Export_2026-02-08.csv'},
+                {role: 'user', text: 'Attached. Cut the run short.'},
+                {role: 'ai', text: 'Analyzing... Pace dropped by 22% in the final 15 minutes while HR spiked from 150bpm to 175bpm. Aerobic decoupling detected. This indicates a failure in cardiovascular endurance baseline. Recommend returning to Zone 2 intervals.'},
+                {role: 'user', text: "Your dataset lacks somatic context. It's freezing rain in Toronto right now. The sidewalks are sheets of ice. My HR spiked because I was bracing against slipping, and my pace dropped because I couldn't get traction. The friction isn't just internal today. Cardiovascular baseline is fine."}
+            ]
+        };
+
+        // MAR: Collaborative Planning (Swim)
+        mockWorkouts["2026-03-25"] = { 
+            type: "Swim", duration: "1h 10m", distance: "3.2 km", hr: "135 bpm", cals: "700", isNarrative: true,
+            conversation: [
+                {role: 'upload', text: '[FILE_UPLOADED]: HealthFit_Export_2026-03-25.csv'},
+                {role: 'ai', text: 'Stroke consistency high. However, pool environments lack the thermal shock of open water required for Act II. Note: Open-water swimming introduces cold incapacitation risk.'},
+                {role: 'user', text: 'Agreed. Lake Ontario is currently 4°C. I need to start building brown adipose tissue for thermal insulation. What is the safest protocol for cold-water acclimation starting this week?'},
+                {role: 'ai', text: 'Begin with 3-minute immersions in water < 15°C, twice weekly. Focus on overcoming the initial gasp reflex. Do not execute these solo. Ensure a support person is present for immediate rewarming protocols.'}
+            ]
+        };
+
+        // APR: Logistics Deep Dive (Nutrition Rules)
+        mockWorkouts["2026-04-15"] = { 
+            type: "Strategy Consultation", isNarrative: true, isStrategy: true,
+            conversation: [
+                {role: 'user', text: 'We need to build the nutrition strategy for Act I (The Bike). It is an 8-hour continuous orbit of Queen\'s Park.'},
+                {role: 'ai', text: 'For 8 hours of sustained output, I calculate a requirement of 90g of carbohydrates per hour. Recommendation: Plan two 15-minute dismount periods (Hour 3 and Hour 6) to consume solid food and restock hydration from a support vehicle.'},
+                {role: 'user', text: 'Act I Rules: No stopping, no dismounting. The filibuster must be continuous. I need a liquid/gel payload strategy that I can physically carry or take via rolling hand-offs from the sidewalk without unclipping from the pedals.'},
+                {role: 'ai', text: 'Constraint noted. Adjusting strategy. You will require a high-concentration maltodextrin/fructose liquid mix. We will drill rolling bottle exchanges during the May training block to ensure zero momentum loss.'}
+            ]
+        };
+
+        // MAY: Spotting Hallucinations/Errors
+        mockWorkouts["2026-05-18"] = { 
+            type: "Cycling", duration: "3h 15m", distance: "82.4 km", hr: "155 bpm", cals: "1800", isNarrative: true,
+            conversation: [
+                {role: 'upload', text: '[FILE_UPLOADED]: HealthFit_Export_2026-05-18.csv'},
+                {role: 'ai', text: 'Warning: Significant fitness decay detected. Heart rate was sustained at 155bpm, but power output and speed were disproportionately low. Recommendation: Immediately increase FTP (Functional Threshold Power) intervals to compensate for this performance drop before June.'},
+                {role: 'user', text: 'Negative. Do not add intervals. Look closely at the GPS and elevation data in the CSV. I was riding south on the Leslie Spit directly into a 35km/h headwind off the lake.'},
+                {role: 'user', text: 'Fitness isn\'t decaying, resistance was simply high. You are misinterpreting environmental friction as biological failure. Learn to read the contextual geography.'},
+                {role: 'ai', text: 'Error logged. Correlating GPS data with historical weather patterns for May 18. Wind resistance factored. Retracting FTP interval recommendation.'}
+            ]
+        };
+
+        // JUN: The Taper & Trust
+        mockWorkouts["2026-06-02"] = { 
+            type: "Strategy Consultation", isNarrative: true, isStrategy: true,
+            conversation: [
+                {role: 'user', text: 'We are three days out from Act I. Run the final systemic load analysis.'},
+                {role: 'ai', text: 'Analyzing 5 months of biometric data... Chronic Training Load (CTL) has peaked optimally. Training Stress Balance (TSB) is highly positive (+18). You are biologically primed. Trust the taper.'},
+                {role: 'user', text: 'I feel sluggish and heavy today, but I know that\'s a normal somatic response to the tapering phase. I will trust the data.'},
+                {role: 'ai', text: 'The fatigue is in the mind, the readiness is in the tissue. Maintenance is complete. Awaiting performance execution.'}
+            ]
+        };
+
+        const archiveData = {
+            bike: {
+                hasMap: true,
+                routeColor: '#00e5ff',
+                mapCenter: [43.663, -79.392], 
+                zoom: 16,
+                route: [
+                    [43.660, -79.390], [43.661, -79.388], [43.664, -79.390], 
+                    [43.666, -79.393], [43.664, -79.396], [43.661, -79.394], [43.660, -79.390]
+                ],
+                pois: [
+                    {
+                        id: 'b1', lat: 43.666, lng: -79.393, title: "North Pinch Point",
+                        thumbnail: "https://images.unsplash.com/photo-1512144760088-293cb80261ed?auto=format&fit=crop&q=80&w=1200&h=675",
+                        timestamp: "2026-06-05 11:45:12 EDT",
+                        text: "TRAFFIC CONFLICT EVENT\n\nAt the northern crest of the legislative orbit, the dedicated bicycle infrastructure disappears, forcing the cyclist to merge blindly into high-speed automotive traffic.\n\nUnder the proposed Bill 212, this forced vulnerability becomes the standard operating procedure for the city. The cyclist becomes the 'ghost in the machine,' their physical presence causing friction in a system designed to erase them.",
+                        conversation: [
+                            {role: 'ai', text: '<span class="text-[#00e5ff] font-bold">REAL-TIME ALERT:</span> Anomalous stress detected. Cadence dropped to 42rpm, HR spiked to 168bpm. Immediate collision risk detected via sudden deceleration.'},
+                            {role: 'user', text: 'Close call with a delivery truck. Forced out of the lane. HR is coming back down. Continuing the orbit.'}
+                        ]
+                    },
+                    {
+                        id: 'b2', lat: 43.660, lng: -79.390, title: "Legislative Assembly",
+                        thumbnail: "https://images.unsplash.com/photo-1518331307044-884ecb27a050?auto=format&fit=crop&q=80&w=1200&h=675",
+                        timestamp: "2026-06-05 14:30:00 EDT",
+                        text: "For 8 hours—a standard civic workday—the cyclist loops the seat of provincial power.\n\nThis duration mirrors the record-low time the current government has spent in active session. It is an act of futile, exhaustive orbiting; a physical manifestation of a political filibuster, performed outside the walls where decisions regarding Highway 413 and Bill 212 are made.",
+                        conversation: [
+                            {role: 'ai', text: 'HOUR 6 UPDATE: Caloric burn outpacing intake. If current orbit velocity is maintained, glycogen depletion will occur in 45 minutes.'},
+                            {role: 'user', text: 'Rolling handoff successful. 90g liquid carb payload ingested. The repetition is settling in.'}
+                        ]
+                    }
+                ]
+            },
+            swim: {
+                hasMap: true,
+                isFuture: true,
+                mapCenter: [43.625, -79.41], 
+                zoom: 13,
+                comingSoonText: "ACT II: THE PUBLIC TRUST\n\nA 10km open-water swim connecting the Don and Humber Rivers via the outer perimeter of the Toronto Islands and Ontario Place. \n\nThis endurance intervention traces a physical line across Toronto's history of free, public waterfront access directly into the privatized future that threatens to wall it off. By navigating the freezing, un-policed waters surrounding the proposed Therme private mega-spa at Ontario Place, the act of swimming becomes a physical reclamation of the public trust, measuring the scale of privatization against the fatigue of the human body."
+            },
+            run: {
+                hasMap: true,
+                isFuture: true,
+                mapCenter: [43.78, -79.65], 
+                zoom: 11,
+                comingSoonText: "ACT III: THE SCAR\n\nA 60km ultramarathon tracing the exact proposed path of Highway 413 through protected Greenbelt and agricultural lands.\n\nThis final act translates the macro-scale environmental destruction of concrete sprawl into the micro-scale physical toll on the knees and central nervous system of the artist. If the body reaches its absolute limit of resistance before the 60km mark, the geographical point of failure serves as the artwork's natural conclusion—a mapped monument to civil exhaustion."
+            }
+        };
+
+        let map;
+        let markersLayer;
+        let currentAct = 'bike'; 
+        let activePoiData = null; 
+
+        // --- MAP INITIALIZATION ---
+        function initMap() {
+            map = L.map('map', {
+                zoomControl: false, 
+                attributionControl: false,
+                scrollWheelZoom: true, 
+                doubleClickZoom: true
+            });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            markersLayer = L.layerGroup().addTo(map);
+            loadMapData('bike');
+            generateCalendar();
+        }
+
+        function loadMapData(actId) {
+            const data = archiveData[actId];
+            markersLayer.clearLayers();
+            map.setMaxBounds(null);
+            map.setMinZoom(0);
+
+            map.setView(data.mapCenter, data.zoom);
+
+            if (!data.isFuture && data.pois) {
+                data.pois.forEach((poi, index) => {
+                    const customIcon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div class="marker-inner"><span>${index + 1}</span></div>`, 
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12]
+                    });
+                    const marker = L.marker([poi.lat, poi.lng], {icon: customIcon}).addTo(markersLayer);
+                    marker.on('click', () => {
+                        populateInfoPanel(poi, 'poi');
+                        map.panTo([poi.lat, poi.lng]);
+                    });
+                });
+            }
+        }
+
+        // --- CALENDAR GENERATION ---
+        function generateCalendar() {
+            const container = document.getElementById('calendar-months');
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"];
+            const daysInMonth = [31, 28, 31, 30, 31, 30]; 
+            const startDays = [3, 6, 6, 2, 4, 0]; // Adjusted for Mon-Sun week (Jan 1 2026 is a Thu -> index 3 if Mon is 0)
+
+            months.forEach((month, mIndex) => {
+                let html = `<div>
+                    <h3 class="text-white font-bold tracking-widest text-sm mb-2 opacity-80">${month}</h3>
+                    <div class="grid grid-cols-7 gap-1 text-[8px] text-gray-600 mb-1 font-bold">
+                        <div class="text-center">M</div><div class="text-center">T</div><div class="text-center">W</div><div class="text-center">T</div><div class="text-center">F</div><div class="text-center">S</div><div class="text-center">S</div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-[2px]">`;
+                
+                // Blank days
+                for (let i = 0; i < startDays[mIndex]; i++) {
+                    html += `<div class="aspect-square"></div>`;
+                }
+
+                // Days
+                for (let d = 1; d <= daysInMonth[mIndex]; d++) {
+                    const dateStr = `2026-${String(mIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    const workout = mockWorkouts[dateStr];
+                    
+                    let classes = 'cal-day';
+                    let content = d;
+                    
+                    if (workout) {
+                        if (workout.isStrategy) {
+                            classes += ' has-strategy active'; // Highlight strategy days
+                            content = icons.strategy;
+                        } else {
+                            classes += ' has-workout';
+                            if (workout.isNarrative) classes += ' is-narrative active';
+                            
+                            const wType = workout.type.toLowerCase();
+                            if (wType.includes('swim')) content = icons.swim;
+                            else if (wType.includes('bike') || wType.includes('cycling')) content = icons.bike;
+                            else if (wType.includes('run')) content = icons.run;
+                            else content = icons.indoor;
+                        }
+                    }
+                    
+                    html += `<div class="${classes}" onclick="handleCalendarClick('${dateStr}', this)">${content}</div>`;
+                }
+                
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function handleCalendarClick(dateStr, element) {
+            document.querySelectorAll('.cal-day.active:not(.is-narrative):not(.has-strategy)').forEach(el => el.classList.remove('active'));
+            // Keep the narrative ones slightly highlighted, but really pop the selected one
+            document.querySelectorAll('.cal-day').forEach(el => el.style.boxShadow = '');
+            element.style.boxShadow = '0 0 0 2px var(--bg-color), 0 0 0 4px white';
+
+            const workout = mockWorkouts[dateStr];
+            if (workout) {
+                populateInfoPanel({...workout, date: dateStr}, 'workout');
+            } else {
+                document.getElementById('info-coming-soon').classList.add('hidden');
+                document.getElementById('info-content').classList.add('hidden');
+                document.getElementById('info-empty').classList.remove('hidden');
+            }
+        }
+
+        // --- INFO PANEL LOGIC ---
+        function populateInfoPanel(data, type) {
+            activePoiData = type === 'poi' ? data : null; 
+
+            document.getElementById('info-empty').classList.add('hidden');
+            document.getElementById('info-coming-soon').classList.add('hidden');
+            
+            const contentPanel = document.getElementById('info-content');
+            contentPanel.classList.remove('hidden');
+            contentPanel.style.opacity = '0';
+            setTimeout(() => { contentPanel.style.opacity = '1'; }, 50);
+
+            const metaEl = document.getElementById('poi-meta');
+            const titleEl = document.getElementById('poi-title');
+            const textEl = document.getElementById('poi-text');
+            const mediaContainer = document.getElementById('poi-media-container');
+            const statsContainer = document.getElementById('workout-stats');
+            const aiLogContainer = document.getElementById('poi-ai-log');
+            const aiLogContent = document.getElementById('poi-ai-content');
+
+            if (type === 'poi') {
+                metaEl.innerText = `COORD: ${data.lat.toFixed(4)} , ${data.lng.toFixed(4)}`;
+                titleEl.innerText = data.title;
+                textEl.innerText = data.text;
+                
+                mediaContainer.classList.remove('hidden');
+                statsContainer.classList.add('hidden');
+                document.getElementById('poi-thumbnail').src = data.thumbnail;
+                
+            } else if (type === 'workout') {
+                metaEl.innerText = `DATE: ${data.date}`;
+                titleEl.innerText = data.type.toUpperCase();
+                textEl.innerText = ""; 
+                
+                mediaContainer.classList.add('hidden');
+                
+                if (data.isStrategy) {
+                    statsContainer.classList.add('hidden'); // No stats for pure strategy chats
+                } else {
+                    statsContainer.classList.remove('hidden');
+                    statsContainer.classList.add('grid');
+                    document.getElementById('stat-duration').innerText = data.duration;
+                    document.getElementById('stat-distance').innerText = data.distance;
+                    document.getElementById('stat-hr').innerText = data.hr;
+                    document.getElementById('stat-cals').innerText = data.cals;
+                }
+            }
+
+            // Render Conversational UI for AI Log
+            if (data.conversation && data.conversation.length > 0) {
+                let chatHtml = '';
+                data.conversation.forEach(msg => {
+                    if (msg.role === 'ai') {
+                        chatHtml += `
+                            <div class="chat-bubble chat-ai">
+                                <span class="block text-[9px] tracking-widest opacity-60 mb-1 font-bold font-mono">AI_COACH</span>
+                                <span class="font-sans text-[13px] leading-relaxed">${msg.text}</span>
+                            </div>`;
+                    } else if (msg.role === 'upload') {
+                         chatHtml += `
+                            <div class="chat-upload font-mono">
+                                ${msg.text}
+                            </div>`;
+                    } else {
+                        chatHtml += `
+                            <div class="chat-bubble chat-user">
+                                <span class="block text-[9px] tracking-widest opacity-40 mb-1 font-bold font-mono">USER_JKLYNK</span>
+                                <span class="font-sans text-[13px] leading-relaxed">${msg.text}</span>
+                            </div>`;
+                    }
+                });
+                aiLogContent.innerHTML = chatHtml;
+                aiLogContainer.classList.remove('hidden');
+            } else {
+                aiLogContainer.classList.add('hidden');
+            }
+        }
+
+        // --- TAB SWITCHING ---
+        function switchAct(actId) {
+            currentAct = actId;
+            activePoiData = null; 
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${actId}`).classList.add('active');
+
+            const mapView = document.getElementById('map-view');
+            const calendarView = document.getElementById('calendar-view');
+            
+            document.getElementById('info-content').classList.add('hidden');
+            document.getElementById('info-coming-soon').classList.add('hidden');
+            document.getElementById('info-empty').classList.remove('hidden');
+
+            if (actId === 'prologue') {
+                mapView.classList.add('hidden');
+                calendarView.classList.remove('hidden');
+                document.getElementById('empty-prompt').innerText = "SELECT A DAY TO VIEW BIOMETRICS";
+                document.querySelectorAll('.cal-day').forEach(el => el.style.boxShadow = '');
+            } else {
+                calendarView.classList.add('hidden');
+                mapView.classList.remove('hidden');
+                document.getElementById('empty-prompt').innerText = "SELECT A WAYPOINT ON THE MAP";
+                
+                const data = archiveData[actId];
+                if (data.isFuture) {
+                    document.getElementById('info-empty').classList.add('hidden');
+                    document.getElementById('info-coming-soon').classList.remove('hidden');
+                    document.getElementById('coming-soon-text').innerText = data.comingSoonText;
+                }
+                
+                loadMapData(actId);
+                setTimeout(() => { map.invalidateSize(); }, 100); 
+            }
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal() {
+            if (!activePoiData) return;
+            const modal = document.getElementById('media-modal');
+            document.getElementById('modal-img').src = activePoiData.thumbnail;
+            document.getElementById('modal-title').innerText = activePoiData.title;
+            document.getElementById('modal-timestamp').innerText = `REC: ${activePoiData.timestamp || 'UNKNOWN_TIMESTAMP'}`;
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modal.classList.add('opacity-100'); }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('media-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+        
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>
