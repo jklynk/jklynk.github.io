@@ -96,36 +96,44 @@ async function initDashboard() {
 }
 
 /**
+ * Unified secure fetch helper with strict JSON verification and dual-proxy fallback
+ */
+async function secureFetch(targetUrl) {
+    const primaryProxy = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+    const fallbackProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+    
+    try {
+        console.log(`Attempting primary fetch: ${targetUrl}`);
+        const response = await fetch(primaryProxy);
+        if (!response.ok) throw new Error("Primary proxy status error");
+        
+        // Verify the content type is actually JSON before continuing
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return await response.json();
+        }
+        throw new Error("Primary returned non-JSON data");
+    } catch (err) {
+        console.warn("Primary proxy route blocked or invalid. Engaging AllOrigins production fallback...", err);
+        const response = await fetch(fallbackProxy);
+        if (!response.ok) throw new Error(`Fallback routing failed: ${response.status}`);
+        return await response.json();
+    }
+}
+
+/**
  * City of Toronto Pools Data Fetch via Datastore API
  */
 async function fetchSwimData() {
     console.log("Step 1: Constructing filter query for Datastore API...");
-    const resourceId = "c99ec04f-4540-482c-9ee4-efb38774eab4";
-    const filters = { "Location ID": TARGET_LOCATION_IDS };
+    const targetUrl = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=c99ec04f-4540-482c-9ee4-efb38774eab4&limit=2000&filters=" + encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}));
     
-    const targetDatastoreUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=${resourceId}&limit=2000&filters=${encodeURIComponent(JSON.stringify(filters))}`;
-    const proxyUrl = "https://corsproxy.io/?";
-    const fallbackProxy = "https://api.allorigins.win/raw?url=";
-    
-    console.log("Step 2: Fetching data from City of Toronto API...");
-    let response;
-    try {
-        response = await fetch(`${proxyUrl}${encodeURIComponent(targetDatastoreUrl)}`);
-        if (!response.ok) throw new Error(`Primary proxy response not ok: ${response.status}`);
-    } catch (proxyError) {
-        console.warn("Primary CORS proxy failed, trying secondary production fallback...");
-        response = await fetch(`${fallbackProxy}${encodeURIComponent(targetDatastoreUrl)}`);
+    const data = await secureFetch(targetUrl);
+    if (data && data.result && data.result.records) {
+        return groupPoolData(data.result.records);
+    } else {
+        throw new Error("Pool data structures are invalid or missing fields");
     }
-
-    if (!response.ok) {
-        throw new Error(`Datastore fetch failed: ${response.status} ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    const records = data.result.records || [];
-    
-    console.log(`Step 3: Fetched ${records.length} records matching target locations.`);
-    return groupPoolData(records);
 }
 
 /**
@@ -235,30 +243,12 @@ function groupPoolData(records) {
  */
 async function fetchBeachData() {
     try {
-        const proxyUrl = "https://corsproxy.io/?";
-        const fallbackProxy = "https://api.allorigins.win/raw?url=";
-        
-        const fetchWithFallback = async (targetUrl) => {
-            let res;
+        const fetchedData = [];
+        for (const key in BEACH_CONFIG) {
+            const beach = BEACH_CONFIG[key];
             try {
-                res = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`);
-                if (!res.ok) throw new Error("Primary proxy failed");
-            } catch (e) {
-                console.warn("Primary CORS proxy failed, trying secondary production fallback...");
-                res = await fetch(`${fallbackProxy}${encodeURIComponent(targetUrl)}`);
-            }
-            return res;
-        };
-        
-        const fetchPromises = Object.values(BEACH_CONFIG).map(async (beach) => {
-            try {
-                const [ecoliRes, tempRes] = await Promise.all([
-                    fetchWithFallback(beach.ecoliUrl),
-                    fetchWithFallback(beach.tempUrl)
-                ]);
-
-                const ecoliData = ecoliRes.ok ? await ecoliRes.json() : {};
-                const tempData = tempRes.ok ? await tempRes.json() : {};
+                const ecoliData = await secureFetch(beach.ecoliUrl);
+                const tempData = await secureFetch(beach.tempUrl);
 
                 const ecoliRecords = ecoliData.contents || [];
                 const tempRecords = tempData.contents || [];
@@ -296,23 +286,20 @@ async function fetchBeachData() {
                     }
                 }
 
-                return {
+                fetchedData.push({
                     location: beach.name,
                     ecoliValue: ecoliValue,
                     ecoliDisplayStr: ecoliDisplayStr,
                     isSafe: isSafe,
                     tempValue: tempDisplayStr,
                     upwellingAlert: upwellingAlert
-                };
-            } catch (err) {
-                console.error(`Error fetching data for ${beach.name}:`, err);
-                return null;
+                });
+            } catch (beachError) {
+                console.error(`Skipping rendering pipeline for ${beach.name} due to invalid payload structure:`, beachError);
             }
-        });
-
-        const fetchedData = await Promise.all(fetchPromises);
-        return fetchedData.filter(data => data !== null);
+        }
         
+        return fetchedData;
     } catch (error) {
         console.error("Error fetching Beach Data:", error);
         throw error;
