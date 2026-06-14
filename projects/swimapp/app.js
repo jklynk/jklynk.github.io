@@ -104,10 +104,19 @@ async function fetchSwimData() {
     const filters = { "Location ID": TARGET_LOCATION_IDS };
     
     const targetDatastoreUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=${resourceId}&limit=2000&filters=${encodeURIComponent(JSON.stringify(filters))}`;
-    const datastoreUrl = `https://corsproxy.io/?${encodeURIComponent(targetDatastoreUrl)}`;
+    const proxyUrl = "https://corsproxy.io/?";
+    const fallbackProxy = "https://api.allorigins.win/raw?url=";
     
     console.log("Step 2: Fetching data from City of Toronto API...");
-    const response = await fetch(datastoreUrl);
+    let response;
+    try {
+        response = await fetch(`${proxyUrl}${encodeURIComponent(targetDatastoreUrl)}`);
+        if (!response.ok) throw new Error(`Primary proxy response not ok: ${response.status}`);
+    } catch (proxyError) {
+        console.warn("Primary CORS proxy failed, trying secondary production fallback...");
+        response = await fetch(`${fallbackProxy}${encodeURIComponent(targetDatastoreUrl)}`);
+    }
+
     if (!response.ok) {
         throw new Error(`Datastore fetch failed: ${response.status} ${response.statusText}`);
     }
@@ -227,12 +236,25 @@ function groupPoolData(records) {
 async function fetchBeachData() {
     try {
         const proxyUrl = "https://corsproxy.io/?";
+        const fallbackProxy = "https://api.allorigins.win/raw?url=";
+        
+        const fetchWithFallback = async (targetUrl) => {
+            let res;
+            try {
+                res = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`);
+                if (!res.ok) throw new Error("Primary proxy failed");
+            } catch (e) {
+                console.warn("Primary CORS proxy failed, trying secondary production fallback...");
+                res = await fetch(`${fallbackProxy}${encodeURIComponent(targetUrl)}`);
+            }
+            return res;
+        };
         
         const fetchPromises = Object.values(BEACH_CONFIG).map(async (beach) => {
             try {
                 const [ecoliRes, tempRes] = await Promise.all([
-                    fetch(proxyUrl + encodeURIComponent(beach.ecoliUrl)),
-                    fetch(proxyUrl + encodeURIComponent(beach.tempUrl))
+                    fetchWithFallback(beach.ecoliUrl),
+                    fetchWithFallback(beach.tempUrl)
                 ]);
 
                 const ecoliData = ecoliRes.ok ? await ecoliRes.json() : {};
