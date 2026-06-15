@@ -99,67 +99,20 @@ async function initDashboard() {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 /**
- * Multi-proxy failover helper to bypass rate limits, timeouts, and CORS blocks
+ * Simplified, robust fetch helper using a single reliable proxy.
  */
-async function secureFetch(targetUrl, tryDirect = false) {
-    // Attempt a direct fetch first if requested (saves proxy overhead for servers with native CORS)
-    if (tryDirect) {
-        try {
-            const response = await fetch(targetUrl);
-            if (response.ok) return await response.json();
-        } catch (e) {
-            console.warn(`Direct fetch blocked by CORS or network, falling back to proxies for: ${targetUrl}`);
-        }
-    }
-
-    const proxies = [
-        {
-            // Primary: CORSProxy.io (Raw pass-through, requires the unencoded raw URL)
-            url: `https://corsproxy.io/?${targetUrl}`,
-            isWrapped: false
-        },
-        {
-            // Secondary: AllOrigins (JSONP wrapper, safely guarantees CORS headers are returned)
-            url: `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
-            isWrapped: true
-        },
-        {
-            // Tertiary: CodeTabs (Raw pass-through, requires the unencoded raw URL)
-            url: `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
-            isWrapped: false
-        }
-    ];
+async function secureFetch(targetUrl) {
+    // Use AllOrigins raw pass-through endpoint
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
     
     // Increased throttling to 400ms. Openwaterdata.com drops connections (408/520) if hit too rapidly.
     await delay(400); 
     
-    let lastError;
-    for (const proxy of proxies) {
-        try {
-            console.log(`Fetching from proxy gateway: ${proxy.url}`);
-            const response = await fetch(proxy.url);
-            if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
-            
-            const data = await response.json();
-            
-            // If the proxy wraps the response (like AllOrigins), unpack it safely
-            if (proxy.isWrapped) {
-                if (data && data.contents) {
-                    return typeof data.contents === 'string' ? JSON.parse(data.contents) : data.contents;
-                }
-                throw new Error("Proxy response body is invalid or empty");
-            }
-            
-            // Otherwise return the raw un-wrapped data directly
-            return data;
-        } catch (error) {
-            console.warn(`Proxy failed:`, error.message);
-            lastError = error;
-            // Continue to the next proxy in the loop
-        }
-    }
+    console.log(`Fetching from proxy gateway: ${proxyUrl}`);
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error(`Proxy network error: ${response.status}`);
     
-    throw new Error(`All proxy gateways failed. Last error: ${lastError.message}`);
+    return await response.json();
 }
 
 /**
