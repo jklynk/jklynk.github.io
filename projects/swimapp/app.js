@@ -99,45 +99,119 @@ async function initDashboard() {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 /**
- * Reliable sequenced proxy helper using JSON wrapper endpoint to prevent CORS blocks
+ * Multi-proxy failover helper to bypass rate limits, timeouts, and CORS blocks
  */
-async function secureFetch(targetUrl) {
-    // Use AllOrigins /get endpoint to guarantee CORS headers are applied to the response wrapper
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-    
-    await delay(150); // Maintain slight request sequencing to prevent 429 gate locks
-    
-    console.log(`Fetching from proxy gateway: ${targetUrl}`);
-    const response = await fetch(proxyUrl);
-    if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
-    
-    const wrapperData = await response.json();
-    
-    if (wrapperData && wrapperData.contents) {
-        // Safely parse the contents. If it's already an object, return it. If it's a string, parse it.
-        // This prevents the "Unexpected token u" SyntaxError we previously experienced.
-        if (typeof wrapperData.contents === 'string') {
-            return JSON.parse(wrapperData.contents);
+async function secureFetch(targetUrl, tryDirect = false) {
+    // Attempt a direct fetch first if requested (saves proxy overhead for servers with native CORS)
+    if (tryDirect) {
+        try {
+            const response = await fetch(targetUrl);
+            if (response.ok) return await response.json();
+        } catch (e) {
+            console.warn(`Direct fetch blocked by CORS or network, falling back to proxies for: ${targetUrl}`);
         }
-        return wrapperData.contents;
+    }
+
+    const proxies = [
+        {
+            // Primary: CORSProxy.io (Raw pass-through, requires the unencoded raw URL)
+            url: `https://corsproxy.io/?${targetUrl}`,
+            isWrapped: false
+        },
+        {
+            // Secondary: AllOrigins (JSONP wrapper, safely guarantees CORS headers are returned)
+            url: `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
+            isWrapped: true
+        },
+        {
+            // Tertiary: CodeTabs (Raw pass-through, requires the unencoded raw URL)
+            url: `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
+            isWrapped: false
+        }
+    ];
+    
+    // Increased throttling to 400ms. Openwaterdata.com drops connections (408/520) if hit too rapidly.
+    await delay(400); 
+    
+    let lastError;
+    for (const proxy of proxies) {
+        try {
+            console.log(`Fetching from proxy gateway: ${proxy.url}`);
+            const response = await fetch(proxy.url);
+            if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
+            
+            const data = await response.json();
+            
+            // If the proxy wraps the response (like AllOrigins), unpack it safely
+            if (proxy.isWrapped) {
+                if (data && data.contents) {
+                    return typeof data.contents === 'string' ? JSON.parse(data.contents) : data.contents;
+                }
+                throw new Error("Proxy response body is invalid or empty");
+            }
+            
+            // Otherwise return the raw un-wrapped data directly
+            return data;
+        } catch (error) {
+            console.warn(`Proxy failed:`, error.message);
+            lastError = error;
+            // Continue to the next proxy in the loop
+        }
     }
     
-    throw new Error("Proxy response body is invalid or empty");
+    throw new Error(`All proxy gateways failed. Last error: ${lastError.message}`);
 }
 
 /**
  * City of Toronto Pools Data Fetch via Datastore API
  */
 async function fetchSwimData() {
-    console.log("Step 1: Constructing filter query for Datastore API...");
-    const targetUrl = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=c99ec04f-4540-482c-9ee4-efb38774eab4&limit=2000&filters=" + encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}));
+    console.log("Step 1: Fetching package metadata to get dynamic resource ID...");
+    const packageId = "1a5be46a-4039-48cd-a2d2-8e702abf9516";
+    const packageUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/package_show?id=${packageId}`;
     
+    // Use our secure helper to bypass CORS
+    const packageData = await secureFetch(packageUrl);
+    
+    if (!packageData || !packageData.result || !packageData.result.resources) {
+        throw new Error("Failed to retrieve package metadata from City of Toronto.");
+    }
+
+    // Find the active datastore resource. Prefer the one containing "Drop-in" if there are multiple.
+    const resources = packageData.result.resources;
+    let activeResource = resources.find(r => r.datastore_active && r.name && r.name.includes("Drop-in"));
+    if (!activeResource) {
+        activeResource = resources.find(r => r.datastore_active);
+    }
+
+    if (!activeResource) {
+        throw new Error("No active datastore resources found for this package.");
+    }
+
+    console.log(`Found active resource ID: ${activeResource.id}`);
+
+    console.log("Step 2: Constructing filter query for Datastore API...");
+    const targetUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
+    
+    console.log("Step 3: Fetching pool data...");
     const data = await secureFetch(targetUrl);
     if (data && data.result && data.result.records) {
         return groupPoolData(data.result.records);
     } else {
         throw new Error("Pool data structures are invalid or missing fields");
     }
+}
+
+/**
+ * Helper function to convert 24-hour time to 12-hour AM/PM format
+ */
+function format12Hour(hrString, minString) {
+    let hr = parseInt(hrString, 10);
+    if (isNaN(hr)) return `${hrString}:${minString}`; // Fallback if data is malformed
+    const ampm = hr >= 12 ? 'PM' : 'AM';
+    hr = hr % 12;
+    hr = hr ? hr : 12; // 0 becomes 12
+    return `${hr}:${minString} ${ampm}`;
 }
 
 /**
@@ -188,7 +262,9 @@ function groupPoolData(records) {
         const endHr = String(record["End Hour"] !== undefined && record["End Hour"] !== null ? record["End Hour"] : "00").padStart(2, '0');
         const endMin = String(record["End Min"] !== undefined && record["End Min"] !== null ? record["End Min"] : "00").padStart(2, '0');
 
-        const startTime = `${startHr}:${startMin} - ${endHr}:${endMin}`;
+        const formattedStart = format12Hour(startHr, startMin);
+        const formattedEnd = format12Hour(endHr, endMin);
+        const startTime = `${formattedStart} - ${formattedEnd}`;
         
         const session = {
             day: record["DayOftheWeek"] || "Unknown Day",
