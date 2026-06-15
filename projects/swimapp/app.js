@@ -115,10 +115,11 @@ async function fetchData(url) {
     const data = await res.json();
     if (data && data.contents) {
         try {
-            // AllOrigins stores the response as a string in .contents
-            return JSON.parse(data.contents);
+            const parsed = JSON.parse(data.contents);
+            // Strictly verify we got a valid object, not an HTML error string
+            if (typeof parsed === 'object' && parsed !== null) return parsed;
         } catch (e) {
-            return data.contents;
+            throw new Error("Proxy returned non-JSON content (upstream timeout or error)");
         }
     }
     throw new Error("Invalid proxy response");
@@ -129,7 +130,7 @@ async function fetchData(url) {
  */
 async function fetchSwimData() {
     console.log("Step 1: Fetching package metadata...");
-    const packageUrl = `https://open.toronto.ca/api/3/action/package_show?id=registered-programs-and-drop-in-courses-offering`;
+    const packageUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/package_show?id=1a5be46a-4039-48cd-a2d2-8e702abf9516`;
     const packageData = await fetchData(packageUrl);
     
     if (!packageData || !packageData.result || !packageData.result.resources) {
@@ -144,7 +145,7 @@ async function fetchSwimData() {
     if (!activeResource) throw new Error("No active datastore resources found for this package.");
 
     console.log("Step 2: Constructing filter query for Datastore API...");
-    const targetUrl = `https://open.toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
+    const targetUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
     
     console.log("Step 3: Fetching pool data...");
     const data = await fetchData(targetUrl);
@@ -281,7 +282,11 @@ async function fetchBeachData() {
         for (const key of keys) {
             const beach = BEACH_CONFIG[key];
             try {
+                // Small delay to prevent openwaterdata.com from dropping connections
+                await new Promise(r => setTimeout(r, 500));
                 const ecoliData = await secureFetch(beach.ecoliUrl);
+                
+                await new Promise(r => setTimeout(r, 500));
                 const tempData = await secureFetch(beach.tempUrl);
 
                 const ecoliRecords = ecoliData.contents || [];
