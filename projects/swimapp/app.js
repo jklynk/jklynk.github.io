@@ -96,7 +96,7 @@ async function initDashboard() {
 }
 
 /**
- * Simplified, robust fetch helper. Tries direct fetch, then falls back to a proxy.
+ * Ultra-resilient fetch helper. Tries direct, then AllOrigins, then CodeTabs.
  */
 async function fetchData(url) {
     try {
@@ -104,25 +104,33 @@ async function fetchData(url) {
         const res = await fetch(url);
         if (res.ok) return await res.json();
     } catch (err) {
-        console.warn(`Direct fetch failed for ${url}. Bouncing to proxy...`);
+        console.warn(`Direct fetch failed for ${url}. Bouncing to AllOrigins proxy...`);
     }
     
-    // 2. Fallback to AllOrigins proxy (bypasses CORS using a JSONP wrapper)
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`Proxy error status: ${res.status}`);
-    
-    const data = await res.json();
-    if (data && data.contents) {
-        try {
-            const parsed = JSON.parse(data.contents);
-            // Strictly verify we got a valid object, not an HTML error string
+    try {
+        // 2. Fallback to AllOrigins proxy (bypasses CORS using a JSONP wrapper)
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        const data = await res.json();
+        
+        if (data && data.contents) {
+            const parsed = typeof data.contents === 'string' ? JSON.parse(data.contents) : data.contents;
             if (typeof parsed === 'object' && parsed !== null) return parsed;
-        } catch (e) {
-            throw new Error("Proxy returned non-JSON content (upstream timeout or error)");
         }
+    } catch (e) {
+        console.warn(`AllOrigins proxy failed or timed out. Bouncing to CodeTabs proxy...`);
     }
-    throw new Error("Invalid proxy response");
+    
+        try {
+        // 3. Fallback to CodeTabs (Raw pass-through, requires the unencoded raw URL)
+        const codeTabsUrl = `https://api.codetabs.com/v1/proxy?quest=${url}`;
+        const res = await fetch(codeTabsUrl);
+        if (res.ok) return await res.json();
+    } catch (e) {
+        console.error(`CodeTabs proxy failed for ${url}`);
+    }
+
+    throw new Error(`All network fetch attempts failed for: ${url}`);
 }
 
 /**
