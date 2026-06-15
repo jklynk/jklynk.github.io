@@ -95,30 +95,34 @@ async function initDashboard() {
     }
 }
 
+// A tiny helper to prevent rapid-fire 429 rate limits
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 /**
- * Unified secure fetch helper with strict JSON verification and dual-proxy fallback
+ * Reliable sequenced proxy helper using JSON wrapper endpoint to prevent CORS blocks
  */
 async function secureFetch(targetUrl) {
-    const primaryProxy = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-    const fallbackProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+    // Use AllOrigins /get endpoint to guarantee CORS headers are applied to the response wrapper
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
     
-    try {
-        console.log(`Attempting primary fetch: ${targetUrl}`);
-        const response = await fetch(primaryProxy);
-        if (!response.ok) throw new Error("Primary proxy status error");
-        
-        // Verify the content type is actually JSON before continuing
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            return await response.json();
+    await delay(150); // Maintain slight request sequencing to prevent 429 gate locks
+    
+    console.log(`Fetching from proxy gateway: ${targetUrl}`);
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
+    
+    const wrapperData = await response.json();
+    
+    if (wrapperData && wrapperData.contents) {
+        // Safely parse the contents. If it's already an object, return it. If it's a string, parse it.
+        // This prevents the "Unexpected token u" SyntaxError we previously experienced.
+        if (typeof wrapperData.contents === 'string') {
+            return JSON.parse(wrapperData.contents);
         }
-        throw new Error("Primary returned non-JSON data");
-    } catch (err) {
-        console.warn("Primary proxy route blocked or invalid. Engaging AllOrigins production fallback...", err);
-        const response = await fetch(fallbackProxy);
-        if (!response.ok) throw new Error(`Fallback routing failed: ${response.status}`);
-        return await response.json();
+        return wrapperData.contents;
     }
+    
+    throw new Error("Proxy response body is invalid or empty");
 }
 
 /**
@@ -134,18 +138,6 @@ async function fetchSwimData() {
     } else {
         throw new Error("Pool data structures are invalid or missing fields");
     }
-}
-
-/**
- * Helper function to convert 24-hour time to 12-hour AM/PM format
- */
-function format12Hour(hrString, minString) {
-    let hr = parseInt(hrString, 10);
-    if (isNaN(hr)) return `${hrString}:${minString}`; // Fallback if data is malformed
-    const ampm = hr >= 12 ? 'PM' : 'AM';
-    hr = hr % 12;
-    hr = hr ? hr : 12; // the hour '0' should be '12'
-    return `${hr}:${minString} ${ampm}`;
 }
 
 /**
@@ -196,9 +188,7 @@ function groupPoolData(records) {
         const endHr = String(record["End Hour"] !== undefined && record["End Hour"] !== null ? record["End Hour"] : "00").padStart(2, '0');
         const endMin = String(record["End Min"] !== undefined && record["End Min"] !== null ? record["End Min"] : "00").padStart(2, '0');
 
-        const formattedStart = format12Hour(startHr, startMin);
-        const formattedEnd = format12Hour(endHr, endMin);
-        const startTime = `${formattedStart} - ${formattedEnd}`;
+        const startTime = `${startHr}:${startMin} - ${endHr}:${endMin}`;
         
         const session = {
             day: record["DayOftheWeek"] || "Unknown Day",
@@ -258,7 +248,8 @@ function groupPoolData(records) {
 async function fetchBeachData() {
     try {
         const fetchedData = [];
-        for (const key in BEACH_CONFIG) {
+        const keys = Object.keys(BEACH_CONFIG);
+        for (const key of keys) {
             const beach = BEACH_CONFIG[key];
             try {
                 const ecoliData = await secureFetch(beach.ecoliUrl);
@@ -267,8 +258,8 @@ async function fetchBeachData() {
                 const ecoliRecords = ecoliData.contents || [];
                 const tempRecords = tempData.contents || [];
 
-                const latestEcoliRow = ecoliRecords.length > 0 ? ecoliRecords[0] : null;
-                const latestTempRow = tempRecords.length > 0 ? tempRecords[0] : null;
+                const latestEcoliRow = (Array.isArray(ecoliRecords) && ecoliRecords.length > 0) ? ecoliRecords[0] : null;
+                const latestTempRow = (Array.isArray(tempRecords) && tempRecords.length > 0) ? tempRecords[0] : null;
 
                 const ecoliValue = latestEcoliRow ? parseFloat(latestEcoliRow.Result) : null;
                 const isSafe = ecoliValue !== null && ecoliValue > 100 ? false : true;
