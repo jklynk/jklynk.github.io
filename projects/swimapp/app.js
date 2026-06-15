@@ -114,30 +114,37 @@ async function secureFetch(targetUrl, tryDirect = false) {
 
     const proxies = [
         {
-            // Primary: CORSProxy.io (Raw pass-through, requires the unencoded raw URL)
-            url: `https://corsproxy.io/?${targetUrl}`,
-            isWrapped: false
-        },
-        {
-            // Secondary: AllOrigins (JSONP wrapper, safely guarantees CORS headers are returned)
+            // Primary: AllOrigins (JSONP wrapper, safely guarantees CORS headers are returned)
             url: `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
             isWrapped: true
         },
         {
-            // Tertiary: CodeTabs (Raw pass-through, requires the unencoded raw URL)
+            // Secondary: CodeTabs (Raw pass-through, requires the unencoded raw URL)
             url: `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
+            isWrapped: false
+        },
+        {
+            // Tertiary: CORSProxy.io (Raw pass-through, requires the unencoded raw URL)
+            url: `https://corsproxy.io/?${targetUrl}`,
             isWrapped: false
         }
     ];
     
-    // Increased throttling to 400ms. Openwaterdata.com drops connections (408/520) if hit too rapidly.
-    await delay(400); 
+    // Throttling to 500ms. Openwaterdata.com drops connections (408/520) if hit too rapidly.
+    await delay(500); 
     
     let lastError;
     for (const proxy of proxies) {
         try {
             console.log(`Fetching from proxy gateway: ${proxy.url}`);
-            const response = await fetch(proxy.url);
+            
+            // Add a 10-second timeout so hanging proxies fail quickly and move to the next
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+            
+            const response = await fetch(proxy.url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            
             if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
             
             const data = await response.json();
@@ -167,11 +174,12 @@ async function secureFetch(targetUrl, tryDirect = false) {
  */
 async function fetchSwimData() {
     console.log("Step 1: Fetching package metadata to get dynamic resource ID...");
-    const packageId = "1a5be46a-4039-48cd-a2d2-8e702abf9516";
-    const packageUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/package_show?id=${packageId}`;
+    // Switch back to the public gateway using the slug ID. This supports native CORS!
+    const packageId = "registered-programs-and-drop-in-courses-offering";
+    const packageUrl = `https://open.toronto.ca/api/3/action/package_show?id=${packageId}`;
     
-    // Use our secure helper to bypass CORS
-    const packageData = await secureFetch(packageUrl);
+    // Use our secure helper with tryDirect = true to use native CORS without proxies
+    const packageData = await secureFetch(packageUrl, true);
     
     if (!packageData || !packageData.result || !packageData.result.resources) {
         throw new Error("Failed to retrieve package metadata from City of Toronto.");
@@ -191,10 +199,10 @@ async function fetchSwimData() {
     console.log(`Found active resource ID: ${activeResource.id}`);
 
     console.log("Step 2: Constructing filter query for Datastore API...");
-    const targetUrl = `https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
+    const targetUrl = `https://open.toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
     
     console.log("Step 3: Fetching pool data...");
-    const data = await secureFetch(targetUrl);
+    const data = await secureFetch(targetUrl, true);
     if (data && data.result && data.result.records) {
         return groupPoolData(data.result.records);
     } else {
