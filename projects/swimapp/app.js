@@ -95,91 +95,42 @@ async function initDashboard() {
     }
 }
 
-// A tiny helper to prevent rapid-fire 429 rate limits
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
 /**
- * Multi-proxy failover helper to bypass rate limits, timeouts, and CORS blocks
+ * Simplified, robust fetch helper. Tries direct fetch, then falls back to a proxy.
  */
-async function secureFetch(targetUrl, tryDirect = false) {
-    // Attempt a direct fetch first if requested (saves proxy overhead for servers with native CORS)
-    if (tryDirect) {
+async function fetchData(url) {
+    try {
+        // 1. Try fetching directly (fastest, works seamlessly if the server supports CORS)
+        const res = await fetch(url);
+        if (res.ok) return await res.json();
+    } catch (err) {
+        console.warn(`Direct fetch failed for ${url}. Bouncing to proxy...`);
+    }
+    
+    // 2. Fallback to AllOrigins proxy (bypasses CORS using a JSONP wrapper)
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`Proxy error status: ${res.status}`);
+    
+    const data = await res.json();
+    if (data && data.contents) {
         try {
-            const response = await fetch(targetUrl);
-            if (response.ok) return await response.json();
+            // AllOrigins stores the response as a string in .contents
+            return JSON.parse(data.contents);
         } catch (e) {
-            console.warn(`Direct fetch blocked by CORS or network, falling back to proxies for: ${targetUrl}`);
+            return data.contents;
         }
     }
-
-    const proxies = [
-        {
-            // Primary: AllOrigins (JSONP wrapper, safely guarantees CORS headers are returned)
-            url: `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
-            isWrapped: true
-        },
-        {
-            // Secondary: CodeTabs (Raw pass-through, requires the unencoded raw URL)
-            url: `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
-            isWrapped: false
-        },
-        {
-            // Tertiary: CORSProxy.io (Raw pass-through, requires the unencoded raw URL)
-            url: `https://corsproxy.io/?${targetUrl}`,
-            isWrapped: false
-        }
-    ];
-    
-    // Throttling to 500ms. Openwaterdata.com drops connections (408/520) if hit too rapidly.
-    await delay(500); 
-    
-    let lastError;
-    for (const proxy of proxies) {
-        try {
-            console.log(`Fetching from proxy gateway: ${proxy.url}`);
-            
-            // Add a 10-second timeout so hanging proxies fail quickly and move to the next
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 10000);
-            
-            const response = await fetch(proxy.url, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            
-            if (!response.ok) throw new Error(`Proxy error status: ${response.status}`);
-            
-            const data = await response.json();
-            
-            // If the proxy wraps the response (like AllOrigins), unpack it safely
-            if (proxy.isWrapped) {
-                if (data && data.contents) {
-                    return typeof data.contents === 'string' ? JSON.parse(data.contents) : data.contents;
-                }
-                throw new Error("Proxy response body is invalid or empty");
-            }
-            
-            // Otherwise return the raw un-wrapped data directly
-            return data;
-        } catch (error) {
-            console.warn(`Proxy failed:`, error.message);
-            lastError = error;
-            // Continue to the next proxy in the loop
-        }
-    }
-    
-    throw new Error(`All proxy gateways failed. Last error: ${lastError.message}`);
+    throw new Error("Invalid proxy response");
 }
 
 /**
  * City of Toronto Pools Data Fetch via Datastore API
  */
 async function fetchSwimData() {
-    console.log("Step 1: Fetching package metadata to get dynamic resource ID...");
-    // Switch back to the public gateway using the slug ID. This supports native CORS!
-    const packageId = "registered-programs-and-drop-in-courses-offering";
-    const packageUrl = `https://open.toronto.ca/api/3/action/package_show?id=${packageId}`;
-    
-    // Use our secure helper with tryDirect = true to use native CORS without proxies
-    const packageData = await secureFetch(packageUrl, true);
+    console.log("Step 1: Fetching package metadata...");
+    const packageUrl = `https://open.toronto.ca/api/3/action/package_show?id=registered-programs-and-drop-in-courses-offering`;
+    const packageData = await fetchData(packageUrl);
     
     if (!packageData || !packageData.result || !packageData.result.resources) {
         throw new Error("Failed to retrieve package metadata from City of Toronto.");
@@ -187,22 +138,16 @@ async function fetchSwimData() {
 
     // Find the active datastore resource. Prefer the one containing "Drop-in" if there are multiple.
     const resources = packageData.result.resources;
-    let activeResource = resources.find(r => r.datastore_active && r.name && r.name.includes("Drop-in"));
-    if (!activeResource) {
-        activeResource = resources.find(r => r.datastore_active);
-    }
+    let activeResource = resources.find(r => r.datastore_active && r.name && r.name.includes("Drop-in")) 
+                      || resources.find(r => r.datastore_active);
 
-    if (!activeResource) {
-        throw new Error("No active datastore resources found for this package.");
-    }
-
-    console.log(`Found active resource ID: ${activeResource.id}`);
+    if (!activeResource) throw new Error("No active datastore resources found for this package.");
 
     console.log("Step 2: Constructing filter query for Datastore API...");
     const targetUrl = `https://open.toronto.ca/api/3/action/datastore_search?id=${activeResource.id}&limit=2000&filters=${encodeURIComponent(JSON.stringify({"Location ID": TARGET_LOCATION_IDS}))}`;
     
     console.log("Step 3: Fetching pool data...");
-    const data = await secureFetch(targetUrl, true);
+    const data = await fetchData(targetUrl);
     if (data && data.result && data.result.records) {
         return groupPoolData(data.result.records);
     } else {
