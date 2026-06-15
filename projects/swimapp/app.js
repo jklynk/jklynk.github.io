@@ -137,6 +137,18 @@ async function fetchSwimData() {
 }
 
 /**
+ * Helper function to convert 24-hour time to 12-hour AM/PM format
+ */
+function format12Hour(hrString, minString) {
+    let hr = parseInt(hrString, 10);
+    if (isNaN(hr)) return `${hrString}:${minString}`; // Fallback if data is malformed
+    const ampm = hr >= 12 ? 'PM' : 'AM';
+    hr = hr % 12;
+    hr = hr ? hr : 12; // the hour '0' should be '12'
+    return `${hr}:${minString} ${ampm}`;
+}
+
+/**
  * Groups individual pool records by location ID and formats session times
  */
 function groupPoolData(records) {
@@ -184,7 +196,9 @@ function groupPoolData(records) {
         const endHr = String(record["End Hour"] !== undefined && record["End Hour"] !== null ? record["End Hour"] : "00").padStart(2, '0');
         const endMin = String(record["End Min"] !== undefined && record["End Min"] !== null ? record["End Min"] : "00").padStart(2, '0');
 
-        const startTime = `${startHr}:${startMin} - ${endHr}:${endMin}`;
+        const formattedStart = format12Hour(startHr, startMin);
+        const formattedEnd = format12Hour(endHr, endMin);
+        const startTime = `${formattedStart} - ${formattedEnd}`;
         
         const session = {
             day: record["DayOftheWeek"] || "Unknown Day",
