@@ -1,0 +1,123 @@
+:root {
+    --bg-color: #f4f6f8;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --primary-color: #0f4c81;
+    --highlight-bg: #e6f3ff;
+    --highlight-border: #0078d7;
+    --border-radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn.active, .toggle-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 40px;
+}
+
+/* Section Grouping */
+.group-section {
+    margin-bottom: 40px;
+}
+
+.group-header {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* Cards */
+.swim-card {
+    background: var(--card-bg);
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.swim-card.today-highlight {
+    background: var(--highlight-bg);
+    border-left: 5px solid var(--highlight-border);
+}
+
+.pool-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.time-slot {
+    font-family: monospace;
+    font-size: 1.1rem;
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.date-info {
+    font-size: 0.9rem;
+    color: #555;
+    width: 100%;
+}
+
+@media (max-width: 500px) {
+    .swim-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
