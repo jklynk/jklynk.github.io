@@ -1,6 +1,6 @@
 const PACKAGE_ID = "1a5be46a-4039-48cd-a2d2-8e702abf9516";
 const TARGET_API_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action";
-const CORS_PROXY = "https://api.allorigins.win/raw?url="; // The middleman
+const CORS_PROXY = "https://corsproxy.io/?"; // The middleman
 
 const TARGET_POOLS = {
     58: "Jimmie Simpson (Indoor)",
