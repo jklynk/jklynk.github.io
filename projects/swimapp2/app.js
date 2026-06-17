@@ -1,5 +1,6 @@
 const PACKAGE_ID = "1a5be46a-4039-48cd-a2d2-8e702abf9516";
-const BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action";
+const TARGET_API_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action";
+const CORS_PROXY = "https://api.allorigins.win/raw?url="; // The middleman
 
 const TARGET_POOLS = {
     58: "Jimmie Simpson (Indoor)",
@@ -28,16 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initApp() {
     try {
-        // 1. Get Package Metadata
-        const pkgRes = await fetch(`${BASE_URL}/package_show?id=${PACKAGE_ID}`);
+        // 1. Get Package Metadata via Proxy
+        const pkgTarget = encodeURIComponent(`${TARGET_API_URL}/package_show?id=${PACKAGE_ID}`);
+        const pkgRes = await fetch(`${CORS_PROXY}${pkgTarget}`);
         const pkgData = await pkgRes.json();
         
         // 2. Find active datastore resource
         const activeResource = pkgData.result.resources.find(r => r.datastore_active);
         if (!activeResource) throw new Error("No active datastore found.");
 
-        // 3. Fetch all records (Limit 10000 to bypass truncation)
-        const dataRes = await fetch(`${BASE_URL}/datastore_search?id=${activeResource.id}&limit=10000`);
+        // 3. Fetch all records via Proxy (Limit 10000 to bypass truncation)
+        const dataTarget = encodeURIComponent(`${TARGET_API_URL}/datastore_search?id=${activeResource.id}&limit=10000`);
+        const dataRes = await fetch(`${CORS_PROXY}${dataTarget}`);
         const dataJson = await dataRes.json();
         
         // 4. Process and filter the raw data
@@ -48,7 +51,7 @@ async function initApp() {
 
     } catch (error) {
         console.error("Error fetching data:", error);
-        document.getElementById('app-content').innerHTML = `<p style="color:red;">Error loading schedules. Please check console.</p>`;
+        document.getElementById('app-content').innerHTML = `<p style="color:red;">Error loading schedules. Please check the console for details.</p>`;
     }
 }
 
