@@ -29,29 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initApp() {
     try {
-        // 1. Get Package Metadata via Proxy
-        const pkgTarget = encodeURIComponent(`${TARGET_API_URL}/package_show?id=${PACKAGE_ID}`);
-        const pkgRes = await fetch(`${CORS_PROXY}${pkgTarget}`);
-        const pkgData = await pkgRes.json();
+        // Fetch the securely downloaded local data
+        const res = await fetch('./swim-data.json');
         
-        // 2. Find active datastore resource
-        const activeResource = pkgData.result.resources.find(r => r.datastore_active);
-        if (!activeResource) throw new Error("No active datastore found.");
+        if (!res.ok) {
+            throw new Error("Could not find swim-data.json.");
+        }
 
-        // 3. Fetch all records via Proxy (Limit 10000 to bypass truncation)
-        const dataTarget = encodeURIComponent(`${TARGET_API_URL}/datastore_search?id=${activeResource.id}&limit=10000`);
-        const dataRes = await fetch(`${CORS_PROXY}${dataTarget}`);
-        const dataJson = await dataRes.json();
+        const rawRecords = await res.json();
         
-        // 4. Process and filter the raw data
-        globalSwimData = processRecords(dataJson.result.records);
+        // Process and filter (This uses the exact same logic as before)
+        globalSwimData = processRecords(rawRecords);
         
-        // 5. Initial Render
+        // Initial Render
         renderByDay(globalSwimData);
 
     } catch (error) {
-        console.error("Error fetching data:", error);
-        document.getElementById('app-content').innerHTML = `<p style="color:red;">Error loading schedules. Please check the console for details.</p>`;
+        console.error("Error loading local data:", error);
+        document.getElementById('app-content').innerHTML = `
+            <div style="text-align: center; color: #d9534f; padding: 20px;">
+                <h3>Data Not Found</h3>
+                <p>Make sure to run <code>node update.js</code> in your VS Code terminal first to fetch the latest schedule from the city.</p>
+            </div>
+        `;
     }
 }
 
