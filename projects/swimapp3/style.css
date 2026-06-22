@@ -1,0 +1,996 @@
+/* ==========================================================================
+   Swim App CSS Design System
+   Vanilla CSS with CSS Custom Properties, Glassmorphism, and Responsiveness
+   ========================================================================== */
+
+:root {
+  /* Colors */
+  --bg-color: #0b0f19;
+  --card-bg: rgba(22, 29, 49, 0.65);
+  --card-bg-hover: rgba(30, 39, 65, 0.8);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(255, 255, 255, 0.18);
+  
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-dark: #1f2937;
+  
+  --accent-cyan: #00f0ff;
+  --accent-cyan-glow: rgba(0, 240, 255, 0.25);
+  --accent-mint: #00ffcc;
+  --accent-mint-glow: rgba(0, 255, 204, 0.15);
+  
+  --indoor-color: #a855f7;
+  --indoor-bg: rgba(168, 85, 247, 0.15);
+  --outdoor-color: #f97316;
+  --outdoor-bg: rgba(249, 115, 22, 0.15);
+  
+  --today-highlight-bg: rgba(0, 240, 255, 0.05);
+  --today-highlight-border: rgba(0, 240, 255, 0.45);
+  --today-highlight-glow: rgba(0, 240, 255, 0.2);
+
+  /* Fonts */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s ease;
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-block-size: 100dvh;
+  overflow-x: clip;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* Decorative background glowing blobs */
+.glow-container {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.6;
+}
+
+.glow-blue {
+  background: rgba(0, 102, 255, 0.25);
+  inline-size: 45vw;
+  block-size: 45vw;
+  inset-inline-start: -10vw;
+  inset-block-start: -10vw;
+  animation: float-blob 20s infinite alternate ease-in-out;
+}
+
+.glow-cyan {
+  background: rgba(0, 240, 255, 0.18);
+  inline-size: 40vw;
+  block-size: 40vw;
+  inset-inline-end: -5vw;
+  inset-block-end: 10vw;
+  animation: float-blob 25s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes float-blob {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4vw, -5vw) scale(1.1); }
+  100% { transform: translate(-2vw, 3vw) scale(0.95); }
+}
+
+/* Main Layout Wrapper */
+.dashboard-wrapper {
+  inline-size: 100%;
+  max-inline-size: 1200px;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+  .app-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.header-logo-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-emoji {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 0 10px var(--accent-cyan-glow));
+  animation: swim-motion 4s infinite ease-in-out;
+}
+
+@keyframes swim-motion {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-6px) rotate(-5deg); }
+}
+
+#app-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* Header Stats Panel */
+.header-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px) saturate(180%);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 95px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-block-start: 0.25rem;
+}
+
+/* Control Panel Toolbar */
+.control-panel {
+  background: rgba(22, 29, 49, 0.45);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .control-panel {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  flex: 1;
+  max-inline-size: 100%;
+}
+
+@media (min-width: 1024px) {
+  .search-box {
+    max-inline-size: 380px;
+  }
+}
+
+.search-icon {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  inline-size: 18px;
+  block-size: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+#pool-search-input {
+  inline-size: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
+  background: rgba(11, 15, 25, 0.7);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#pool-search-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 12px var(--accent-cyan-glow);
+}
+
+#pool-search-input:focus + .search-icon {
+  color: var(--accent-cyan);
+}
+
+/* Filter Chips */
+.filter-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 0.5rem 1.1rem;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  border-color: var(--card-border-hover);
+  color: var(--text-main);
+}
+
+.chip.active {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  color: var(--text-dark);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+}
+
+/* Sliding View Toggle */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.view-toggle {
+  position: relative;
+  background: rgba(11, 15, 25, 0.7);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 3px;
+  display: flex;
+  inline-size: 160px;
+  block-size: 40px;
+}
+
+.toggle-btn {
+  position: relative;
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 2;
+  transition: color var(--transition-fast);
+}
+
+.toggle-btn.active {
+  color: var(--text-dark);
+}
+
+.toggle-slider {
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 3px;
+  inline-size: 77px;
+  block-size: 32px;
+  background: var(--accent-cyan);
+  border-radius: 9px;
+  z-index: 1;
+  transition: transform var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 240, 255, 0.3);
+}
+
+/* When the pool button is active, slide the slider */
+.view-toggle[data-active="pool"] .toggle-slider {
+  transform: translateX(77px);
+}
+
+/* Schedule Container Grid & Sections */
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  min-block-size: 300px;
+}
+
+/* Category Sections (Days or Pools) */
+.schedule-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.05);
+  padding-block-end: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.session-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* HIGHLIGHT: Today's Section Styling */
+.schedule-section.section-today {
+  order: -1; /* Floats to the top of flex layout */
+  background: linear-gradient(180deg, var(--today-highlight-bg) 0%, transparent 100%);
+  border: 1px solid var(--today-highlight-border);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px var(--today-highlight-glow);
+}
+
+.schedule-section.section-today .section-title {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+/* Individual Row Styling */
+.swim-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.swim-card::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  inline-size: 4px;
+}
+
+.swim-card.pool-indoor::before {
+  background-color: var(--indoor-color);
+}
+
+.swim-card.pool-outdoor::before {
+  background-color: var(--outdoor-color);
+}
+
+.swim-card:hover {
+  border-color: var(--card-border-hover);
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Highlighted Today Row variant */
+.section-today .swim-card {
+  background: rgba(22, 29, 49, 0.8);
+  border-color: rgba(0, 240, 255, 0.15);
+}
+
+.section-today .swim-card:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+}
+
+.swim-row-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.swim-row-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.swim-info-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pool-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.pool-type-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.badge-indoor {
+  background: var(--indoor-bg);
+  color: var(--indoor-color);
+}
+
+.badge-outdoor {
+  background: var(--outdoor-bg);
+  color: var(--outdoor-color);
+}
+
+.time-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clock-icon {
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--accent-cyan);
+}
+
+.swim-time {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.swim-time.time-live {
+  color: var(--accent-mint) !important;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.25);
+}
+
+.swim-duration {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.swim-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .swim-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+  }
+  .swim-row-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .swim-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Loading & Empty States */
+.loading-state,
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  text-align: center;
+  gap: 1rem;
+}
+
+.spinner {
+  inline-size: 40px;
+  block-size: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-block-start-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  filter: grayscale(0.5);
+}
+
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-inline-size: 320px;
+}
+
+/* Footer Section */
+.app-footer {
+  margin-block-start: auto;
+  padding-block-start: 1.5rem;
+  border-block-start: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .app-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.pool-legend {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-dot {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-indoor {
+  background-color: var(--indoor-color);
+}
+
+.dot-outdoor {
+  background-color: var(--outdoor-color);
+}
+
+/* Beach Conditions Styling */
+.beach-conditions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.beach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.beach-card {
+  text-decoration: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(22, 29, 49, 0.7) 0%, rgba(11, 15, 25, 0.8) 100%);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.beach-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
+}
+
+.beach-card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 100%;
+  inline-size: 4px;
+  background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-mint));
+}
+
+.beach-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.beach-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.beach-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-block-start: 0.2rem;
+}
+
+/* Water Temp, Ecoli & Waves Section */
+.beach-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (max-width: 480px) {
+  .beach-metrics {
+    gap: 0.5rem;
+  }
+  .metric-box {
+    padding: 0.5rem 0.35rem;
+    gap: 0.25rem;
+  }
+  .metric-value-large {
+    font-size: 1.25rem;
+  }
+  .metric-label {
+    font-size: 0.58rem;
+    gap: 0.2rem;
+  }
+  .metric-update {
+    font-size: 0.54rem;
+  }
+  .metric-source {
+    font-size: 0.48rem;
+  }
+}
+
+.metric-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.metric-box.status-safe {
+  border-color: rgba(0, 255, 204, 0.22);
+  background: rgba(0, 255, 204, 0.02);
+}
+.metric-box.status-safe .metric-value-large {
+  color: var(--accent-mint);
+}
+
+.metric-box.status-warning {
+  border-color: rgba(249, 115, 22, 0.22);
+  background: rgba(249, 115, 22, 0.02);
+}
+.metric-box.status-warning .metric-value-large {
+  color: #f97316;
+}
+
+.metric-box.status-danger {
+  border-color: rgba(239, 68, 68, 0.22);
+  background: rgba(239, 68, 68, 0.02);
+}
+.metric-box.status-danger .metric-value-large {
+  color: #ef4444;
+}
+
+.metric-box.status-stale {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.01);
+  opacity: 0.55;
+  transition: opacity var(--transition-fast);
+}
+.metric-box.status-stale .metric-value-large {
+  color: var(--text-muted);
+}
+.metric-box.status-stale:hover {
+  opacity: 0.85;
+}
+
+.stale-warning {
+  color: #f97316;
+  font-size: 0.58rem;
+  font-weight: 700;
+  margin-inline-start: auto;
+  letter-spacing: 0.02em;
+}
+
+.metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.metric-value-large {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  line-height: 1.2;
+}
+
+.metric-value-unit {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.metric-update {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  margin-block-start: auto; /* Push it to the bottom of the flexbox */
+  padding-block-start: 0.35rem;
+  opacity: 0.75;
+}
+
+.metric-source {
+  display: block;
+  font-size: 0.56rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+  margin-block-start: 0.1rem;
+}
+
+/* Ecoli Badges */
+.ecoli-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.ecoli-safe {
+  background: var(--accent-mint-glow);
+  color: var(--accent-mint);
+  border: 1px solid rgba(0, 255, 204, 0.3);
+}
+
+.ecoli-unsafe {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: pulse-border 2s infinite;
+}
+
+.ecoli-warning {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(239, 68, 68, 0.3); }
+  50% { border-color: rgba(239, 68, 68, 0.8); }
+}
+
+.beach-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-block-start: 1px solid rgba(255, 255, 255, 0.05);
+  padding-block-start: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.beach-source {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  inline-size: 8px;
+  block-size: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   Beach Conditions Collapsed State
+   ========================================================================== */
+#beach-section-container.collapsed .beach-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+#beach-section-container.collapsed .beach-card {
+  padding: 0.5rem 1.25rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: none;
+  min-height: auto;
+}
+
+#beach-section-container.collapsed .beach-card::before {
+  display: none;
+}
+
+#beach-section-container.collapsed .beach-metrics,
+#beach-section-container.collapsed .ecoli-badge {
+  display: none !important;
+}
+
+#beach-section-container.collapsed .beach-card.status-safe .beach-name {
+  color: var(--accent-mint);
+  text-shadow: 0 0 8px rgba(0, 255, 204, 0.2);
+}
+
+#beach-section-container.collapsed .beach-card.status-warning .beach-name {
+  color: #f97316;
+  text-shadow: 0 0 8px rgba(249, 115, 22, 0.2);
+}
+
+#beach-section-container.collapsed .beach-card.status-danger .beach-name {
+  color: #ef4444;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+}
+
+#beach-section-container.collapsed .beach-card.status-unknown .beach-name {
+  color: var(--text-muted);
+}
+
+#beach-section-container.collapsed .beach-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+}
+
+#beach-section-container.collapsed .beach-card.status-safe:hover {
+  border-color: var(--accent-mint);
+}
+
+#beach-section-container.collapsed .beach-card.status-warning:hover {
+  border-color: #f97316;
+}
+
+#beach-section-container.collapsed .beach-card.status-danger:hover {
+  border-color: #ef4444;
+}
+
+#beach-section-container.collapsed .beach-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}

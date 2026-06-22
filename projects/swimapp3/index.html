@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Real-time lane swim schedules for Toronto's premier indoor and outdoor public pools.">
+  <title>SwimApp</title>
+  <!-- Google Fonts: Outfit for heading/UI, Inter for body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="glow-container">
+    <div class="glow-blob glow-blue"></div>
+    <div class="glow-blob glow-cyan"></div>
+  </div>
+
+  <div class="dashboard-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo-title">
+        <span class="logo-emoji">🏊‍♀️</span>
+        <div>
+          <h1 id="app-title">Swim App</h1>
+        </div>
+      </div>
+    </header>
+
+    <!-- Beach Conditions -->
+    <section class="beach-conditions-panel" aria-label="Beach Conditions" id="beach-section-container">
+      <div class="section-header-row" style="margin-block-end: 0.75rem;">
+        <h2 class="section-title">🏖️ Beach Conditions</h2>
+        <button id="toggle-beach-btn" class="chip active" style="margin-block-start: 0; margin-inline-start: auto; cursor: pointer; user-select: none;">Hide</button>
+      </div>
+      <div class="beach-grid" id="beach-display-panel">
+        <!-- Beach cards will be dynamically inserted here -->
+      </div>
+    </section>
+
+    <!-- Control Toolbar -->
+    <section class="control-panel" aria-label="Controls">
+      <!-- Search Input -->
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="pool-search-input" placeholder="Search pools (e.g., Monarch, Jimmie)..." aria-label="Search pools">
+      </div>
+
+      <!-- Quick Pool Filters -->
+      <div class="filter-chips" id="pool-filter-chips">
+        <button class="chip active" data-filter="all" id="filter-all-btn">All Pools</button>
+        <button class="chip" data-filter="indoor" id="filter-indoor-btn">Indoor Only</button>
+        <button class="chip" data-filter="outdoor" id="filter-outdoor-btn">Outdoor Only</button>
+      </div>
+
+      <!-- View Toggle -->
+      <div class="toggle-container">
+        <span class="toggle-label">Group By:</span>
+        <div class="view-toggle" id="view-toggle-control" role="radiogroup" aria-label="Grouping View">
+          <button class="toggle-btn active" id="group-day-btn" role="radio" aria-checked="true" data-view="day">Day</button>
+          <button class="toggle-btn" id="group-pool-btn" role="radio" aria-checked="false" data-view="pool">Pool</button>
+          <span class="toggle-slider" id="toggle-slider-el"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Schedule Content -->
+    <main class="schedule-container" id="schedule-display">
+      <!-- Loading State -->
+      <div class="loading-state" id="loading-spinner">
+        <div class="spinner"></div>
+        <p>Fetching swim schedules...</p>
+      </div>
+
+      <!-- Schedules will be dynamically inserted here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-info">
+        <p>Data sourced from City of Toronto Open Data API.</p>
+        <p id="last-updated-text">Last sync: Checking...</p>
+      </div>
+      <div class="pool-legend">
+        <span class="legend-item"><span class="legend-dot dot-indoor"></span> Indoor Pool</span>
+        <span class="legend-item"><span class="legend-dot dot-outdoor"></span> Outdoor Pool</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
